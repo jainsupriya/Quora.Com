@@ -7,7 +7,7 @@ import jwt_decode from "jwt-decode";
 import authToken from "../utils/authToken";
 import { setCurrentUser, logoutUser } from "../actions/authActions";
 import { Provider } from "react-redux";
-import store from "../store";
+import { store } from "../store";
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -25,7 +25,7 @@ if (localStorage.jwtToken) {
     store.dispatch(logoutUser());
 
     // Redirect to login
-    window.location.href = "/signin";
+    window.location.href = "/login";
   }
 }
 //Create a Main Component
@@ -37,7 +37,7 @@ class Main extends Component {
           <div>
             <Switch>
               <Route exact path="/" component={FeedHome} />
-              <Route exact path="/signin" component={Login} />
+              <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={SignUp} />
               <Route render={() => <h3>Page not Found</h3>} />
             </Switch>
