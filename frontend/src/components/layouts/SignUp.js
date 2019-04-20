@@ -1,9 +1,8 @@
 import React from "react";
-import Modal from "react-bootstrap/lib/Modal";
-import Button from "react-bootstrap/lib/Button";
-import FormGroup from "react-bootstrap/lib/FormGroup";
-import FormControl from "react-bootstrap/lib/FormControl";
-import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+
 import AppActions from "../../actions/AppActions";
 
 export default class SignUp extends React.Component {
@@ -49,84 +48,84 @@ export default class SignUp extends React.Component {
             </Modal.Header>
 
             <Modal.Body>
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Enter Username</ControlLabel>
-                <FormControl
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Enter Username</Form.Label>
+                <Form.Control
                   type="text"
                   placeholder="Username"
                   inputRef={ref => {
                     this.unameField = ref;
                   }}
                 />
-              </FormGroup>
+              </Form.Group>
 
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Enter First Name</ControlLabel>
-                <FormControl
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Enter First Name</Form.Label>
+                <Form.Control
                   type="text"
                   placeholder="First name"
                   inputRef={ref => {
                     this.fnameField = ref;
                   }}
                 />
-              </FormGroup>
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Enter Last Name</ControlLabel>
-                <FormControl
+              </Form.Group>
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Enter Last Name</Form.Label>
+                <Form.Control
                   type="text"
                   placeholder="Last name"
                   inputRef={ref => {
                     this.lnameField = ref;
                   }}
                 />
-              </FormGroup>
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Enter Email</ControlLabel>
-                <FormControl
+              </Form.Group>
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Enter Email</Form.Label>
+                <Form.Control
                   type="text"
                   placeholder="Email"
                   inputRef={ref => {
                     this.emailField = ref;
                   }}
                 />
-              </FormGroup>
+              </Form.Group>
 
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Enter Password</ControlLabel>
-                <FormControl
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Enter Password</Form.Label>
+                <Form.Control
                   type="password"
                   placeholder="Password"
                   inputRef={ref => {
                     this.passwordField = ref;
                   }}
                 />
-              </FormGroup>
+              </Form.Group>
 
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Enter Mobile</ControlLabel>
-                <FormControl
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Enter Mobile</Form.Label>
+                <Form.Control
                   type="text"
                   placeholder="Mobile"
                   inputRef={ref => {
                     this.mobileField = ref;
                   }}
                 />
-              </FormGroup>
+              </Form.Group>
 
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Enter Date Of Birth</ControlLabel>
-                <FormControl
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Enter Date Of Birth</Form.Label>
+                <Form.Control
                   type="text"
                   placeholder="Date of Birth(in Epoch Time format)"
                   inputRef={ref => {
                     this.dobField = ref;
                   }}
                 />
-              </FormGroup>
+              </Form.Group>
 
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Enter Gender</ControlLabel>
-                <FormControl
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Enter Gender</Form.Label>
+                <Form.Control
                   type="text"
                   placeholder="Gender"
                   inputRef={ref => {
@@ -141,7 +140,7 @@ export default class SignUp extends React.Component {
                                 <MenuItem eventKey="2">Female</MenuItem>
                                 <MenuItem eventKey="3">Other</MenuItem>
                                 </DropdownButton> */}
-              </FormGroup>
+              </Form.Group>
             </Modal.Body>
 
             <Modal.Footer>

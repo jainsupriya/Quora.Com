@@ -1,11 +1,11 @@
 import React from "react";
-import Button from "react-bootstrap/lib/Button";
-import Overlay from "react-bootstrap/lib/Overlay";
+import Button from "react-bootstrap/Button";
+import Overlay from "react-bootstrap/Overlay";
 import ReactDOM from "react-dom";
-import NavItem from "react-bootstrap/lib/NavItem";
+import NavItem from "react-bootstrap/NavItem";
 
 import NotificationComponent from "./NotificationComponent";
-import Badge from "react-bootstrap/lib/Badge";
+import Badge from "react-bootstrap/Badge";
 
 export default class Notificationpopup extends React.Component {
   constructor(props, context) {
@@ -27,9 +27,6 @@ export default class Notificationpopup extends React.Component {
   }
 
   render() {
-    const notification = this.props.notification;
-    const notificationStrings = notification.notification;
-
     return (
       <div style={{ height: 20, position: "relative" }}>
         <NavItem
@@ -44,7 +41,7 @@ export default class Notificationpopup extends React.Component {
             <span class="glyphicon glyphicon-bell text-success" />
             &nbsp;
           </font>
-          Notification &nbsp;<Badge>{notificationStrings.length}</Badge>
+          Notification &nbsp;<Badge />
         </NavItem>
 
         <Overlay

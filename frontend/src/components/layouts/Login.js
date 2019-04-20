@@ -1,9 +1,8 @@
 import React from "react";
-import Modal from "react-bootstrap/lib/Modal";
-import Button from "react-bootstrap/lib/Button";
-import FormGroup from "react-bootstrap/lib/FormGroup";
-import FormControl from "react-bootstrap/lib/FormControl";
-import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+
 import AppActions from "../../actions/AppActions";
 
 export default class Login extends React.Component {
@@ -35,26 +34,26 @@ export default class Login extends React.Component {
             </Modal.Header>
 
             <Modal.Body>
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>Username or email</ControlLabel>
-                <FormControl
+              <Form.Group controlId="formBasicText">
+                <Form.Label>Username or email</Form.Label>
+                <Form.Control
                   type="text"
                   placeholder="username"
                   inputRef={ref => {
                     this.usernameField = ref;
                   }}
                 />
-              </FormGroup>
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>password</ControlLabel>
-                <FormControl
+              </Form.Group>
+              <Form.Group controlId="formBasicText">
+                <Form.Label>password</Form.Label>
+                <Form.Control
                   type="password"
                   placeholder="password"
                   inputRef={ref => {
                     this.passwordField = ref;
                   }}
                 />
-              </FormGroup>
+              </Form.Group>
             </Modal.Body>
 
             <Modal.Footer>

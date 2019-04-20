@@ -1,6 +1,6 @@
 import React from "react";
 import "./notification.css";
-import Button from "react-bootstrap/lib/Button";
+import Button from "react-bootstrap/Button";
 import AppActions from "../../../actions/AppActions";
 
 export default class NotificationComponent extends React.Component {
