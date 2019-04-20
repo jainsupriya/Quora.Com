@@ -1,11 +1,16 @@
 {
-  "name": "frontend",
+  "name": "quora",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.8.6",
+    "axios": "^0.18.0",
+    "jwt-decode": "^2.2.0",
+    "react": "^16.2.0",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-scripts": "^2.1.8",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
