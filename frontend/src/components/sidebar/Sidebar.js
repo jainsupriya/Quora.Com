@@ -29,13 +29,26 @@ class Sidebar extends React.Component {
 
 
         <List  className={classes.list}  style = {{backgroundColor: 'white'} }>
-            <ListItem button></ListItem> <ListItem button></ListItem> <ListItem button></ListItem>
             <Link to={"/profile"}><ListItem button>
             <ListItemIcon>
             <Bookmark style={{ fill: "grey" }}/>
             </ListItemIcon>
             <ListItemText  inset primary={<Typography style={{ color: 'grey' }}>
             Bookmark</Typography>}/>
+            </ListItem></Link>
+            <Link to={"/profile"}><ListItem button>
+            <ListItemIcon>
+            <Bookmark style={{ fill: "grey" }}/>
+            </ListItemIcon>
+            <ListItemText  inset primary={<Typography style={{ color: 'grey' }}>
+            Hollywood</Typography>}/>
+            </ListItem></Link>
+            <Link to={"/profile"}><ListItem button>
+            <ListItemIcon>
+            <Bookmark style={{ fill: "grey" }}/>
+            </ListItemIcon>
+            <ListItemText  inset primary={<Typography style={{ color: 'grey' }}>
+            Dance</Typography>}/>
             </ListItem></Link>
         </List>
 

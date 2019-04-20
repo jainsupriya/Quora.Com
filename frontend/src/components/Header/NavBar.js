@@ -9,6 +9,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import EditIcon from '@material-ui/icons/Edit';
 import notificatioIcon from '@material-ui/icons/'
 import CreateQuestion from "../Questions/CreateQuestion";
+import { Typography } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -60,7 +61,7 @@ class NavBar extends React.Component {
       <div className={classes.root}>
       <Navbar bg="light" variant="light" className={classes.navbar}>
         <Navbar.Brand href="#home" >
-        <font size="8">  <a href="/"  style={{ color: 'red' }}>Quora</a></font>
+        <Typography variant="h5" > <a href="/"  style={{ color: 'red' }}>Quora </a></Typography>
         </Navbar.Brand>
         <Nav className="mr-auto">
           
@@ -73,7 +74,7 @@ class NavBar extends React.Component {
 
           <Nav.Link href="#home">
             <font size="3">  
-              <EditIcon color="secondary"/>
+              <EditIcon className={classes.icon}  color="secondary"/>
             </font>
             Answer
           </Nav.Link>

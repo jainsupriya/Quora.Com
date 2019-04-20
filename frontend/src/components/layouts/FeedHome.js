@@ -13,8 +13,8 @@ class FeedHome extends React.Component {
         <Navbar />
         <Container>
           <Row>
-            <Col xs={3} ><Sidebar/></Col>
-            <Col xs={6}><Feeds/></Col>
+            <Col xs={2} ><Sidebar/></Col>
+            <Col xs={8}><Feeds/></Col>
             <Col xs={3} ></Col>
           </Row>
         </Container>
