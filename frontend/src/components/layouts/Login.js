@@ -141,7 +141,7 @@ export class Login extends Component {
                 // type="submit"
                 fullWidth
                 variant="contained"
-                color="secondary"
+                color="primary"
                 className={classes.submit}
               >
                 Sign Up
