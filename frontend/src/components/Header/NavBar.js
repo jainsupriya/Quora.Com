@@ -8,6 +8,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 
 import EditIcon from '@material-ui/icons/Edit';
 import notificatioIcon from '@material-ui/icons/'
+import CreateQuestion from "../Questions/CreateQuestion";
 
 const styles = theme => ({
   root: {
@@ -42,7 +43,14 @@ function HomeIcon(props) {
 class NavBar extends React.Component {
   constructor() {
     super();
+    this.state = {
+      show:false,
+      };
+
   }
+  handleShow = () => {
+    this.setState({show:true})
+   };
 
   render() {
     
@@ -52,7 +60,7 @@ class NavBar extends React.Component {
       <div className={classes.root}>
       <Navbar bg="light" variant="light" className={classes.navbar}>
         <Navbar.Brand href="#home" >
-        <a href="/">Quora</a>
+        <font size="8">  <a href="/"  style={{ color: 'red' }}>Quora</a></font>
         </Navbar.Brand>
         <Nav className="mr-auto">
           
@@ -80,9 +88,12 @@ class NavBar extends React.Component {
         </Nav>
         <Form inline>
           <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-info">Search</Button>
+          <Button variant="danger" color="secondary"  onClick={this.handleShow}>
+          Add Question
+          </Button>
         </Form>
       </Navbar>
+      { this.state.show && <CreateQuestion close={this.handleClose}/> }
       </div>
     );
   }
