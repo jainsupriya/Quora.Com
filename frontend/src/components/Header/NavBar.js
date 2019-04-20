@@ -17,28 +17,28 @@ export default class MyNavBar extends React.Component {
     this.handleLogOut = this.handleLogOut.bind(this);
   }
   handleUserClick = () => {
-    //AppActions.showLoginPopup();
+    AppActions.showLoginPopup();
   };
 
   handleSignUpClick = () => {
-    // AppActions.showSignUpPopup();
+    AppActions.showSignUpPopup();
   };
 
   handleOnAddQclick = () => {
-    //AppActions.showAddQPopup();
+    AppActions.showAddQPopup();
   };
 
   handleUserProfileClick = () => {
-    // AppActions.handleUserProfileClick();
+    AppActions.handleUserProfileClick();
   };
 
   handleLogOut = () => {
-    //AppActions.getLogOut();
+    AppActions.getLogOut();
   };
 
   componentDidMount() {
     var cookie = document.cookie;
-    //if (cookie) AppActions.showNotification();
+    if (cookie) AppActions.showNotification();
   }
   getUserButton = () => {
     let user = this.props.user;

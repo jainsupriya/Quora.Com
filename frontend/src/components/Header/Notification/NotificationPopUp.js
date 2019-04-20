@@ -1,8 +1,9 @@
 import React from "react";
+import Button from "react-bootstrap/lib/Button";
 import Overlay from "react-bootstrap/lib/Overlay";
 import ReactDOM from "react-dom";
 import NavItem from "react-bootstrap/lib/NavItem";
-import AppAction from "../../../actions/AppActions";
+
 import NotificationComponent from "./NotificationComponent";
 import Badge from "react-bootstrap/lib/Badge";
 
@@ -21,7 +22,7 @@ export default class Notificationpopup extends React.Component {
     this.handleToggle();
   }
   handleToggle() {
-    // AppAction.showNotificationAsRead();
+    // /AppAction.showNotificationAsRead();
     this.setState({ show: !this.state.show });
   }
 
