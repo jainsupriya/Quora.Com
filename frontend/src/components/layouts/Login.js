@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Divider from "@material-ui/core/Divider";
 import "./Login.css";
 
 import { Link, withRouter } from "react-router-dom";
@@ -111,8 +104,6 @@ export class Login extends Component {
           </div>
           <div className="content-box">
             <div className="left">
-              <h1 />
-
               <input
                 type="text"
                 name="email"
