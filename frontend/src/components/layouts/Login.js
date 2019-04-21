@@ -120,7 +120,7 @@ export class Login extends Component {
               <input
                 type="submit"
                 name="signin_submit"
-                value="Sign In"
+                value="Login"
                 onClick={this.submitLogin}
               />
             </div>
@@ -136,30 +136,43 @@ export class Login extends Component {
                 Log in with Google+
               </button>
               <br />
-              <span className="light_gray TosDisclaimer">
-                By signing up you indicate that you have read and agree to
-                Quora's{" "}
+              <div id="__w2_wJNkelKg8_connect_explanation">
                 <a
-                  class="tos_link"
-                  href="/about/tos"
-                  nav_style="modal_present"
-                  target="_blank"
-                  rel="noopener"
+                  className="signup_email_link"
+                  href="/signup"
+                  tabindex="8"
+                  id="__w2_wJNkelKg8_continue_with_email"
                 >
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a
-                  class="tos_link"
-                  href="/about/privacy"
-                  nav_style="modal_present"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Privacy Policy
+                  Sign Up With Email
                 </a>
-                .
-              </span>
+                <span class="tos_disclaimer">
+                  .{" "}
+                  <span class="light_gray TosDisclaimer">
+                    By signing up you indicate that you have read and agree to
+                    Quora's{" "}
+                    <a
+                      class="tos_link"
+                      href="/about/tos"
+                      nav_style="modal_present"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      class="tos_link"
+                      href="/about/privacy"
+                      nav_style="modal_present"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Privacy Policy
+                    </a>
+                    .
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
