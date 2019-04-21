@@ -8,6 +8,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Divider from "@material-ui/core/Divider";
+import "./Login.css";
 
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -88,68 +89,90 @@ export class Login extends Component {
     // console.log(this.props);
 
     return (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          {/* <img src={Logo} /> */}
+      <div className="content">
+        <div className="bg_container">
+          <div className="bg_image" />
+        </div>
 
-          <Divider className={classes.divider} />
-
-          <form className={classes.form} onSubmit={this.onSubmit}>
-            {/* Email ID */}
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="text">Email Id</InputLabel>
-              <Input
-                placeholder="Email"
-                id="email"
-                name="email"
-                type="email"
-                value={this.state.email}
-                onChange={this.onChange}
-              />
-              {errors.email && (
-                <div style={{ color: "red" }}>{errors.email}</div>
-              )}
-            </FormControl>
-
-            {/* PASSWORD */}
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                onChange={this.onChange}
-              />
-              {errors.password && (
-                <div style={{ color: "red" }}>{errors.password}</div>
-              )}
-            </FormControl>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
+        <div id="login-box">
+          <div className="okta-sign-in-header">
+            <div className="NetworkLogo" style={{ margin: "auto" }}>
+              <a className="logo hidden" href="/">
+                <span>Quora</span>
+              </a>
+            </div>
+            <h2
+              className="NetworkLogoTagline tagline"
+              style={{ align: "center" }}
             >
-              Login
-            </Button>
+              A place to share knowledge and better understand the world
+            </h2>
+            <div data-type="beacon-container" className="beacon-container" />
+          </div>
+          <div className="content-box">
+            <div className="left">
+              <h1 />
 
-            <Link style={{ textDecoration: "none" }} to="/signup">
-              <Button
-                // type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign Up
-              </Button>
-            </Link>
-          </form>
-        </Paper>
-      </main>
+              <input
+                type="text"
+                name="email"
+                placeholder="Email"
+                onChange={this.onChange}
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={this.onChange}
+              />
+
+              <input
+                type="submit"
+                name="signin_submit"
+                value="Sign In"
+                onClick={this.submitLogin}
+              />
+            </div>
+            <div className="v1" />
+            <div className="right">
+              <button className="social-signin facebook">
+                Log in with facebook
+              </button>
+              <button className="social-signin twitter">
+                Log in with Twitter
+              </button>
+              <button className="social-signin google">
+                Log in with Google+
+              </button>
+              <br />
+              <span className="light_gray TosDisclaimer">
+                By signing up you indicate that you have read and agree to
+                Quora's{" "}
+                <a
+                  class="tos_link"
+                  href="/about/tos"
+                  nav_style="modal_present"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a
+                  class="tos_link"
+                  href="/about/privacy"
+                  nav_style="modal_present"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Privacy Policy
+                </a>
+                .
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
