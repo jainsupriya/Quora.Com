@@ -126,7 +126,7 @@ export class SignUp extends Component {
           <div className="bg_image" />
         </div>
 
-        <div id="login-box">
+        <div id="signup-box">
           <div className="okta-sign-in-header">
             <div className="NetworkLogo" style={{ margin: "auto" }}>
               <a className="logo hidden" href="/">
