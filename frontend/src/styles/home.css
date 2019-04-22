@@ -25,7 +25,7 @@
 .avatar {
     margin: 10px;
 }
-.askQuestionBtn{
+.askQuestionBtn {
     margin-left: 8px;
     min-width: 96px;
     white-space: nowrap;
@@ -37,9 +37,10 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    transition: opacity ease-in-out 100ms,color ease-in-out 100ms,background-color ease-in-out 100ms,border-color ease-in-out 100ms;
+    transition: opacity ease-in-out 100ms, color ease-in-out 100ms,
+        background-color ease-in-out 100ms, border-color ease-in-out 100ms;
     border-radius: 3px;
-    box-shadow: 0 1px 1px 0 rgba(200,200,200,0.2);
+    box-shadow: 0 1px 1px 0 rgba(200, 200, 200, 0.2);
     display: inline-block;
     font-weight: 500;
     outline: 0;
@@ -51,29 +52,30 @@
     background: #b92b27;
     color: #fff;
 }
-.menu-clr-1{
+.menu-clr-1 {
     color: #b92b27;
     /* margin-left: 5px; */
     /* margin-right: 5px; */
 }
-.menu-clr-2{
+.menu-clr-2 {
     color: #666;
     /* margin-left: 5px; */
     /* margin-right: 5px; */
 }
-.header-search{
+.header-search {
     border: 1px solid #e2e2e2;
     border-radius: 4px;
     padding-left: 26px;
-    background: url(https://qsfl2.fs.quoracdn.net/-3-images.new_grid.QuoraSearch.png-26-86c32b1ac26e4161.png) no-repeat 8px center;
+    background: url(https://qsfl2.fs.quoracdn.net/-3-images.new_grid.QuoraSearch.png-26-86c32b1ac26e4161.png)
+        no-repeat 8px center;
     background-size: 13px;
 }
-.m-paper{
+.m-paper {
     padding: 15px;
     align-content: center;
-    text-align: center
+    text-align: center;
 }
-.check{
+.check {
     background-image: url(https://qsfl2.fs.quoracdn.net/-3-images.icons.green_check.svg-26-c26f17650e6e0192.svg);
     border: 0;
     /* background-color: black; */
@@ -82,4 +84,34 @@
     height: 13px;
     background-size: cover;
     position: relative;
+}
+.feed-bg-1 {
+    background-image: url(https://qsfl2.fs.quoracdn.net/-3-images.icons.mobile_feed_switcher.feed_3x.png-26-94e21de5c18cba55.png);
+    background-color: #b92b27;
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+    position: relative;
+}
+.feed-bg-2 {
+    background-image: url(https://qsfl2.fs.quoracdn.net/-3-images.icons.mobile_feed_switcher.feed_3x.png-26-94e21de5c18cba55.png);
+    background-color: #666;
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+    position: relative;
+}
+.m-margin-up-down {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 15px;
+    color: #666;
+}
+.m-padding-left-right-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.fix-pos{
+    /* position: fixed !important; */
 }
