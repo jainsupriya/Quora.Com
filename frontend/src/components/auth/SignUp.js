@@ -17,11 +17,11 @@ import TextField from "@material-ui/core/TextField";
 import { withRouter } from "react-router-dom";
 
 import classnames from "classnames";
-import "./SignUp.css";
+// import "./SignUp.css";
 
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { registerUser } from "../../actions/authActions";
+import { registerUser } from "../../redux/actions/authActions";
 
 const styles = theme => ({
   main: {
