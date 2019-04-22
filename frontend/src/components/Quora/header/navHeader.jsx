@@ -166,6 +166,23 @@ class NavHeader extends Component {
                                 </textarea>
                                     
                             </Grid>
+
+                            <Grid item xs={9}>
+                                      
+                                <textarea 
+                                class="selector_input text" 
+                                type="text" 
+                                rows="1" 
+                                title="Enter your topic here." 
+                                data-group="js-editable" 
+                                placeholder="Enter your topic here." 
+                                w2cid="wHEAXKDm8" 
+                                id="__w2_wHEAXKDm8_input" 
+                                >
+                                </textarea>
+                                    
+                            </Grid>
+
                         </Grid>
             
           </DialogContent>
