@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-// import "./Login.css";
+import "./Login.css";
 
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { loginUser } from "../../redux/actions/authActions";
+import { loginUser } from "../../actions/authActions";
 
 const styles = theme => ({
   main: {
