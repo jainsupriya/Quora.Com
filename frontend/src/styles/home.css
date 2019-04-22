@@ -54,11 +54,13 @@
 }
 .menu-clr-1 {
   color: #b92b27;
+  cursor: pointer;
   /* margin-left: 5px; */
   /* margin-right: 5px; */
 }
 .menu-clr-2 {
   color: #666;
+  cursor: pointer;
   /* margin-left: 5px; */
   /* margin-right: 5px; */
 }
