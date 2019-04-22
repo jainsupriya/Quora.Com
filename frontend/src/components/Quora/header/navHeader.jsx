@@ -4,6 +4,15 @@ import { Provider, connect } from "react-redux";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AppBar from "@material-ui/core/AppBar";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 
@@ -13,21 +22,164 @@ const styles = theme => ({
 
 })
 
+const DialogTitle = withStyles(theme => ({
+    root: {
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      margin: 0,
+      padding: theme.spacing.unit * 2,
+    },
+    closeButton: {
+      position: 'absolute',
+      right: theme.spacing.unit,
+      top: theme.spacing.unit,
+      color: theme.palette.grey[500],
+    },
+  }))(props => {
+    const { children, classes, onClose } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogContent = withStyles(theme => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing.unit * 2,
+    },
+  }))(MuiDialogContent);
+  
+  const DialogActions = withStyles(theme => ({
+    root: {
+      borderTop: `1px solid ${theme.palette.divider}`,
+      margin: 0,
+      padding: theme.spacing.unit,
+    },
+  }))(MuiDialogActions);
+
 //Create a Main Component
 class NavHeader extends Component {
   constructor() {
     super();
     this.state = {
-      
+        openAddQuestion: false,
     };
   }
+
+  handleClickOpen = () => {
+    this.setState({
+        openAddQuestion: true,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({ openAddQuestion: false });
+  };
 
   render() {
 
     const { classes } = this.props;
 
+    const addQuestion = (
+        <div>    
+        <Dialog
+          fullWidth
+          onClose={this.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.openAddQuestion}
+        >
+          <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
+            Add Question
+          </DialogTitle>
+          <DialogContent>
+            <Typography gutterBottom>
+            Tips on getting good answers quickly<br/><br/>
+
+              <li>Make sure your question hasn't been asked already</li><br/>
+              <li>Keep your question short and to the point</li><br/>
+              <li>Double-check grammar and spelling</li><br/>
+            </Typography>
+            <Divider />
+                        <Grid
+                            container
+                            direction="column"
+                            justify="space-between"
+                            // className="m-margin-up-down"
+                        >
+                            <Grid
+                                container
+                                direction="row"
+                                justify="flex-start"
+                                alignItems="flex-start"
+                                // className="m-margin-up-down"
+                            >
+                                <Grid item>
+                                    <Avatar
+                                        alt="Remy Sharp"
+                                        src="1.jpg"
+                                        className="avatar"
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <Grid
+                                        container
+                                        direction="column"
+                                        justify="flex-start"
+                                        alignItems="flex-start"
+                                        className="m-margin-up-down"
+                                    >
+                                        <Grid item className="black-clr">
+                                            {"Mayank Padshala Asked"}
+                                        </Grid>
+                                        {/* <Grid item className="fnt-13">
+                                            {"Answered 7H ago"}
+                                        </Grid> */}
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                            <Grid item xs={9}>
+                                      
+                                <textarea 
+                                class="selector_input text" 
+                                type="text" 
+                                rows="1" 
+                                title="Start your question with &quot;What&quot;, &quot;How&quot;, &quot;Why&quot;, etc." 
+                                data-group="js-editable" 
+                                placeholder="Start your question with &quot;What&quot;, &quot;How&quot;, &quot;Why&quot;, etc." 
+                                w2cid="wHEAXKDm8" 
+                                id="__w2_wHEAXKDm8_input" 
+                                >
+                                </textarea>
+                                    
+                            </Grid>
+                        </Grid>
+            
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleClose} color="primary">
+              Add Question
+            </Button>
+          </DialogActions>
+        </Dialog>
+    
+
+        </div>
+    );
+
     return (
       <div>
+
+          {addQuestion}
 
       <Grid
           container
@@ -131,7 +283,7 @@ class NavHeader extends Component {
                       src="1.jpg"
                       className="avatar"
                   />
-                  <button className="askQuestionBtn">
+                  <button className="askQuestionBtn" onClick={() => {this.setState({openAddQuestion: true})}}>
                       Add Question or Link
                   </button>
               </Grid>

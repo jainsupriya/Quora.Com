@@ -40,6 +40,7 @@ class QuestionCard extends React.Component {
                                 Answer · Google (company) · Topic you might like
                             </span>
                         </Grid>
+                        
                         <Grid
                             container
                             direction="row"
@@ -71,6 +72,7 @@ class QuestionCard extends React.Component {
                                 </Grid>
                             </Grid>
                         </Grid>
+
                         <Grid item className="ans-main-content">
                             {`Too hard to get promoted. The process was slow and I got denied promo 
                                             by the anonymous committee despite my manager and others on my team being 
