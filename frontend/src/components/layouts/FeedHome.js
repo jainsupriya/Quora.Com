@@ -5,7 +5,6 @@ import { Row, Container, Col } from "react-bootstrap";
 import Feeds from "../feeds/Feeds";
 import Sidebar from "../sidebar/Sidebar";
 
-
 class FeedHome extends React.Component {
   render() {
     return (
@@ -15,7 +14,7 @@ class FeedHome extends React.Component {
           <Row>
             <Col xs={2} ><Sidebar/></Col>
             <Col xs={8}><Feeds/></Col>
-            <Col xs={3} ></Col>
+            <Col xs={2} ></Col>
           </Row>
         </Container>
       </React.Fragment>

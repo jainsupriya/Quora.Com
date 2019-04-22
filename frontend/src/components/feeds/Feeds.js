@@ -9,6 +9,10 @@ import { TiArrowUpOutline } from "react-icons/ti";
 import { TiArrowForwardOutline } from "react-icons/ti";
 import { Container, Row, Col } from 'reactstrap';
 import LongMenu from '../Header/LongMenu';
+import Grid from '@material-ui/core/Grid';
+import ThumbDown from '@material-ui/icons/ThumbDown';
+import ThumbUp from '@material-ui/icons/ThumbUp';
+import { Button } from 'react-bootstrap';
 
 const styles = theme => ({
     root: {
@@ -17,6 +21,9 @@ const styles = theme => ({
       paddingBottom: theme.spacing.unit * 1.5,
       
     },
+    margin: {
+      background: "#fff",
+    }
   });
   
 class Feeds extends React.Component {
@@ -40,6 +47,30 @@ class Feeds extends React.Component {
             Victoria Mason, former Digital Marketing Manager — With the increasing competition in the market it is crucial for the companies to showcase themselves in more presentable manner. Therefore, it is quite important for one to...
             </Typography>
             53.7k Views. <a href="">View Upvoters</a>
+            <div className={classes.root}>
+              <Grid container spacing={12}>
+                <Grid item xs={3} style={{}}>
+                  
+                    Extended
+                </Grid>
+                <Grid item xs={2}>
+                  XS=12
+                </Grid>
+                <Grid item xs={4}>
+                  XS=12
+                </Grid>
+                <Grid item xs={1}>
+                  XS=12
+                </Grid>
+                <Grid item xs={1}>
+                  XS=12
+                </Grid>
+                <Grid item xs={1}>
+                  XS=12
+                </Grid>
+               
+              </Grid>
+            </div>
             <Container>
             <Row>
                 <Col> <TiArrowUpOutline/>  Upvote 5.5K</Col>
