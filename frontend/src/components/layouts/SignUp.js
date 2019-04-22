@@ -1,158 +1,314 @@
-import React from "react";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Divider from "@material-ui/core/Divider";
+import TextField from "@material-ui/core/TextField";
 
-import AppActions from "../../actions/AppActions";
+import { withRouter } from "react-router-dom";
 
-export default class SignUp extends React.Component {
+import classnames from "classnames";
+import "./SignUp.css";
+
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { registerUser } from "../../actions/authActions";
+
+const styles = theme => ({
+  main: {
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: 400,
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200
+  },
+  dense: {
+    marginTop: 19
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`
+  },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+    width: "60px",
+    height: "60px"
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing.unit
+  },
+  submit: {
+    marginTop: theme.spacing.unit * 3
+  },
+  divider: {
+    width: "100%",
+    padding: "2px",
+    margin: "32px 0 32px 0"
+  }
+});
+
+export class SignUp extends Component {
+  //Register Functions
   constructor() {
     super();
-    this.handleSignUpClick = this.handleSignUpClick.bind(this);
+    this.state = {
+      fname: "",
+      lname: "",
+      email: "",
+      password: "",
+      password2: "",
+      errors: {}
+    };
   }
 
-  handleCancelClick() {
-    AppActions.hideSignupPopup();
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    console.log(this.state);
+
+    const user = {
+      fname: this.state.fname,
+      lname: this.state.lname,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+
+    this.props.registerUser(user, this.props.history);
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
-  handleSignUpClick() {
-    AppActions.hideSignupPopup();
-    const username = this.unameField.value;
-    const firstName = this.fnameField.value;
-    const lastName = this.lnameField.value;
-    const email = this.emailField.value;
-    const password = this.passwordField.value;
-    const mobile = this.mobileField.value;
-    const dob = this.dobField.value;
-    const gender = this.genderField.value;
+  render() {
+    const { classes } = this.props;
 
-    AppActions.signUp(
-      username,
-      firstName,
-      lastName,
-      email,
-      password,
-      mobile,
-      dob,
-      gender
+    const { errors } = this.props;
+
+    return (
+      <div className="content">
+        <div className="bg_container">
+          <div className="bg_image" />
+        </div>
+
+        <div id="login-box">
+          <div className="okta-sign-in-header">
+            <div className="NetworkLogo" style={{ margin: "auto" }}>
+              <a className="logo hidden" href="/">
+                <span>Quora</span>
+              </a>
+            </div>
+            <h2
+              className="NetworkLogoTagline tagline"
+              style={{ align: "center" }}
+            >
+              A place to share knowledge and better understand the world
+            </h2>
+            <div data-type="beacon-container" className="beacon-container" />
+          </div>
+          <div className="content-box">
+            <div className="left">
+              <div className="first_last_group" style={{ height: "18%" }}>
+                <div className="form_row half">
+                  <label>First Name</label>
+                  <div className="input_wrapper">
+                    <input
+                      className="text"
+                      type="text"
+                      name="first_name"
+                      autocapitalize="words"
+                      autocorrect="off"
+                      value={this.state.fname}
+                      onChange={this.onChange}
+                      tabindex="9"
+                      data-group="js-editable"
+                      w2cid="wJNkelKg12"
+                      id="__w2_wJNkelKg12_first_name"
+                    />
+                  </div>
+                </div>
+                <div className="form_row half">
+                  <label>Last Name</label>
+                  <div className="input_wrapper">
+                    <input
+                      className="text"
+                      type="text"
+                      name="last_name"
+                      autocapitalize="words"
+                      autocorrect="off"
+                      value={this.state.lname}
+                      onChange={this.onChange}
+                      tabindex="9"
+                      data-group="js-editable"
+                      w2cid="wJNkelKg12"
+                      id="last_name"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="form_row" style={{ height: "50px", margin: 0 }}>
+                <label>Email</label>
+                <div className="input_wrapper">
+                  <input
+                    className="text"
+                    type="text"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.onChange}
+                    tabindex="10"
+                    data-group="js-editable"
+                    w2cid="wJNkelKg12"
+                    id="__w2_wJNkelKg12_email"
+                  />
+                </div>
+              </div>
+
+              <div className="form_row">
+                <label>Password</label>
+                <div className="input_wrapper">
+                  <input
+                    className="text"
+                    type="password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.onChange}
+                    tabindex="11"
+                    data-group="js-editable"
+                    w2cid="wJNkelKg12"
+                    id="__w2_wJNkelKg12_password"
+                  />
+                </div>
+              </div>
+
+              <div className="form_row">
+                <label>Retype Password</label>
+                <div className="input_wrapper">
+                  <input
+                    className="text"
+                    type="password"
+                    name="password2"
+                    value={this.state.password2}
+                    onChange={this.onChange}
+                    tabindex="11"
+                    data-group="js-editable"
+                    w2cid="wJNkelKg12"
+                    id="__w2_wJNkelKg12_password"
+                  />
+                </div>
+              </div>
+
+              <input
+                type="submit"
+                name="signin_submit"
+                value="Sign Up"
+                onClick={this.submitLogin}
+              />
+            </div>
+            <div className="v1" />
+            <div className="right">
+              <button className="social-signin facebook">
+                Log in with facebook
+              </button>
+              <button className="social-signin twitter">
+                Log in with Twitter
+              </button>
+              <button className="social-signin google">
+                Log in with Google+
+              </button>
+              <br />
+              <div id="__w2_wJNkelKg8_connect_explanation">
+                <a
+                  className="signup_email_link"
+                  href="/signup"
+                  tabindex="8"
+                  id="__w2_wJNkelKg8_continue_with_email"
+                >
+                  Sign Up With Email
+                </a>
+                <span className="tos_disclaimer">
+                  .{" "}
+                  <span className="light_gray TosDisclaimer">
+                    By signing up you indicate that you have read and agree to
+                    Quora's{" "}
+                    <a
+                      className="tos_link"
+                      href="/about/tos"
+                      nav_style="modal_present"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      className="tos_link"
+                      href="/about/privacy"
+                      nav_style="modal_present"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Privacy Policy
+                    </a>
+                    .
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
-  render() {
-    let shouldShowDailog = this.props.shouldShowSignUp;
-    if (shouldShowDailog) {
-      return (
-        <div className="static-modal">
-          <Modal.Dialog>
-            <Modal.Header>
-              <Modal.Title>Sign Up</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <Form.Group controlId="formBasicText">
-                <Form.Label>Enter Username</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Username"
-                  inputRef={ref => {
-                    this.unameField = ref;
-                  }}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicText">
-                <Form.Label>Enter First Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="First name"
-                  inputRef={ref => {
-                    this.fnameField = ref;
-                  }}
-                />
-              </Form.Group>
-              <Form.Group controlId="formBasicText">
-                <Form.Label>Enter Last Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Last name"
-                  inputRef={ref => {
-                    this.lnameField = ref;
-                  }}
-                />
-              </Form.Group>
-              <Form.Group controlId="formBasicText">
-                <Form.Label>Enter Email</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Email"
-                  inputRef={ref => {
-                    this.emailField = ref;
-                  }}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicText">
-                <Form.Label>Enter Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  inputRef={ref => {
-                    this.passwordField = ref;
-                  }}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicText">
-                <Form.Label>Enter Mobile</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Mobile"
-                  inputRef={ref => {
-                    this.mobileField = ref;
-                  }}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicText">
-                <Form.Label>Enter Date Of Birth</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Date of Birth(in Epoch Time format)"
-                  inputRef={ref => {
-                    this.dobField = ref;
-                  }}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicText">
-                <Form.Label>Enter Gender</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Gender"
-                  inputRef={ref => {
-                    this.genderField = ref;
-                  }}
-                />
-
-                {/* <DropdownButton
-                                 title={"Select Gender"}
-                                >
-                                <MenuItem eventKey="1">Male</MenuItem>
-                                <MenuItem eventKey="2">Female</MenuItem>
-                                <MenuItem eventKey="3">Other</MenuItem>
-                                </DropdownButton> */}
-              </Form.Group>
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button onClick={this.handleCancelClick}>Cancel</Button>
-              <Button bsStyle="primary" onClick={this.handleSignUpClick}>
-                Sign Up
-              </Button>
-            </Modal.Footer>
-          </Modal.Dialog>
-        </div>
-      );
-    }
-    return null;
-  }
 }
+
+SignUp.propTypes = {
+  classes: PropTypes.object.isRequired,
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withStyles(styles)(withRouter(SignUp)));
