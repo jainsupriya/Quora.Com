@@ -63,7 +63,7 @@
   color: #5e5e5e;
 }
 
-#login-box {
+#signup-box {
   background-attachment: scroll;
   background-clip: border-box;
   background-color: rgb(255, 255, 255);
@@ -124,7 +124,7 @@
   height: 50px;
 }
 
-#login-box .auth-org-logo {
+#signup-box .auth-org-logo {
   display: block;
   margin: 0 auto;
   padding-top: 10px;
@@ -132,7 +132,7 @@
   max-height: 40px;
 }
 
-#login-box .content-box {
+#signup-box .content-box {
   position: absolute;
   box-sizing: border-box;
   padding: 5px;
@@ -140,7 +140,7 @@
   height: 300px;
 }
 
-#login-box .left {
+#signup-box .left {
   position: absolute;
   display: block;
   float: left;
@@ -245,7 +245,7 @@ input[type="submit"]:active {
   text-align: center;
 }
 
-#login-box .v1 {
+#signup-box .v1 {
   content: "";
   width: 1px;
   position: absolute;
@@ -255,7 +255,7 @@ input[type="submit"]:active {
   left: 50%;
 }
 
-#login-box .right {
+#signup-box .right {
   position: absolute;
   right: 0;
   box-sizing: border-box;
@@ -279,7 +279,7 @@ input[type="submit"]:active {
   text-align: left;
 }
 
-#login-box .content-box .Home {
+#signup-box .content-box .Home {
   position: absolute;
   box-sizing: border-box;
   padding: 5px;
