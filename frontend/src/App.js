@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { persistor, store } from "./redux/store";
 import Main from "./components/Main";
-
+//first change by parth
 class App extends Component {
     render() {
         return (
