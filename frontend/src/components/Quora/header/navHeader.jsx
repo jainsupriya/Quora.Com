@@ -28,11 +28,22 @@ const styles = theme => ({
     padding: 0,
     minWidth: 518,
     maxHeight: 300,
-    fontSize: 14
+    fontSize: 14,
     // overflowY: 'scroll'
+    '&::before': {
+      content: '',
+      display: 'block',
+      width: 0,
+      height: 0,
+      borderColor: 'rgba(204,204,204,0)',
+      borderLeft: '7.5px solid transparent',
+      borderRight: '7.5px solid transparen',
+      borderBottom: '7px solid #ccc',
+      left: 14,
+      marginTop: -7,
+    }
   },
   notificationContent : {
-    textAlign: 'center',
     borderTop: '1px solid #e2e2e2',
     background: '#fff',
     overflowY: 'scroll',
@@ -42,6 +53,7 @@ const styles = theme => ({
   emptyContent : {
     paddingTop: 32,
     paddingBottom: 32,
+    textAlign: 'center',
   },
   icon : {
     backgroundImage: 'url(//qsf2.c7.quoracdn.net/-3-images.write_empty_state.svg-26-9b81e25167b45e72.svg)',
@@ -120,9 +132,8 @@ class NavHeader extends Component {
     });
   };
 
-  handleClose = name => {
-    console.log(name);
-    this.setState({ [name]: false });
+  handleClose = () => {
+    this.setState({ openAddQuestion : false });
   };
 
   navigationClick = (selectedItem) => {
@@ -142,7 +153,7 @@ class NavHeader extends Component {
     const { classes } = this.props;
     const { openNotification } = this.state;
     const open = Boolean(openNotification);
-    const notificationList = {
+    const notificationList =  {
       user: 'Mayank Padshala',
       question: 'To anti diversity people - what is the best evidence for your beliefs and what evidence would change your view?',
       time: '6h', 
