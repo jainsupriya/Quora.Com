@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // import "./Login.css";
-
+import SimpleReactValidator from "simple-react-validator";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/authActions";
@@ -57,6 +57,7 @@ export class Login extends Component {
       loginSuccess: true,
       errors: {}
     };
+    this.validator = new SimpleReactValidator();
   }
 
   onChange = e => {
@@ -65,15 +66,26 @@ export class Login extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
-    const user = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    // console.log(this.state.FACULTY)
-
-    this.props.loginUser(user, this.props.history);
+    if (this.validator.allValid()) {
+      const user = {
+        email: this.state.email,
+        password: this.state.password
+      };
+      this.props.loginUser(user);
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
 
   render() {
     const { classes } = this.props;
@@ -110,18 +122,28 @@ export class Login extends Component {
                 placeholder="Email"
                 onChange={this.onChange}
               />
+              {this.validator.message(
+                "email",
+                this.state.email,
+                "required|email"
+              )}
               <input
                 type="password"
                 name="password"
                 placeholder="Password"
                 onChange={this.onChange}
               />
+              {this.validator.message(
+                "password",
+                this.state.password,
+                "required"
+              )}
 
               <input
                 type="submit"
                 name="signin_submit"
                 value="Login"
-                onClick={this.submitLogin}
+                onClick={this.onSubmit}
               />
             </div>
             <div className="v1" />
@@ -140,18 +162,18 @@ export class Login extends Component {
                 <a
                   className="signup_email_link"
                   href="/signup"
-                  tabindex="8"
+                  tabIndex="8"
                   id="__w2_wJNkelKg8_continue_with_email"
                 >
                   Sign Up With Email
                 </a>
-                <span class="tos_disclaimer">
+                <span className="tos_disclaimer">
                   .{" "}
-                  <span class="light_gray TosDisclaimer">
+                  <span className="light_gray TosDisclaimer">
                     By signing up you indicate that you have read and agree to
                     Quora's{" "}
                     <a
-                      class="tos_link"
+                      className="tos_link"
                       href="/about/tos"
                       nav_style="modal_present"
                       target="_blank"
@@ -161,7 +183,7 @@ export class Login extends Component {
                     </a>{" "}
                     and{" "}
                     <a
-                      class="tos_link"
+                      className="tos_link"
                       href="/about/privacy"
                       nav_style="modal_present"
                       target="_blank"

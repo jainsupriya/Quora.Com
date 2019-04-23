@@ -14,11 +14,9 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import SimpleReactValidator from "simple-react-validator";
-
 import { withRouter } from "react-router-dom";
-
 import classnames from "classnames";
-// import "./SignUp.css";
+//import "./SignUp.css";
 
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -84,7 +82,16 @@ export class SignUp extends Component {
       password2: "",
       errors: {}
     };
-    this.validator = new SimpleReactValidator();
+    this.validator = new SimpleReactValidator({
+      validators: {
+        password2: {
+          message: "Passwords do not match",
+          rule: (val, params, validator) => {
+            return this.state.password === this.state.password2;
+          }
+        }
+      }
+    });
   }
 
   onChange = e => {
@@ -95,7 +102,7 @@ export class SignUp extends Component {
     this.setState({ [name]: event.target.checked });
   };
 
-  submitLogin = e => {
+  onSubmit = e => {
     e.preventDefault();
 
     if (this.validator.allValid()) {
@@ -155,7 +162,7 @@ export class SignUp extends Component {
                     <input
                       className="text"
                       type="text"
-                      name="first_name"
+                      name="fname"
                       autocapitalize="words"
                       autocorrect="off"
                       value={this.state.fname}
@@ -165,11 +172,14 @@ export class SignUp extends Component {
                       w2cid="wJNkelKg12"
                       id="__w2_wJNkelKg12_first_name"
                     />
-                    {this.validator.message(
-                      "first_name",
-                      this.state.fname,
-                      "required|alpha"
-                    )}
+
+                    <span className="error">
+                      {this.validator.message(
+                        "first_name",
+                        this.state.fname,
+                        "required|alpha"
+                      )}
+                    </span>
                   </div>
                 </div>
                 <div className="form_row half">
@@ -178,7 +188,7 @@ export class SignUp extends Component {
                     <input
                       className="text"
                       type="text"
-                      name="last_name"
+                      name="lname"
                       autocapitalize="words"
                       autocorrect="off"
                       value={this.state.lname}
@@ -253,15 +263,12 @@ export class SignUp extends Component {
                     data-group="js-editable"
                     w2cid="wJNkelKg12"
                     id="__w2_wJNkelKg12_password"
-                  />
-                  <div className="errorMsg">
-                    {" "}
-                    {this.validator.message(
-                      "password2",
-                      this.state.password,
-                      "required|password"
-                    )}
-                  </div>
+                  />{" "}
+                  {this.validator.message(
+                    "password2",
+                    this.state.password,
+                    "password2"
+                  )}
                 </div>
               </div>
 
@@ -269,7 +276,7 @@ export class SignUp extends Component {
                 type="submit"
                 name="signin_submit"
                 value="Sign Up"
-                onClick={e => this.submitLogin(e)}
+                onClick={this.onSubmit}
               />
             </div>
             <div className="v1" />

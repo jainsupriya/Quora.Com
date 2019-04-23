@@ -331,3 +331,8 @@ button.social-signin.twitter {
 button.social-signin.google {
   background: #dd4b39;
 }
+
+.srv-validation-message {
+  color: #cc0000;
+  margin-bottom: 12px;
+}
