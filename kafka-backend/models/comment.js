@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const User = require("./user");
+const Answer = require("./answer");
 
 // sample: {
 //     type: String | Number | Date | Boolean,
@@ -16,8 +17,19 @@ const User = require("./user");
 const CommentSchema = new Schema({
     comment: {
         type: String,
-        required: [true, "First Name is required"]
+        required: [true, "comment is required"]
     },
+    answerId: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Answer,
+        required: [true, "Answer Id is required"]
+        }
+    ],
+    // commentOwner: {
+    //     type: String,
+    //     required: [true, "Comment Owner is required"]
+    // },
     commentOwner: [
         {
             type: mongoose.Schema.Types.ObjectId,

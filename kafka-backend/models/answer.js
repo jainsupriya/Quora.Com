@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const User = require("./user");
 const Comment = require("./comment");
+const Question = require("./question");
 
 // sample: {
 //     type: String | Number | Date | Boolean,
@@ -19,6 +20,17 @@ const AnswerSchema = new Schema({
         type: String,
         required: [true, "First Name is required"]
     },
+    // answerOwner: {
+    //     type: String
+    // },
+    questionId: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Question,
+            required: [true, "First Name is required"]
+
+        }
+    ],
     answerOwner: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -34,13 +46,21 @@ const AnswerSchema = new Schema({
         type: Boolean,
         required: [true, "isAnonymous is required"]
     },
+    votes: {
+        type: Number,
+        default: 0
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
     upVotes: {
         type: Number,
-        required: [true, "upVotes is required"]
+        default: 0
     },
     downVotes: {
         type: Number,
-        required: [true, "downVotes is required"]
+        default: 0
     },
     commentList: [
         {
@@ -54,6 +74,6 @@ const AnswerSchema = new Schema({
     }
 });
 
-const Answer = mongoose.model("nswer", AnswerSchema);
+const Answer = mongoose.model("answer", AnswerSchema);
 
 module.exports = Answer;

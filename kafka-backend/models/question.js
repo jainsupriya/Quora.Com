@@ -18,20 +18,28 @@ const Answer = require("./answer");
 const QuestionSchema = new Schema({
     question: {
         type: String,
-        required: [true, "First Name is required"]
+        required: [true, "Question is required"]
     },
+    // questionOwner: {
+    //     type: String,
+    //     required: [true, "User is required"]
+    // },
     questionOwner: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: User
         }
     ],
-    topicList: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: Topic
-        }
-    ],
+    topicList: {
+        type: String,
+        required: [true, "Topic List String is required"]
+    },
+    // topicList: [
+    //     {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: Topic
+    //     }
+    // ],
     followersUserList: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -46,7 +54,7 @@ const QuestionSchema = new Schema({
     ],
     postedTime: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     }
 });
 

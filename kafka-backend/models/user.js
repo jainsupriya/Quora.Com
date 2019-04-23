@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 var validate = require("mongoose-validator");
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 const Question = require("./question");
+const Answer = require("./answer");
 const Topic = require("./topic");
 
 var validateEmail = function(email) {
@@ -30,6 +31,10 @@ const UserSchema = new Schema({
         type: String,
         required: [true, "Last Name is required"]
     },
+    username: {
+        type: String,
+        required: [true, "Last Name is required"]
+    },
     mobile: {
         type: String,
         required: [true, "Mobile number is required"]
@@ -47,12 +52,20 @@ const UserSchema = new Schema({
         required: [true, "Email address is required"],
         trim: true,
         lowercase: true,
-        unique: true,
+        unique: false,
         validate: [validateEmail, "Please fill a valid email address"]
     },
-    password: {
-        type: String,
-        required: [true, "Password is required"]
+    profileViews: [
+        {
+            type: Date,
+        }
+    ],
+    // password: {
+    //     type: String,
+    //     required: [true, "Password is required"]
+    // },
+    sqlUserId:{
+        type: String
     },
     employment: {
         position: {
@@ -131,18 +144,8 @@ const UserSchema = new Schema({
     profileCredential: {
         type: String
     },
-    followingUserList: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    ],
-    followersUserList: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    ],
+    followingUserList: [this],
+    followersUserList: [this],
     questionFollowingList: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -159,6 +162,24 @@ const UserSchema = new Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: Question
+        }
+    ],
+    bookmarkedAnswerList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Answer
+        }
+    ],
+    myQuestionList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Question
+        }
+    ],
+    myAnswerList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Answer
         }
     ],
     social: {
@@ -182,36 +203,36 @@ const UserSchema = new Schema({
 
 //authenticate input against database
 
-UserSchema.statics.authenticate = function(email, password, callback) {
-    User.findOne({ email: email }).exec(function(err, user) {
-        if (err) {
-            return callback(err);
-        } else if (!user) {
-            var err = new Error("User not found.");
-            err.status = 401;
-            return callback(err);
-        }
-        bcrypt.compare(password, user.password, function(err, result) {
-            if (result === true) {
-                return callback(null, user);
-            } else {
-                return callback();
-            }
-        });
-    });
-};
+// UserSchema.statics.authenticate = function(email, password, callback) {
+//     User.findOne({ email: email }).exec(function(err, user) {
+//         if (err) {
+//             return callback(err);
+//         } else if (!user) {
+//             var err = new Error("User not found.");
+//             err.status = 401;
+//             return callback(err);
+//         }
+//         bcrypt.compare(password, user.password, function(err, result) {
+//             if (result === true) {
+//                 return callback(null, user);
+//             } else {
+//                 return callback();
+//             }
+//         });
+//     });
+// };
 
-//hashing a password before saving it to the database
-UserSchema.pre("save", function(next) {
-    var user = this;
-    bcrypt.hash(user.password, 10, function(err, hash) {
-        if (err) {
-            return next(err);
-        }
-        user.password = hash;
-        next();
-    });
-});
+// //hashing a password before saving it to the database
+// UserSchema.pre("save", function(next) {
+//     var user = this;
+//     bcrypt.hash(user.password, 10, function(err, hash) {
+//         if (err) {
+//             return next(err);
+//         }
+//         user.password = hash;
+//         next();
+//     });
+// });
 
 const User = mongoose.model("user", UserSchema);
 

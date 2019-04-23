@@ -3,6 +3,14 @@ const Schema = mongoose.Schema;
 const User = require("./user");
 
 const MessageSchema = new Schema({
+    // sender: {
+    //     type: String,
+    //     required: [true, "Message is required"]
+    // },
+    // receiver: {
+    //     type: String,
+    //     required: [true, "Message is required"]
+    // },
     sender: [
         {
             type: mongoose.Schema.Types.ObjectId,
