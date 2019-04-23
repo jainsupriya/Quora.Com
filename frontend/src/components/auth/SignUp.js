@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
+import SimpleReactValidator from "simple-react-validator";
 
 import { withRouter } from "react-router-dom";
 
@@ -83,6 +84,7 @@ export class SignUp extends Component {
       password2: "",
       errors: {}
     };
+    this.validator = new SimpleReactValidator();
   }
 
   onChange = e => {
@@ -93,20 +95,23 @@ export class SignUp extends Component {
     this.setState({ [name]: event.target.checked });
   };
 
-  onSubmit = e => {
+  submitLogin = e => {
     e.preventDefault();
 
+    if (this.validator.allValid()) {
+      const user = {
+        fname: this.state.fname,
+        lname: this.state.lname,
+        email: this.state.email,
+        password: this.state.password,
+        password2: this.state.password2
+      };
+      this.props.registerUser(user, this.props.history);
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
     console.log(this.state);
-
-    const user = {
-      fname: this.state.fname,
-      lname: this.state.lname,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
-    };
-
-    this.props.registerUser(user, this.props.history);
   };
 
   componentWillReceiveProps(nextProps) {
@@ -160,6 +165,11 @@ export class SignUp extends Component {
                       w2cid="wJNkelKg12"
                       id="__w2_wJNkelKg12_first_name"
                     />
+                    {this.validator.message(
+                      "first_name",
+                      this.state.fname,
+                      "required|alpha"
+                    )}
                   </div>
                 </div>
                 <div className="form_row half">
@@ -178,6 +188,11 @@ export class SignUp extends Component {
                       w2cid="wJNkelKg12"
                       id="last_name"
                     />
+                    {this.validator.message(
+                      "last_name",
+                      this.state.lname,
+                      "required|alpha"
+                    )}
                   </div>
                 </div>
               </div>
@@ -195,6 +210,11 @@ export class SignUp extends Component {
                     w2cid="wJNkelKg12"
                     id="__w2_wJNkelKg12_email"
                   />
+                  {this.validator.message(
+                    "email",
+                    this.state.email,
+                    "required|email"
+                  )}
                 </div>
               </div>
 
@@ -212,6 +232,11 @@ export class SignUp extends Component {
                     w2cid="wJNkelKg12"
                     id="__w2_wJNkelKg12_password"
                   />
+                  {this.validator.message(
+                    "password",
+                    this.state.password,
+                    "required|password"
+                  )}
                 </div>
               </div>
 
@@ -229,6 +254,14 @@ export class SignUp extends Component {
                     w2cid="wJNkelKg12"
                     id="__w2_wJNkelKg12_password"
                   />
+                  <div className="errorMsg">
+                    {" "}
+                    {this.validator.message(
+                      "password2",
+                      this.state.password,
+                      "required|password"
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -236,7 +269,7 @@ export class SignUp extends Component {
                 type="submit"
                 name="signin_submit"
                 value="Sign Up"
-                onClick={this.submitLogin}
+                onClick={e => this.submitLogin(e)}
               />
             </div>
             <div className="v1" />
