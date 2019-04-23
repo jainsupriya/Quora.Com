@@ -15,11 +15,45 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
+import Popover from '@material-ui/core/Popover';
 
 import '../../../styles/home.css'
 
 const styles = theme => ({
-
+  notificationDialog : {
+    borderRadius: 3,
+    background: '#f7f7f7',
+    border: '1px solid #ccc',
+    boxShadow: '0 1px 3px rgba(200,200,200,0.7)',
+    padding: 0,
+    minWidth: 518,
+    maxHeight: 300,
+    fontSize: 14
+    // overflowY: 'scroll'
+  },
+  notificationContent : {
+    textAlign: 'center',
+    borderTop: '1px solid #e2e2e2',
+    background: '#fff',
+    overflowY: 'scroll',
+    maxHeight: '80vh',
+    textAlign: 'left'
+  },
+  emptyContent : {
+    paddingTop: 32,
+    paddingBottom: 32,
+  },
+  icon : {
+    backgroundImage: 'url(//qsf2.c7.quoracdn.net/-3-images.write_empty_state.svg-26-9b81e25167b45e72.svg)',
+    width: 50,
+    height: 50,
+    backgroundSize: '50px 50px',
+    backgroundRepeat: 'no-repeat',
+    paddingLeft: 9
+  },
+  typography: {
+    margin: theme.spacing.unit * 2,
+  },
 })
 
 const DialogTitle = withStyles(theme => ({
@@ -69,7 +103,8 @@ class NavHeader extends Component {
     super();
     this.state = {
         openAddQuestion: false,
-        navSelectedItem: "home"
+        navSelectedItem: "home",
+        openNotification: false,
     };
   }
 
@@ -79,8 +114,15 @@ class NavHeader extends Component {
     });
   };
 
-  handleClose = () => {
-    this.setState({ openAddQuestion: false });
+  handleNotification = event => {
+    this.setState({
+      openNotification: event.currentTarget,
+    });
+  };
+
+  handleClose = name => {
+    console.log(name);
+    this.setState({ [name]: false });
   };
 
   navigationClick = (selectedItem) => {
@@ -89,9 +131,22 @@ class NavHeader extends Component {
       })
   }
 
+  handleNotificationClose = () => {
+    this.setState({
+      openNotification: null,
+    });
+  };
+
   render() {
 
     const { classes } = this.props;
+    const { openNotification } = this.state;
+    const open = Boolean(openNotification);
+    const notificationList = {
+      user: 'Mayank Padshala',
+      question: 'To anti diversity people - what is the best evidence for your beliefs and what evidence would change your view?',
+      time: '6h', 
+    };
 
     const addQuestion = (
         <div>    
@@ -200,10 +255,142 @@ class NavHeader extends Component {
         </div>
     );
 
+    const notifications = (
+      <div>
+        <Popover
+          id="simple-popper"
+          open={open}
+          anchorEl={openNotification}
+          onClose={this.handleNotificationClose}
+          anchorReference= 'anchorPosition'
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          anchorPosition={{
+            left: 420,
+            top: 68
+          }}
+        >
+          <div className={classes.notificationDialog}>
+            <div style={{padding: 10}}>
+              See All Notifications >
+            </div>
+            <div className={classes.notificationContent}>
+                <div className={classes.emptyContent} style={{display : notificationList == '' ? 'block' : 'none'}}>
+                  No New Notifications
+                </div>
+
+                <div style={{display : notificationList != '' ? 'block' : 'none'}}>
+              <Grid
+                    container
+                    direction="column"
+                    justify="space-between"
+                    style={{borderBottom: '1px solid #e2e2e2'}}
+                    // className="m-margin-up-down"
+                >
+                    <Grid
+                        container
+                        direction="row"
+                        justify="flex-start"
+                        alignItems="flex-start"
+                        // className="m-margin-up-down"
+                    >
+                        <Grid item>
+                            <Avatar
+                                alt="Remy Sharp"
+                                src="1.jpg"
+                                className="avatar"
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Grid
+                                container
+                                direction="column"
+                                justify="flex-start"
+                                alignItems="flex-start"
+                                className="m-margin-up-down"
+                                style={{ maxWidth: 420,}}
+                            >
+                                <Grid item className="black-clr, font-14">
+                                    <span style={{fontWeight: 'bold'}}>
+                                      {notificationList.user + " "}
+                                    </span>
+                                     answered: 
+                                    <span style={{color: '#021ebe'}}>
+                                       {" " + notificationList.question}
+                                    </span> 
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    
+
+                </Grid>
+
+                <Grid
+                    container
+                    direction="column"
+                    justify="space-between"
+                    style={{borderBottom: '1px solid #e2e2e2'}}
+                    // className="m-margin-up-down"
+                >
+                    <Grid
+                        container
+                        direction="row"
+                        justify="flex-start"
+                        alignItems="flex-start"
+                        // className="m-margin-up-down"
+                    >
+                        <Grid item>
+                            <Avatar
+                                alt="Remy Sharp"
+                                src="1.jpg"
+                                className="avatar"
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Grid
+                                container
+                                direction="column"
+                                justify="flex-start"
+                                alignItems="flex-start"
+                                className="m-margin-up-down"
+                                style={{ maxWidth: 420,}}
+                            >
+                                <Grid item className="black-clr, font-14">
+                                    <span style={{fontWeight: 'bold'}}>
+                                      {notificationList.user + " "}
+                                    </span>
+                                     answered: 
+                                    <span style={{color: '#021ebe'}}>
+                                       {" " + notificationList.question}
+                                    </span> 
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    
+
+                </Grid>
+              </div>
+            </div>
+          </div>
+        </Popover>
+      </div>
+  );
+
     return (
       <div>
 
           {addQuestion}
+          {notifications}
 
       <Grid
           container
@@ -277,7 +464,8 @@ class NavHeader extends Component {
                       </svg>
                       {" Spaces"}
                   </div>
-                  <div className={this.state.navSelectedItem === "notifications" ? "menu-clr-1" : "menu-clr-2"}  onClick={()=>{this.navigationClick("notifications")}}>
+                  {/* <div className={this.state.navSelectedItem === "notifications" ? "menu-clr-1" : "menu-clr-2"}  onClick={()=>{this.navigationClick("notifications")}}> */}
+                  <div className={this.state.navSelectedItem === "notifications" ? "menu-clr-1" : "menu-clr-2"}  onClick={this.handleNotification}>
                       <svg
                           width="24px"
                           height="24px"
