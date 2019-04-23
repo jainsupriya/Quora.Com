@@ -92,6 +92,34 @@ MessageRoutes.get("/messages", (req, res, next) => {
     });
 });
 
+MessageRoutes.get("/messages/:u1/:u2", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/messages/:u1/:u2");
+    var reqMsg = {
+        api: "get/messages/:u1/:u2",
+        reqBody: {u1: req.params.u1, u2:req.params.u2}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
 MessageRoutes.put("/message", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="

@@ -94,6 +94,63 @@ QuestionRoutes.get("/questions", (req, res, next) => {
     });
 });
 
+QuestionRoutes.get("/questions/byUserId/:userId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/questions/byUserId/:userId");
+    var reqMsg = {
+        api: "get/questions/byUserId/:userId",
+        reqBody: {userId: req.params.userId}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
+// search question by question name
+QuestionRoutes.get("/questions/search/:searchQuery", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/questions/search/:searchQuery");
+    var reqMsg = {
+        api: "get/questions/search/:searchQuery",
+        reqBody: {searchQuery: req.params.searchQuery}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
 QuestionRoutes.put("/question", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="

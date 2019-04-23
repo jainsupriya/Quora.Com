@@ -4,6 +4,7 @@ var kafka = require("../kafka/client");
 const TOPIC = "comment";
 
 // comment
+// answerId
 // commentOwner[]
 // postedTime
 

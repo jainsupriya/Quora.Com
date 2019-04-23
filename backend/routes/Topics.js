@@ -90,6 +90,35 @@ TopicRoutes.get("/topics", (req, res, next) => {
     });
 });
 
+// search topics by topic name
+TopicRoutes.get("/topics/search/:searchQuery", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/topics/search/:searchQuery");
+    var reqMsg = {
+        api: "get/topics/search/:searchQuery",
+        reqBody: {searchQuery: req.params.searchQuery}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
 TopicRoutes.put("/topic", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
