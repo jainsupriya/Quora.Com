@@ -6,6 +6,7 @@ http://52.9.137.32:5000/users
 
 URL to import in postman
 https://www.getpostman.com/collections/f0e73c80047a6b833288
+If you get error put url variable as http://52.9.137.32:5000 in environment
 
 Branches
 Ruchika - ruchika
