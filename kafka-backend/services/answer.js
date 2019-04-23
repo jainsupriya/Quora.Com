@@ -1,4 +1,6 @@
 const Answer = require("../models/answer");
+const User = require("../models/user");
+const Question = require("../models/question");
 
 function handle_request(msg, callback) {
     switch (msg.api) {
@@ -9,11 +11,47 @@ function handle_request(msg, callback) {
                         console.log("__________err_________________\n", err);
                         callback(err, err);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        Question
+                            .updateOne({_id:msg.reqBody.questionId},{ $addToSet: { answerList: result._id } })
+                            // .updateOne({sqlUserId:msg.reqBody.answerOwner},{ $addToSet: { myAnswerList: result._id } })
+                            .then((result1, err1) => {
+                                if (err1) {
+                                    console.log("__________err1_________________\n", err1);
+                                    callback(err, err1);
+                                } else {
+                                    User
+                                        .updateOne({_id:msg.reqBody.answerOwner},{ $addToSet: { myAnswerList: result._id } })
+                                        // .updateOne({sqlUserId:msg.reqBody.answerOwner},{ $addToSet: { myAnswerList: result._id } })
+                                        .then((result2, err2) => {
+                                            if (err2) {
+                                                console.log("__________err2_________________\n", err2);
+                                                callback(err, err2);
+                                            } else {
+                                                console.log(
+                                                    "__________result_________________\n",
+                                                    result
+                                                );
+                                                console.log(
+                                                    "__________result1_________________\n",
+                                                    result1
+                                                );
+                                                console.log(
+                                                    "__________result2_________________\n",
+                                                    result2
+                                                );
+                                                callback(null, result);
+                                            }
+                                        })
+                                        .catch(err2 => {
+                                            console.log("__________err2_________________\n", err2);
+                                            callback(err, err2);
+                                        });
+                                }
+                            })
+                            .catch(err1 => {
+                                console.log("__________err1_________________\n", err1);
+                                callback(err, err1);
+                            });
                     }
                 })
                 .catch(err => {
@@ -41,7 +79,178 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/answers":
-            Answer.find({})
+            Answer
+                .find({})
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "get/answers/orderByViews":
+            Answer
+                .find().sort({views: -1})
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "get/answers/orderByUpVotes":
+            Answer
+                .find().sort({upVotes: -1})
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "get/answers/orderByDownVotes":
+            Answer
+                .find().sort({downVotes: -1})
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "get/answers/byUserId/:userId":
+            Answer
+                .find({answerOwner: msg.reqBody.userId})
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "get/answersWithPopulate":
+            Answer
+                .find({})
+                .populate("commentList")
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "put/answer/upvote/:answerId":
+            Answer.findOneAndUpdate(
+                { _id: msg.reqBody.answerId },
+                {$inc: {votes: 1,upVotes: 1}},
+                {new : true}
+            )
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "put/answer/downvote/:answerId":
+            Answer.findOneAndUpdate(
+                { _id: msg.reqBody.answerId },
+                {$inc: {votes: -1,downVotes: 1}},
+                {new : true}
+            )
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "put/answer/view/:answerId":
+            Answer.findOneAndUpdate(
+                { _id: msg.reqBody.answerId },
+                {$inc: {views: 1}},
+                {new : true}
+            )
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);

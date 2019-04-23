@@ -1,4 +1,5 @@
 const Comment = require("../models/comment");
+const Answer = require("../models/answer");
 
 function handle_request(msg, callback) {
     switch (msg.api) {
@@ -9,11 +10,28 @@ function handle_request(msg, callback) {
                         console.log("__________err_________________\n", err);
                         callback(err, err);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        Answer
+                            .updateOne({_id:msg.reqBody.answerId},{ $addToSet: { commentList: result._id } })
+                            .then((result1, err) => {
+                                if (err) {
+                                    console.log("__________err_________________\n", err);
+                                    callback(err, err);
+                                } else {
+                                    console.log(
+                                        "__________result_________________\n",
+                                        result
+                                    );
+                                    console.log(
+                                        "__________result1_________________\n",
+                                        result1
+                                    );
+                                    callback(null, result);
+                                }
+                            })
+                            .catch(err => {
+                                console.log("__________err_________________\n", err);
+                                callback(err, err);
+                            });
                     }
                 })
                 .catch(err => {

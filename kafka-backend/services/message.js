@@ -59,6 +59,30 @@ function handle_request(msg, callback) {
                     callback(err, err);
                 });
             break;
+        case "get/messages/:u1/:u2":
+            Message.find({
+                $or: [
+                    { sender: msg.reqBody.u1, receiver: msg.reqBody.u2 },
+                    { sender: msg.reqBody.u2, receiver: msg.reqBody.u1 }
+                ]
+            })
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
         case "put/message/:messageId":
             Message.findOneAndUpdate(
                 { _id: msg.reqBody.messageId },

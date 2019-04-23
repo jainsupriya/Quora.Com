@@ -59,6 +59,25 @@ function handle_request(msg, callback) {
                     callback(err, err);
                 });
             break;
+        case "get/topics/search/:searchQuery":
+            Topic.find({topic: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
         case "put/topic/:topicId":
             Topic.findOneAndUpdate(
                 { _id: msg.reqBody.topicId },
