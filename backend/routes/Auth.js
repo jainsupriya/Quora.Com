@@ -13,14 +13,23 @@ authRouter.post("/login", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        console.log(err)
+        console.log(results)
         if (err) {
+            console.log("in err")
             console.log(err);
+            console.log({
+                status: 422,
+                msg: "Fail",
+                data: err
+            })
             res.send({
                 status: 422,
                 msg: "Fail",
                 data: err
             });
         } else {
+            console.log("in else")
             console.log(results);
             res.send(results);
         }

@@ -8,7 +8,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         User
                             .updateOne({_id:msg.reqBody.questionOwner},{ $addToSet: { myQuestionList: result._id, interestedTopicList: result.topicList.split(", ")} })
@@ -16,7 +16,7 @@ function handle_request(msg, callback) {
                             .then((result1, err1) => {
                                 if (err1) {
                                     console.log("__________err1_________________\n", err1);
-                                    callback(err, err1);
+                                    callback("err", err1);
                                 } else {
                                     console.log(
                                         "__________result_________________\n",
@@ -31,13 +31,13 @@ function handle_request(msg, callback) {
                             })
                             .catch(err1 => {
                                 console.log("__________err1_________________\n", err1);
-                                callback(err, err1);
+                                callback("err", err1);
                             });
                     }
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/question":
@@ -45,7 +45,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -56,7 +56,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/questions":
@@ -64,7 +64,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -75,7 +75,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/questions/byUserId/:userId":
@@ -84,7 +84,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -95,7 +95,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/questions/searchByQuestion/:searchQuery":
@@ -103,7 +103,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -114,7 +114,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/questions/searchByTopic/:searchQuery":
@@ -122,7 +122,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -133,7 +133,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "put/question/:questionId":
@@ -145,7 +145,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -156,7 +156,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "delete/question/:questionId":
@@ -164,7 +164,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -175,11 +175,11 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         default:
-            callback(err, "msg api missing");
+            callback("err", "msg api missing");
             break;
     }
 }

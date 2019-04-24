@@ -14,6 +14,7 @@ function handleTopicRequest(topic_name,fname){
         
         fname.handle_request(data.data, function(err,res){
             console.log('after handle'+res);
+            console.log(err)
             var payloads = [
                 { topic: data.replyTo,
                     messages:JSON.stringify({
@@ -25,7 +26,8 @@ function handleTopicRequest(topic_name,fname){
                 }
             ];
             producer.send(payloads, function(err, data){
-                console.log(data);
+                console.log("data lsakl");
+                console.log("sa "+data);
             });
             return;
         });

@@ -28,14 +28,14 @@ function handle_request(msg, callback) {
                 conn.query(queryString, (err, rows, fields) => {
                     if (err || rows.length <= 0) {
                         console.log(err)
-                        callback(err, err);
+                        callback("rows wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", "err");
                     }else{
                         let passMatch = false
                         try {
                             passMatch = bcrypt.compareSync(msg.reqBody.password+"", rows[0].password+"")
                         } catch (error) {
                             console.log(error)
-                            callback(err, error);
+                            callback("err", error);
                             // resData = { status: 500, msg: error + "", data: null };
                         }
                         if(passMatch){
@@ -44,7 +44,7 @@ function handle_request(msg, callback) {
                         // findNewUser(conn,rows,callback)
                     }
                 })
-                console.log("connected as id " + connection.threadId);
+                // console.log("connected as id " + connection.threadId);
             });
             break;
         case "post/user":
@@ -86,7 +86,7 @@ function handle_request(msg, callback) {
                 conn.query(queryString, (err, rows, fields) => {
                     if (err) {
                         console.log(err)
-                        callback(err, err);
+                        callback("err", err);
                     }else{
                         findNewUser(conn,rows,callback)
                     }
@@ -95,7 +95,9 @@ function handle_request(msg, callback) {
             });
             break;
         default:
-            callback(err, "msg api missing");
+            console.log("msg api missing")
+            // callback("msg api missing",null);
+            callback(null,"msg api missing");
             break;
     }
 }
@@ -110,7 +112,7 @@ findNewUser = (conn,rows,callback) => {
                 conn.query(queryString, (err, rows1, fields) => {
                     if (err) {
                         console.log(err)
-                        callback(err, err);
+                        callback("err", err);
                     }else{
                         console.log(rows1)
                         // callback(null,rows)
@@ -125,7 +127,7 @@ findLoginUser = (rows,callback) => {
         .then((result, err) => {
             if (err) {
                 console.log("__________err_________________\n", err);
-                callback(err, err);
+                callback("err", err);
             } else {
                 console.log(
                     "__________result_________________\n",
@@ -145,7 +147,7 @@ findLoginUser = (rows,callback) => {
         })
         .catch(err => {
             console.log("__________err_________________\n", err);
-            callback(err, err);
+            callback("err", err);
         });
     // callback(null, rows);
 }
@@ -166,7 +168,7 @@ sendTokenCreateMongo = (rows,callback) => {
         .then((result, err) => {
             if (err) {
                 console.log("__________err_________________\n", err);
-                callback(err, err);
+                callback("err", err);
             } else {
                 console.log(
                     "__________result_________________\n",
@@ -186,7 +188,7 @@ sendTokenCreateMongo = (rows,callback) => {
         })
         .catch(err => {
             console.log("__________err_________________\n", err);
-            callback(err, err);
+            callback("err", err);
         });
     // callback(null, rows);
 }

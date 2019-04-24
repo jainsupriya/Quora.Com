@@ -7,7 +7,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -18,7 +18,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/message":
@@ -26,7 +26,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -37,7 +37,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/messages":
@@ -45,7 +45,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -56,7 +56,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/messages/:u1/:u2":
@@ -69,7 +69,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -80,7 +80,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "put/message/:messageId":
@@ -92,7 +92,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -103,7 +103,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "delete/message/:messageId":
@@ -111,7 +111,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -122,11 +122,11 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         default:
-            callback(err, "msg api missing");
+            callback("err", "msg api missing");
             break;
     }
 }

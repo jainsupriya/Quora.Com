@@ -9,7 +9,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         Question
                             .updateOne({_id:msg.reqBody.questionId},{ $addToSet: { answerList: result._id } })
@@ -17,7 +17,7 @@ function handle_request(msg, callback) {
                             .then((result1, err1) => {
                                 if (err1) {
                                     console.log("__________err1_________________\n", err1);
-                                    callback(err, err1);
+                                    callback("err", err1);
                                 } else {
                                     User
                                         .updateOne({_id:msg.reqBody.answerOwner},{ $addToSet: { myAnswerList: result._id } })
@@ -25,7 +25,7 @@ function handle_request(msg, callback) {
                                         .then((result2, err2) => {
                                             if (err2) {
                                                 console.log("__________err2_________________\n", err2);
-                                                callback(err, err2);
+                                                callback("err", err2);
                                             } else {
                                                 console.log(
                                                     "__________result_________________\n",
@@ -44,19 +44,19 @@ function handle_request(msg, callback) {
                                         })
                                         .catch(err2 => {
                                             console.log("__________err2_________________\n", err2);
-                                            callback(err, err2);
+                                            callback("err", err2);
                                         });
                                 }
                             })
                             .catch(err1 => {
                                 console.log("__________err1_________________\n", err1);
-                                callback(err, err1);
+                                callback("err", err1);
                             });
                     }
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/answer":
@@ -64,7 +64,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -75,7 +75,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/answers":
@@ -84,7 +84,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -95,7 +95,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/answers/orderByViews":
@@ -104,7 +104,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -115,7 +115,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/answers/orderByUpVotes":
@@ -124,7 +124,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -135,7 +135,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/answers/orderByDownVotes":
@@ -144,7 +144,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -155,7 +155,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/answers/byUserId/:userId":
@@ -164,7 +164,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -175,7 +175,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "get/answersWith/comments":
@@ -185,7 +185,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -196,7 +196,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "put/answer/upvoteInc/:userId/:answerId":
@@ -209,7 +209,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -220,7 +220,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "put/answer/upvoteDec/:userId/:answerId":
@@ -233,7 +233,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -244,7 +244,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "put/answer/downvote/:userId/:answerId":
@@ -256,7 +256,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -267,7 +267,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "put/answer/view/:answerId":
@@ -279,7 +279,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -290,7 +290,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "put/answer/:answerId":
@@ -302,7 +302,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -313,7 +313,7 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         case "delete/answer/:answerId":
@@ -321,7 +321,7 @@ function handle_request(msg, callback) {
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
-                        callback(err, err);
+                        callback("err", err);
                     } else {
                         console.log(
                             "__________result_________________\n",
@@ -332,11 +332,11 @@ function handle_request(msg, callback) {
                 })
                 .catch(err => {
                     console.log("__________err_________________\n", err);
-                    callback(err, err);
+                    callback("err", err);
                 });
             break;
         default:
-            callback(err, "msg api missing");
+            callback("err", "msg api missing");
             break;
     }
 }
