@@ -120,7 +120,7 @@ function handle_request(msg, callback) {
             break;
         case "get/answers/orderByUpVotes":
             Answer
-                .find().sort({upVotes: -1})
+                .find().sort({upVotesCount: -1})
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
@@ -178,7 +178,7 @@ function handle_request(msg, callback) {
                     callback(err, err);
                 });
             break;
-        case "get/answersWithPopulate":
+        case "get/answersWith/comments":
             Answer
                 .find({})
                 .populate("commentList")
@@ -199,10 +199,11 @@ function handle_request(msg, callback) {
                     callback(err, err);
                 });
             break;
-        case "put/answer/upvote/:answerId":
+        case "put/answer/upvoteInc/:userId/:answerId":
             Answer.findOneAndUpdate(
                 { _id: msg.reqBody.answerId },
-                {$inc: {votes: 1,upVotes: 1}},
+                { $addToSet: { upVotes: msg.reqBody.userId }, $inc: {votes: 1, upVotesCount: 1}},
+                // {$inc: {votes: 1,upVotes: 1}},
                 {new : true}
             )
                 .then((result, err) => {
@@ -222,10 +223,34 @@ function handle_request(msg, callback) {
                     callback(err, err);
                 });
             break;
-        case "put/answer/downvote/:answerId":
+        case "put/answer/upvoteDec/:userId/:answerId":
             Answer.findOneAndUpdate(
                 { _id: msg.reqBody.answerId },
-                {$inc: {votes: -1,downVotes: 1}},
+                { $pull: { upVotes: msg.reqBody.userId }, $inc: {votes: -1, upVotesCount: -1}},
+                // {$inc: {votes: 1,upVotes: 1}},
+                {new : true}
+            )
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "put/answer/downvote/:userId/:answerId":
+            User.findOneAndUpdate(
+                { _id: msg.reqBody.userId },
+                {$addToSet: {downVoteAnswerList: msg.reqBody.answerId}},
                 {new : true}
             )
                 .then((result, err) => {
@@ -271,7 +296,8 @@ function handle_request(msg, callback) {
         case "put/answer/:answerId":
             Answer.findOneAndUpdate(
                 { _id: msg.reqBody.answerId },
-                msg.reqBody.body
+                msg.reqBody.body,
+                {new: true}
             )
                 .then((result, err) => {
                     if (err) {

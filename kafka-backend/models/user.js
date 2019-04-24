@@ -182,6 +182,12 @@ const UserSchema = new Schema({
             ref: Answer
         }
     ],
+    downVoteAnswerList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Answer
+        }
+    ],
     social: {
         youtube: {
             type: String

@@ -209,13 +209,13 @@ AnswerRoutes.get("/answers/byUserId/:userId", (req, res, next) => {
 });
 
 // get ans with comment list populate
-AnswerRoutes.get("/answersWithPopulate", (req, res, next) => {
+AnswerRoutes.get("/answersWith/comments", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/get/answersWithPopulate");
+    console.log("/get/answersWith/comments");
     var reqMsg = {
-        api: "get/answersWithPopulate",
+        api: "get/answersWith/comments",
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
@@ -236,15 +236,43 @@ AnswerRoutes.get("/answersWithPopulate", (req, res, next) => {
         }
     });
 });
-// Upvote an answer
-AnswerRoutes.put("/answer/upvote/:answerId", (req, res, next) => {
+// Add Upvote to an answer
+AnswerRoutes.put("/answer/upvoteInc/:userId/:answerId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/put/answer/upvote/:answerId");
+    console.log("/put/answer/upvoteInc/:userId/:answerId");
     var reqMsg = {
-        api: "put/answer/upvote/:answerId",
-        reqBody: {answerId: req.params.answerId}
+        api: "put/answer/upvoteInc/:userId/:answerId",
+        reqBody: {userId: req.params.userId, answerId: req.params.answerId}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+// Remove Upvote of answer
+AnswerRoutes.put("/answer/upvoteDec/:userId/:answerId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/put/answer/upvoteDec/:userId/:answerId");
+    var reqMsg = {
+        api: "put/answer/upvoteDec/:userId/:answerId",
+        reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         if (err) {
@@ -266,14 +294,14 @@ AnswerRoutes.put("/answer/upvote/:answerId", (req, res, next) => {
 });
 
 // Downvote an answer
-AnswerRoutes.put("/answer/downvote/:answerId", (req, res, next) => {
+AnswerRoutes.put("/answer/downvote/:userId/:answerId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/put/answer/downvote/:answerId");
+    console.log("/put/answer/downvote/:userId/:answerId");
     var reqMsg = {
-        api: "put/answer/downvote/:answerId",
-        reqBody: {answerId: req.params.answerId}
+        api: "put/answer/downvote/:userId/:answerId",
+        reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         if (err) {
@@ -323,14 +351,14 @@ AnswerRoutes.put("/answer/view/:answerId", (req, res, next) => {
     });
 });
 
-AnswerRoutes.put("/answer", (req, res, next) => {
+AnswerRoutes.put("/answer/:answerId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/put/answer");
+    console.log("/put/answer/:answerId");
     var reqMsg = {
-        api: "put/answer",
-        reqBody: req.body
+        api: "put/answer/:answerId",
+        reqBody: {answerId: req.params.answerId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         if (err) {

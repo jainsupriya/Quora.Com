@@ -54,14 +54,30 @@ const AnswerSchema = new Schema({
         type: Number,
         default: 0
     },
-    upVotes: {
+    upVotes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: User
+        }
+    ],
+    upVotesCount: {
         type: Number,
         default: 0
     },
-    downVotes: {
-        type: Number,
-        default: 0
-    },
+    // downVotes: [
+    //     {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: User
+    //     }
+    // ],
+    // upVotes: {
+    //     type: Number,
+    //     default: 0
+    // },
+    // downVotes: {
+    //     type: Number,
+    //     default: 0
+    // },
     commentList: [
         {
             type: mongoose.Schema.Types.ObjectId,
