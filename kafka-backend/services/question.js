@@ -98,8 +98,27 @@ function handle_request(msg, callback) {
                     callback(err, err);
                 });
             break;
-        case "get/questions/search/:searchQuery":
-            Question.find({topic: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+        case "get/questions/searchByQuestion/:searchQuery":
+            Question.find({question: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "get/questions/searchByTopic/:searchQuery":
+            Question.find({topicList: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);
@@ -120,7 +139,8 @@ function handle_request(msg, callback) {
         case "put/question/:questionId":
             Question.findOneAndUpdate(
                 { _id: msg.reqBody.questionId },
-                msg.reqBody.body
+                msg.reqBody.body,
+                {new: true}
             )
                 .then((result, err) => {
                     if (err) {

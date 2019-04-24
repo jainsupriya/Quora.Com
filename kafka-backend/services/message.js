@@ -86,7 +86,8 @@ function handle_request(msg, callback) {
         case "put/message/:messageId":
             Message.findOneAndUpdate(
                 { _id: msg.reqBody.messageId },
-                msg.reqBody.body
+                msg.reqBody.body,
+                {new: true}
             )
                 .then((result, err) => {
                     if (err) {

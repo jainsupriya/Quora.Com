@@ -80,7 +80,8 @@ function handle_request(msg, callback) {
         case "put/comment/:commentId":
             Comment.findOneAndUpdate(
                 { _id: msg.reqBody.commentId },
-                msg.reqBody.body
+                msg.reqBody.body,
+                {new: true}
             )
                 .then((result, err) => {
                     if (err) {

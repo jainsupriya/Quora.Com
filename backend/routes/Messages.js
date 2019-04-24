@@ -120,14 +120,14 @@ MessageRoutes.get("/messages/:u1/:u2", (req, res, next) => {
     });
 });
 
-MessageRoutes.put("/message", (req, res, next) => {
+MessageRoutes.put("/message/:messageId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/put/message");
+    console.log("/put/message/:messageId");
     var reqMsg = {
-        api: "put/message",
-        reqBody: req.body
+        api: "put/message/:messageId",
+        reqBody: {messageId: req.params.messageId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         if (err) {

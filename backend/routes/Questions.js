@@ -123,13 +123,13 @@ QuestionRoutes.get("/questions/byUserId/:userId", (req, res, next) => {
 });
 
 // search question by question name
-QuestionRoutes.get("/questions/search/:searchQuery", (req, res, next) => {
+QuestionRoutes.get("/questions/searchByQuestion/:searchQuery", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/get/questions/search/:searchQuery");
+    console.log("/get/questions/searchByQuestion/:searchQuery");
     var reqMsg = {
-        api: "get/questions/search/:searchQuery",
+        api: "get/questions/searchByQuestion/:searchQuery",
         reqBody: {searchQuery: req.params.searchQuery}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
@@ -151,14 +151,43 @@ QuestionRoutes.get("/questions/search/:searchQuery", (req, res, next) => {
     });
 });
 
-QuestionRoutes.put("/question", (req, res, next) => {
+// search question by topic
+QuestionRoutes.get("/questions/searchByTopic/:searchQuery", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/put/question");
+    console.log("/get/questions/searchByTopic/:searchQuery");
     var reqMsg = {
-        api: "put/question",
-        reqBody: req.body
+        api: "get/questions/searchByTopic/:searchQuery",
+        reqBody: {searchQuery: req.params.searchQuery}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
+QuestionRoutes.put("/question/:questionId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/put/question/:questionId");
+    var reqMsg = {
+        api: "put/question/:questionId",
+        reqBody: {questionId: req.params.questionId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         if (err) {
