@@ -11,7 +11,7 @@ function handle_request(msg, callback) {
                         callback(err, err);
                     } else {
                         User
-                            .updateOne({_id:msg.reqBody.questionOwner},{ $addToSet: { myQuestionList: result._id } })
+                            .updateOne({_id:msg.reqBody.questionOwner},{ $addToSet: { myQuestionList: result._id, interestedTopicList: result.topicList.split(", ")} })
                             // .updateOne({sqlUserId:msg.reqBody.questionOwner},{ $addToSet: { myQuestionList: result._id } })
                             .then((result1, err1) => {
                                 if (err1) {

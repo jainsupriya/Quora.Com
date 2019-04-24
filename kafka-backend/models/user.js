@@ -146,6 +146,11 @@ const UserSchema = new Schema({
     },
     followingUserList: [this],
     followersUserList: [this],
+    interestedTopicList:[
+        {
+            type: String,
+        }
+    ],
     questionFollowingList: [
         {
             type: mongoose.Schema.Types.ObjectId,
