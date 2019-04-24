@@ -37,15 +37,15 @@ const UserSchema = new Schema({
     },
     mobile: {
         type: String,
-        required: [true, "Mobile number is required"]
+        // required: [true, "Mobile number is required"]
     },
     dob: {
         type: Date,
-        required: [true, "Date of birth is required"]
+        // required: [true, "Date of birth is required"]
     },
     gender: {
         type: String,
-        required: [true, "Gender is required"]
+        // required: [true, "Gender is required"]
     },
     email: {
         type: String,

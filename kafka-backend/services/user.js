@@ -79,7 +79,7 @@ function handle_request(msg, callback) {
                                         "__________result_________________\n",
                                         result
                                     );
-                                    resD = {sql: ans, mongo: result}
+                                    resD = {mongo: result, sql: ans}
                                     callback(null, resD);
                                 }
                             })
@@ -92,7 +92,29 @@ function handle_request(msg, callback) {
                 console.log("connected as id " + connection.threadId);
             });
             break;
-        case "get/usersWithQuestionList":
+        case "get/userWith/QuestionFollowingList/:userId":
+            User
+                .find({_id:msg.reqBody.userId})
+                .populate("questionFollowingList")
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            
+            break;
+        case "get/usersWith/QuestionFollowingList":
             User
                 .find({})
                 .populate("questionFollowingList")
@@ -114,7 +136,29 @@ function handle_request(msg, callback) {
                 });
             
             break;
-        case "get/usersWithFollowingUserList":
+        case "get/userWith/FollowingUserList/:userId":
+            User
+                .find({_id:msg.reqBody.userId})
+                .populate("followingUserList")
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            
+            break;
+        case "get/usersWith/FollowingUserList":
             User
                 .find({})
                 .populate("followingUserList")
@@ -136,7 +180,28 @@ function handle_request(msg, callback) {
                 });
             
             break;
-        case "get/usersWithFollowersUserList":
+        case "get/userWith/FollowersUserList/:userId":
+            User
+                .find({_id: msg.reqBody.userId})
+                .populate("followersUserList")
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "get/usersWith/FollowersUserList":
             User
                 .find({})
                 .populate("followersUserList")
@@ -158,7 +223,28 @@ function handle_request(msg, callback) {
                 });
             
             break;
-        case "get/usersWithBookmarkAnswerList":
+        case "get/userWith/BookmarkAnswerList/:userId":
+            User
+                .find({_id: msg.reqBody.userId})
+                .populate({path: "bookmarkedAnswerList", model:Answer})
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
+        case "get/usersWith/BookmarkAnswerList":
             User
                 .find({})
                 .populate({path: "bookmarkedAnswerList", model:Answer})
@@ -306,9 +392,32 @@ function handle_request(msg, callback) {
                     callback(err, err);
                 });
             break;
+        case "put/user/bookmarkQuestion/:userId/:questionId":
+            User.findOneAndUpdate(
+                { _id: msg.reqBody.userId },
+                { $addToSet: { bookmarkedQuestionList: msg.reqBody.questionId } },
+                {new: true}
+            )
+                .then((result, err) => {
+                    if (err) {
+                        console.log("__________err_________________\n", err);
+                        callback(err, err);
+                    } else {
+                        console.log(
+                            "__________result_________________\n",
+                            result
+                        );
+                        callback(null, result);
+                    }
+                })
+                .catch(err => {
+                    console.log("__________err_________________\n", err);
+                    callback(err, err);
+                });
+            break;
         case "put/user/:userId":
             User
-                .findOneAndUpdate({ _id: msg.reqBody.userId }, msg.reqBody.body)
+                .findOneAndUpdate({ _id: msg.reqBody.userId }, msg.reqBody.body, {new:true})
                 // .findOneAndUpdate({ sqlUserId: msg.reqBody.userId }, msg.reqBody.body)
                 .then((result, err) => {
                     if (err) {
@@ -368,7 +477,7 @@ function handle_request(msg, callback) {
             });
             break;
         default:
-            callback(err, "msg api missing");
+            callback(null, "msg api missing");
             break;
     }
 }

@@ -164,14 +164,44 @@ UserRoutes.get("/users", (req, res, next) => {
         }
     });
 });
-// get users with question list
-UserRoutes.get("/usersWithQuestionList", (req, res, next) => {
+
+// get users with question following list
+UserRoutes.get("/userWith/QuestionFollowingList/:userId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/get/usersWithQuestionList");
+    console.log("/get/userWith/QuestionFollowingList/:userId");
     var reqMsg = {
-        api: "get/usersWithQuestionList",
+        api: "get/userWith/QuestionFollowingList/:userId",
+        reqBody: {userId: req.params.userId}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
+// get users with question following list
+UserRoutes.get("/usersWith/QuestionFollowingList", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/usersWith/QuestionFollowingList");
+    var reqMsg = {
+        api: "get/usersWith/QuestionFollowingList",
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
@@ -194,13 +224,42 @@ UserRoutes.get("/usersWithQuestionList", (req, res, next) => {
 });
 
 // get users with following user list
-UserRoutes.get("/usersWithFollowingUserList", (req, res, next) => {
+UserRoutes.get("/userWith/FollowingUserList/:userId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/get/usersWithFollowingUserList");
+    console.log("/get/userWith/FollowingUserList/:userId");
     var reqMsg = {
-        api: "get/usersWithFollowingUserList",
+        api: "get/userWith/FollowingUserList/:userId",
+        reqBody: {userId: req.params.userId}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
+// get users with following user list
+UserRoutes.get("/usersWith/FollowingUserList", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/usersWith/FollowingUserList");
+    var reqMsg = {
+        api: "get/usersWith/FollowingUserList",
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
@@ -223,13 +282,42 @@ UserRoutes.get("/usersWithFollowingUserList", (req, res, next) => {
 });
 
 // get users with following user list
-UserRoutes.get("/usersWithFollowersUserList", (req, res, next) => {
+UserRoutes.get("/userWith/FollowersUserList/:userId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/get/usersWithFollowersUserList");
+    console.log("/get/userWith/FollowersUserList/:userId");
     var reqMsg = {
-        api: "get/usersWithFollowersUserList",
+        api: "get/userWith/FollowersUserList/:userId",
+        reqBody: {userId: req.params.userId}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
+// get users with following user list
+UserRoutes.get("/usersWith/FollowersUserList", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/usersWith/FollowersUserList");
+    var reqMsg = {
+        api: "get/usersWith/FollowersUserList",
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
@@ -252,13 +340,42 @@ UserRoutes.get("/usersWithFollowersUserList", (req, res, next) => {
 });
 
 // get users with bookmarked answer list
-UserRoutes.get("/usersWithBookmarkAnswerList", (req, res, next) => {
+UserRoutes.get("/userWith/BookmarkAnswerList/:userId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/get/usersWithBookmarkAnswerList");
+    console.log("/get/userWith/BookmarkAnswerList/:userId");
     var reqMsg = {
-        api: "get/usersWithBookmarkAnswerList",
+        api: "get/userWith/BookmarkAnswerList/:userId",
+        reqBody: {userId: req.params.userId}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        if (err) {
+            console.log(err);
+            res.send({
+                status: 422,
+                msg: "Fail",
+                data: err
+            });
+        } else {
+            console.log(results);
+            res.send({
+                status: 200,
+                msg: "Success",
+                data: results
+            });
+        }
+    });
+});
+
+// get users with bookmarked answer list
+UserRoutes.get("/usersWith/BookmarkAnswerList", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/usersWith/BookmarkAnswerList");
+    var reqMsg = {
+        api: "get/usersWith/BookmarkAnswerList",
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
@@ -396,14 +513,14 @@ UserRoutes.put("/user/followUser/:u1/:u2", (req, res, next) => {
     });
 });
 
-UserRoutes.put("/user", (req, res, next) => {
+UserRoutes.put("/user/:userId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/put/user");
+    console.log("put/user/:userId");
     var reqMsg = {
-        api: "put/user",
-        reqBody: req.body
+        api: "put/user/:userId",
+        reqBody: {userId: req.params.userId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         if (err) {
@@ -459,14 +576,14 @@ UserRoutes.put("/user/bookmarkAnswer/:userId/:answerId", (req, res, next) => {
 //     UserId
 //     questionId
 // }
-UserRoutes.put("/user/bookmarkQuestion", (req, res, next) => {
+UserRoutes.put("/user/bookmarkQuestion/:userId/:questionId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/put/user/bookmark");
+    console.log("/put/user/bookmarkQuestion/:userId/:questionId");
     var reqMsg = {
-        api: "put/user/bookmark",
-        reqBody: req.body
+        api: "put/user/bookmarkQuestion/:userId/:questionId",
+        reqBody: {userId: req.params.userId, questionId: req.params.questionId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         if (err) {

@@ -63,17 +63,25 @@ function handle_request(msg, callback) {
                 conn = connection;
             
                 let queryString = 
-                `INSERT INTO quora.users(username, fname, lname, mobile, dob, gender, email, password)
+                // `INSERT INTO quora.users(username, fname, lname, mobile, dob, gender, email, password)
+                `INSERT INTO quora.users(username, fname, lname, email, password)
                 VALUES (
                     ${mysql.escape(msg.reqBody.username)},
                     ${mysql.escape(msg.reqBody.fname)},
                     ${mysql.escape(msg.reqBody.lname)},
-                    ${mysql.escape(msg.reqBody.mobile)},
-                    ${mysql.escape(msg.reqBody.dob)},
-                    ${mysql.escape(msg.reqBody.gender)},
                     ${mysql.escape(msg.reqBody.email)},
                     ${mysql.escape(hashedPass)}
                 );`;
+                // VALUES (
+                //     ${mysql.escape(msg.reqBody.username)},
+                //     ${mysql.escape(msg.reqBody.fname)},
+                //     ${mysql.escape(msg.reqBody.lname)},
+                //     ${mysql.escape(msg.reqBody.mobile)},
+                //     ${mysql.escape(msg.reqBody.dob)},
+                //     ${mysql.escape(msg.reqBody.gender)},
+                //     ${mysql.escape(msg.reqBody.email)},
+                //     ${mysql.escape(hashedPass)}
+                // );`;
                 console.log(queryString)
                 conn.query(queryString, (err, rows, fields) => {
                     if (err) {
@@ -151,9 +159,9 @@ sendTokenCreateMongo = (rows,callback) => {
             fname: rows[0].fname,
             lname: rows[0].lname,
             username: rows[0].username,
-            mobile: rows[0].mobile,
-            dob: rows[0].dob,
-            gender: rows[0].gender
+            // mobile: rows[0].mobile,
+            // dob: rows[0].dob,
+            // gender: rows[0].gender
         })
         .then((result, err) => {
             if (err) {
