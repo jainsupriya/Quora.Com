@@ -31,6 +31,20 @@ ContentRoutes.get("/content/:contentId", (req, res, next) => {
     });
 });
 
+ContentRoutes.get("/content/byUserId/:userId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/content/byUserId/:userId");
+    var reqMsg = {
+        api: "get/content/byUserId/:userId",
+        reqBody: { userId: req.params.userId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.send(results);
+    });
+});
+
 ContentRoutes.get("/contents", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="

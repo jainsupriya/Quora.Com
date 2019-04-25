@@ -1,8 +1,4 @@
 const Content = require("../models/content");
-const Question = require("../models/question");
-const Answer = require("../models/answer");
-const Comment = require("../models/comment");
-const User = require("../models/user");
 
 myCallback = (err, result, callback) => {
     if (err) {
@@ -38,7 +34,24 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/content/:contentId":
-            Content.find({ _id: msg.reqBody.contentId })
+            Content
+                .find({ _id: msg.reqBody.contentId })
+                .populate('contentId')
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "get/content/byUserId/:userId":
+            Content
+                .find({ userId: msg.reqBody.userId })
+                .populate('contentId')
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);

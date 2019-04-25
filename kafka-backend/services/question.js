@@ -92,6 +92,8 @@ function handle_request(msg, callback) {
             break;
         case "get/questions/searchByQuestion/:searchQuery":
             Question.find({question: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+                .populate('answerList')                
+                .populate('questionOwner')                
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
