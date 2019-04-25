@@ -1,5 +1,8 @@
 # Quora.Com
 
+URL for Frontend
+http://3.19.40.73:3000/
+
 URL for Backend
 This is get request for users
 http://52.9.137.32:5000/users
