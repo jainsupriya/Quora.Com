@@ -22,21 +22,7 @@ AnswerRoutes.post("/answer", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -50,21 +36,7 @@ AnswerRoutes.get("/answer/:answerId", (req, res, next) => {
         reqBody: { answerId: req.params.answerId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -78,21 +50,7 @@ AnswerRoutes.get("/answers", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -106,21 +64,7 @@ AnswerRoutes.get("/answers/orderByViews", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -134,21 +78,7 @@ AnswerRoutes.get("/answers/orderByUpVotes", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -162,21 +92,7 @@ AnswerRoutes.get("/answers/orderByDownVotes", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -190,21 +106,7 @@ AnswerRoutes.get("/answers/byUserId/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -219,21 +121,7 @@ AnswerRoutes.get("/answersWith/comments", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 // Add Upvote to an answer
@@ -247,21 +135,7 @@ AnswerRoutes.put("/answer/upvoteInc/:userId/:answerId", (req, res, next) => {
         reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 // Remove Upvote of answer
@@ -275,21 +149,7 @@ AnswerRoutes.put("/answer/upvoteDec/:userId/:answerId", (req, res, next) => {
         reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -304,21 +164,7 @@ AnswerRoutes.put("/answer/downvote/:userId/:answerId", (req, res, next) => {
         reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -333,21 +179,7 @@ AnswerRoutes.put("/answer/view/:answerId", (req, res, next) => {
         reqBody: {answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -361,21 +193,7 @@ AnswerRoutes.put("/answer/:answerId", (req, res, next) => {
         reqBody: {answerId: req.params.answerId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -389,21 +207,7 @@ AnswerRoutes.delete("/answer/:answerId", (req, res, next) => {
         reqBody: { answerId: req.params.answerId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 

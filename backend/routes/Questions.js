@@ -20,21 +20,7 @@ QuestionRoutes.post("/question", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -48,21 +34,7 @@ QuestionRoutes.get("/question/:questionId", (req, res, next) => {
         reqBody: { questionId: req.params.questionId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -76,21 +48,7 @@ QuestionRoutes.get("/questions", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -104,21 +62,7 @@ QuestionRoutes.get("/questions/byUserId/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -133,21 +77,7 @@ QuestionRoutes.get("/questions/searchByQuestion/:searchQuery", (req, res, next) 
         reqBody: {searchQuery: req.params.searchQuery}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -162,21 +92,7 @@ QuestionRoutes.get("/questions/searchByTopic/:searchQuery", (req, res, next) => 
         reqBody: {searchQuery: req.params.searchQuery}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -190,21 +106,7 @@ QuestionRoutes.put("/question/:questionId", (req, res, next) => {
         reqBody: {questionId: req.params.questionId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -218,21 +120,7 @@ QuestionRoutes.delete("/question/:questionId", (req, res, next) => {
         reqBody: { questionId: req.params.questionId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 

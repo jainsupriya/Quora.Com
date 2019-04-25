@@ -2,6 +2,24 @@ const Answer = require("../models/answer");
 const User = require("../models/user");
 const Question = require("../models/question");
 
+myCallback = (err, result, callback) => {
+    if (err) {
+        console.log("__________err_________________\n", err);
+        callback(null, {
+            status: 422,
+            msg: "Fail",
+            data: err
+        });
+    } else {
+        console.log("__________result_________________\n", result);
+        callback(null, {
+            status: 200,
+            msg: "Success",
+            data: result
+        });
+    }
+};
+
 function handle_request(msg, callback) {
     switch (msg.api) {
         case "post/answer":

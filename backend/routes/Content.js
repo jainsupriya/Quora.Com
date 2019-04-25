@@ -13,21 +13,7 @@ ContentRoutes.post("/content", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -41,21 +27,7 @@ ContentRoutes.get("/content/:contentId", (req, res, next) => {
         reqBody: { contentId: req.params.contentId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -69,21 +41,7 @@ ContentRoutes.get("/contents", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -97,21 +55,7 @@ ContentRoutes.put("/content/:contentId", (req, res, next) => {
         reqBody: {contentId: req.params.contentId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 
@@ -125,21 +69,7 @@ ContentRoutes.delete("/content/:contentId", (req, res, next) => {
         reqBody: { contentId: req.params.contentId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        if (err) {
-            console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
-        } else {
-            console.log(results);
-            res.send({
-                status: 200,
-                msg: "Success",
-                data: results
-            });
-        }
+        res.send(results);
     });
 });
 

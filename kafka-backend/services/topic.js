@@ -1,5 +1,23 @@
 const Topic = require("../models/topic");
 
+myCallback = (err, result, callback) => {
+    if (err) {
+        console.log("__________err_________________\n", err);
+        callback(null, {
+            status: 422,
+            msg: "Fail",
+            data: err
+        });
+    } else {
+        console.log("__________result_________________\n", result);
+        callback(null, {
+            status: 200,
+            msg: "Success",
+            data: result
+        });
+    }
+};
+
 function handle_request(msg, callback) {
     switch (msg.api) {
         case "post/topic":
