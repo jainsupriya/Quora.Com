@@ -1,15 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Question = require("./question");
-const Answer = require("./answer");
-const Comment = require("./comment");
-const User = require("./user");
 
 const ContentSchema = new Schema({
     userId: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: User
+            ref: 'user'
         }
     ],
     contentType: {
@@ -18,14 +14,13 @@ const ContentSchema = new Schema({
     },
     contentId: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             refPath: "contentIdModel"
         }
     ],
     contentIdModel: {
         type: String,
         required: true,
-        enum: ['Answer', 'Question', 'Comment', 'User']
     },
     timeStamp: {
         type: Date,

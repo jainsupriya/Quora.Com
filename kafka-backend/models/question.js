@@ -1,19 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const User = require("./user");
-const Topic = require("./topic");
-const Answer = require("./answer");
-
-// sample: {
-//     type: String | Number | Date | Boolean,
-//     required: [true,"User Name is required"],
-//     trim: true,
-//     lowercase: true,
-//     unique: true,
-//     validate: [validateEmail, 'Please fill a valid email address'],
-//     match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
-//     default: false,
-// },
 
 const QuestionSchema = new Schema({
     question: {
@@ -27,7 +13,7 @@ const QuestionSchema = new Schema({
     questionOwner: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: User
+            ref: "user"
         }
     ],
     topicList: {
@@ -43,13 +29,13 @@ const QuestionSchema = new Schema({
     followersUserList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: User
+            ref: "user"
         }
     ],
     answerList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Answer
+            ref: "answer"
         }
     ],
     postedTime: {

@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 var validate = require("mongoose-validator");
-// const bcrypt = require("bcryptjs");
-const Question = require("./question");
-const Answer = require("./answer");
-const Topic = require("./topic");
 
 var validateEmail = function(email) {
     var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -154,43 +150,43 @@ const UserSchema = new Schema({
     questionFollowingList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Question
+            ref: "question"
         }
     ],
     topicFollowingList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Topic
+            ref: "topic"
         }
     ],
     bookmarkedQuestionList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Question
+            ref: "question"
         }
     ],
     bookmarkedAnswerList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Answer
+            ref: "answer"
         }
     ],
     myQuestionList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Question
+            ref: "question"
         }
     ],
     myAnswerList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Answer
+            ref: "answer"
         }
     ],
     downVoteAnswerList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Answer
+            ref: "answer"
         }
     ],
     social: {

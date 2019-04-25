@@ -1,8 +1,8 @@
 const Content = require("../models/content");
 const Question = require("../models/question");
-const Answer = require("./answer");
-const Comment = require("./comment");
-const User = require("./user");
+const Answer = require("../models/answer");
+const Comment = require("../models/comment");
+const User = require("../models/user");
 
 function handle_request(msg, callback) {
     switch (msg.api) {
@@ -47,9 +47,7 @@ function handle_request(msg, callback) {
         case "get/contents":
             Content
                 .find({})
-                .populate({path:"contentId", model: Question})
-                // .populate({path:"contentId", model: Answer})
-                // .populate("contentId")
+                .populate('contentId')
                 .then((result, err) => {
                     if (err) {
                         console.log("__________err_________________\n", err);

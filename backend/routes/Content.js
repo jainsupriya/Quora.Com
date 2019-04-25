@@ -3,9 +3,6 @@ const ContentRoutes = express.Router();
 var kafka = require("../kafka/client");
 const TOPIC = "content";
 
-// content
-// questionList[]
-
 ContentRoutes.post("/content", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="

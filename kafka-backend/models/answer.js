@@ -1,19 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const User = require("./user");
-const Comment = require("./comment");
-const Question = require("./question");
-
-// sample: {
-//     type: String | Number | Date | Boolean,
-//     required: [true,"User Name is required"],
-//     trim: true,
-//     lowercase: true,
-//     unique: true,
-//     validate: [validateEmail, 'Please fill a valid email address'],
-//     match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
-//     default: false,
-// },
 
 const AnswerSchema = new Schema({
     answer: {
@@ -26,7 +12,7 @@ const AnswerSchema = new Schema({
     questionId: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Question,
+            ref: "question",
             required: [true, "First Name is required"]
 
         }
@@ -34,7 +20,7 @@ const AnswerSchema = new Schema({
     answerOwner: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: User
+            ref: "user"
         }
     ],
     imageList: [
@@ -57,7 +43,7 @@ const AnswerSchema = new Schema({
     upVotes: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: User
+            ref: "user"
         }
     ],
     upVotesCount: {
@@ -67,7 +53,7 @@ const AnswerSchema = new Schema({
     // downVotes: [
     //     {
     //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: User
+    //         ref: "user"
     //     }
     // ],
     // upVotes: {
@@ -81,7 +67,7 @@ const AnswerSchema = new Schema({
     commentList: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Comment
+            ref: "comment"
         }
     ],
     postedTime: {

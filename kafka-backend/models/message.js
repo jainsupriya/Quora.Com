@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const User = require("./user");
 
 const MessageSchema = new Schema({
     // sender: {
@@ -14,14 +13,14 @@ const MessageSchema = new Schema({
     sender: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: User,
+            ref: "user",
             required: [true, "Sender _ID is required"]
         }
     ],
     receiver: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: User,
+            ref: "user",
             required: [true, "Receiver _ID is required"]
         }
     ],
