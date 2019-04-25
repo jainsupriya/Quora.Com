@@ -1,6 +1,27 @@
 import axios from "axios";
-import { GET_ERRORS, GET_QUESTIONS, GET_QUESTION } from "./types";
+import {
+  GET_ERRORS,
+  GET_QUESTIONS,
+  GET_QUESTION,
+  GET_USER_DETAILS
+} from "./types";
 
+export const getUserDetails = userId => dispatch => {
+  axios
+    .get(`/user/${userId}`)
+    .then(res =>
+      dispatch({
+        type: GET_USER_DETAILS,
+        payload: res.data.data[0]
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.data
+      })
+    );
+};
 export const getQuestions = topic => dispatch => {
   axios
     .get(`/questions/searchByTopic/${topic}`)

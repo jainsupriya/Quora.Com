@@ -14,7 +14,10 @@ import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
-import { getQuestions } from "../../../redux/actions/homeAction";
+import {
+  getQuestions,
+  getUserDetails
+} from "../../../redux/actions/homeAction";
 
 import Feed from "../layout/feed";
 import QuestionCard from "../layout/QuestionCard";
@@ -27,9 +30,8 @@ class Home extends React.Component {
     super(props);
     this.state = {
       topic: "Change",
-      questions: [],
-      openAddQuestion: false,
-      state: {}
+      userDetails: {},
+      openAddQuestion: false
     };
   }
 
@@ -45,19 +47,20 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.props.getQuestions(this.state.topic);
+    //this.props.getUserDetails(this.props.auth.user._id); //TODO
+    this.props.getUserDetails("5cbe44ad5445656fa98b6f7d");
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.questions) {
-      this.setState({ questions: nextProps.questions });
-    }
-  }
+  handleTopicClick = newTopic => {
+    this.props.getQuestions(newTopic);
+  };
 
   render() {
-    let temp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    //let temp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    let userTopicList = this.props.userDetails.interestedTopicList;
     let QuestionComp;
-    if (this.state.questions && this.state.questions.length) {
-      QuestionComp = this.state.questions.map(question => {
+    if (this.props.questions && this.props.questions.length) {
+      QuestionComp = this.props.questions.map(question => {
         return <QuestionCard question={question} />;
       });
     } else {
@@ -92,14 +95,19 @@ class Home extends React.Component {
             >
               <Grid item xs={2} className="fix-pos">
                 <div style={{ position: "fixed", width: "11%" }}>
-                  {temp.map(item => {
-                    // console.log(item);
-                    return <Feed />;
+                  {userTopicList.map(topic => {
+                    return (
+                      <Feed
+                        topic={topic}
+                        handleTopicClick={() => this.handleTopicClick(topic)}
+                      />
+                    );
                   })}
                 </div>
               </Grid>
               <Grid item xs={8} className="m-padding-left-right-15">
                 <AskQuestionCard
+                  user={this.props.auth.user}
                   handleClickOpen={() => this.handleClickOpen()}
                 />
                 {QuestionComp}
@@ -150,13 +158,14 @@ class Home extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  state: state.homeState,
+  auth: state.auth,
   userState: state.userState,
   errors: state.errors,
+  userDetails: state.homeState.userDetails,
   questions: state.homeState.questions
 });
 
 export default connect(
   mapStateToProps,
-  { getQuestions }
+  { getQuestions, getUserDetails }
 )(withStyles(styles)(Home));
