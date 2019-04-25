@@ -28,38 +28,26 @@ function handle_request(msg, callback) {
             Content.create(msg.reqBody)
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/content/:contentId":
             Content.find({ _id: msg.reqBody.contentId })
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/contents":
@@ -68,19 +56,13 @@ function handle_request(msg, callback) {
                 .populate('contentId')
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "put/content/:contentId":
@@ -90,42 +72,30 @@ function handle_request(msg, callback) {
             )
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "delete/content/:contentId":
             Content.remove({ _id: msg.reqBody.contentId })
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         default:
-            callback("msg api missing", null);
+            myCallback("msg api missing", null, callback);
             break;
     }
 }

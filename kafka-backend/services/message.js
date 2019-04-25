@@ -24,57 +24,39 @@ function handle_request(msg, callback) {
             Message.create(msg.reqBody)
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/message":
             Message.find({ _id: msg.reqBody.messageId })
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/messages":
             Message.find({})
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/messages/:u1/:u2":
@@ -86,19 +68,13 @@ function handle_request(msg, callback) {
             })
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "put/message/:messageId":
@@ -109,42 +85,30 @@ function handle_request(msg, callback) {
             )
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "delete/message/:messageId":
             Message.remove({ _id: msg.reqBody.messageId })
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         default:
-            callback("err", "msg api missing");
+            myCallback("msg api missing", null, callback);
             break;
     }
 }

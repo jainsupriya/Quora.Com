@@ -25,75 +25,55 @@ function handle_request(msg, callback) {
             Question.create(msg.reqBody)
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
                         User
                             .updateOne({_id:msg.reqBody.questionOwner},{ $addToSet: { myQuestionList: result._id, interestedTopicList: result.topicList.split(", ")} })
                             // .updateOne({sqlUserId:msg.reqBody.questionOwner},{ $addToSet: { myQuestionList: result._id } })
                             .then((result1, err1) => {
                                 if (err1) {
-                                    console.log("__________err1_________________\n", err1);
-                                    callback("err", err1);
+                                    myCallback(err1, null, callback);
                                 } else {
-                                    console.log(
-                                        "__________result_________________\n",
-                                        result
-                                    );
                                     console.log(
                                         "__________result1_________________\n",
                                         result1
                                     );
-                                    callback(null, result);
+                                    myCallback(null, result, callback);
                                 }
                             })
                             .catch(err1 => {
-                                console.log("__________err1_________________\n", err1);
-                                callback("err", err1);
+                                myCallback(err1, null, callback);
                             });
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/question":
             Question.find({ _id: msg.reqBody.questionId })
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/questions":
             Question.find({})
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/questions/byUserId/:userId":
@@ -101,57 +81,39 @@ function handle_request(msg, callback) {
                 .find({questionOwner: msg.reqBody.userId})
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/questions/searchByQuestion/:searchQuery":
             Question.find({question: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "get/questions/searchByTopic/:searchQuery":
             Question.find({topicList: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "put/question/:questionId":
@@ -162,42 +124,30 @@ function handle_request(msg, callback) {
             )
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         case "delete/question/:questionId":
             Question.remove({ _id: msg.reqBody.questionId })
                 .then((result, err) => {
                     if (err) {
-                        console.log("__________err_________________\n", err);
-                        callback("err", err);
+                        myCallback(err, null, callback);
                     } else {
-                        console.log(
-                            "__________result_________________\n",
-                            result
-                        );
-                        callback(null, result);
+                        myCallback(null, result, callback);
                     }
                 })
                 .catch(err => {
-                    console.log("__________err_________________\n", err);
-                    callback("err", err);
+                    myCallback(err, null, callback);
                 });
             break;
         default:
-            callback("err", "msg api missing");
+            myCallback("msg api missing", null, callback);
             break;
     }
 }
