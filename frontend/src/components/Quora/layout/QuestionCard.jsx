@@ -14,6 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
+import ReadMoreReact from "read-more-react";
 
 const styles = theme => ({});
 
@@ -67,10 +68,17 @@ class QuestionCard extends React.Component {
             </Grid>
 
             <Grid item className="ans-main-content">
-              {`Too hard to get promoted. The process was slow and I got denied promo 
-                                            by the anonymous committee despite my manager and others on my team being 
-                                            re I was going to get it.The only metric that matters is “launch”. 
-                                            I worked on almost exclusively `}
+              <ReadMoreReact
+                text={`Too hard to get promoted. The process was slow and I got denied promo 
+                by the anonymous committee despite my manager and others on my team being 
+                re I was going to get it.The only metric that matters is “launch”. 
+                I worked on almost exclusively `}
+                min={80}
+                ideal={100}
+                max={200}
+                readMoreText="...(more)"
+                showLessButton={true}
+              />
             </Grid>
             <Grid item className="votes">
               {`334 views · View Upvoters`}
