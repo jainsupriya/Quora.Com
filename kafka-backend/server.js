@@ -26,8 +26,8 @@ function handleTopicRequest(topic_name,fname){
                 }
             ];
             producer.send(payloads, function(err, data){
-                console.log("data lsakl");
-                console.log("sa "+data);
+                // console.log("data lsakl");
+                console.log("data:- "+data);
             });
             return;
         });
