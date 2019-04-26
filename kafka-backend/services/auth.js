@@ -137,8 +137,8 @@ findLoginUser = (rows,callback) => {
                 var payload = { id: rows[0].id, email: rows[0].email };
                 var token = jwt.sign(payload, "secret_is_secret");
                 let resData = {
-                    status: 200,
-                    msg: "Success",
+                    // status: 200,
+                    // msg: "Success",
                     sqlData: rows[0],
                     MongoData: result,
                     token: token
@@ -170,8 +170,8 @@ sendTokenCreateMongo = (rows,callback) => {
                 var payload = { id: rows[0].id, email: rows[0].email };
                 var token = jwt.sign(payload, "secret_is_secret");
                 let resData = {
-                    status: 200,
-                    msg: "Success",
+                    // status: 200,
+                    // msg: "Success",
                     sqlData: rows[0],
                     MongoData: result,
                     token: token
