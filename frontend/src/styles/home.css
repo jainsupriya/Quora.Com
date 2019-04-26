@@ -195,3 +195,23 @@
   text-decoration: none;
   background-color: transparent;
 }
+
+.regular-search {
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
+  width: 100%;
+  padding: 2% 5%;
+}
+
+a{
+  cursor: pointer;
+}
+
+.questionNav {
+  color: #2b6dad;
+}
+
+.secondaryText {
+  font-size: 14px;
+  color: #949494;
+}

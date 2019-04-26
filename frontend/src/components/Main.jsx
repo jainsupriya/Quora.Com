@@ -6,6 +6,7 @@ import { store } from "../redux/store";
 import Login from "./auth/Login"
 import SignUp from "./auth/SignUp"
 import Quora from "./Quora/Quora"
+import Content from "./Quora/Content"
 
 // Check for token
 // if (localStorage.jwtToken) {
@@ -36,8 +37,9 @@ class Main extends Component {
           <div>
             <Switch>
               <Route exact path="/" component={Quora} />
-              <Route path="/login" component={Login} />
               <Route path="/signup" component={SignUp} />
+              <Route path="/login" component={Login} />
+              <Route path="/content" component={Content} />
               <Route render={() => <h3>Page not Found</h3>} />
             </Switch>
           </div>
