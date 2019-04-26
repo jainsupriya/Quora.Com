@@ -16,7 +16,7 @@ ContentRoutes.post("/content", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -30,7 +30,7 @@ ContentRoutes.get("/content/:contentId", (req, res, next) => {
         reqBody: { contentId: req.params.contentId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -44,7 +44,7 @@ ContentRoutes.get("/content/byUserId/:userId", (req, res, next) => {
         reqBody: { userId: req.params.userId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -58,7 +58,7 @@ ContentRoutes.get("/content/byUserId/:userId/onlyAnswers", (req, res, next) => {
         reqBody: { userId: req.params.userId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -72,7 +72,7 @@ ContentRoutes.get("/content/byUserId/:userId/onlyQuestions", (req, res, next) =>
         reqBody: { userId: req.params.userId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -86,7 +86,7 @@ ContentRoutes.get("/content/byUserId/:userId/onlyFollowQuestions", (req, res, ne
         reqBody: { userId: req.params.userId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -100,7 +100,7 @@ ContentRoutes.get("/content/byUserId/:userId/year/:year", (req, res, next) => {
         reqBody: { userId: req.params.userId, year: req.params.year }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -114,7 +114,7 @@ ContentRoutes.get("/contents", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -128,7 +128,7 @@ ContentRoutes.put("/content/:contentId", (req, res, next) => {
         reqBody: {contentId: req.params.contentId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -142,7 +142,7 @@ ContentRoutes.delete("/content/:contentId", (req, res, next) => {
         reqBody: { contentId: req.params.contentId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 

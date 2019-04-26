@@ -18,7 +18,7 @@ CommentRoutes.post("/comment", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -32,7 +32,7 @@ CommentRoutes.get("/comment/:commentId", (req, res, next) => {
         reqBody: { commentId: req.params.commentId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -46,7 +46,7 @@ CommentRoutes.get("/comments", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -60,7 +60,7 @@ CommentRoutes.put("/comment/:commentId", (req, res, next) => {
         reqBody: { commentId: req.params.commentId, body: req.body }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -74,7 +74,7 @@ CommentRoutes.delete("/comment/:commentId", (req, res, next) => {
         reqBody: { commentId: req.params.commentId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 

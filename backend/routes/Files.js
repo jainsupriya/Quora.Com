@@ -30,11 +30,7 @@ filesRoutes.put("/file/updateProfileImg", (req, res) => {
         console.log(req.file)
         if (err) {
             console.log(err);
-            res.send({
-                status: 500,
-                msg: err,
-                data: null
-            });
+            res.status(422).send(err);
         } else {
             let sourceUrl =
                 "../backend/public/uploads/temp/" + req.file.filename;
@@ -45,11 +41,7 @@ filesRoutes.put("/file/updateProfileImg", (req, res) => {
                 if (err) {
                     console.log(err);
                     fsx.remove(sourceUrl);
-                    res.send({
-                        status: 422,
-                        msg: "Fail",
-                        data: err
-                    });
+                    res.status(422).send(err);
                 } else {
                     console.log("move success");
                     var reqMsg = {
@@ -60,7 +52,7 @@ filesRoutes.put("/file/updateProfileImg", (req, res) => {
                         }
                     };
                     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-                        res.send(results);
+                        res.status(results.status).send(results.data);
                     });
                 }
             });

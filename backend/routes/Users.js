@@ -62,7 +62,7 @@ UserRoutes.post("/user", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -76,7 +76,7 @@ UserRoutes.get("/user/:userId", (req, res, next) => {
         reqBody: { userId: req.params.userId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -91,7 +91,7 @@ UserRoutes.get("/users/searchByUsername/:usernameQuery", (req, res, next) => {
         reqBody: { usernameQuery: req.params.usernameQuery }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -105,7 +105,7 @@ UserRoutes.get("/users", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -120,7 +120,7 @@ UserRoutes.get("/userWith/QuestionFollowingList/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -135,7 +135,7 @@ UserRoutes.get("/usersWith/QuestionFollowingList", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -150,7 +150,7 @@ UserRoutes.get("/userWith/FollowingUserList/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -165,7 +165,7 @@ UserRoutes.get("/usersWith/FollowingUserList", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -180,7 +180,7 @@ UserRoutes.get("/userWith/FollowersUserList/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -195,7 +195,7 @@ UserRoutes.get("/usersWith/FollowersUserList", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -210,7 +210,7 @@ UserRoutes.get("/userWith/BookmarkAnswerList/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -225,7 +225,7 @@ UserRoutes.get("/usersWith/BookmarkAnswerList", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -240,7 +240,7 @@ UserRoutes.get("/usersWithAllTypeContent", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -255,7 +255,7 @@ UserRoutes.put("/user/incView/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -270,7 +270,7 @@ UserRoutes.put("/user/followQuestion/:userId/:questionId", (req, res, next) => {
         reqBody: {userId: req.params.userId, questionId: req.params.questionId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -285,7 +285,7 @@ UserRoutes.put("/user/followUser/:u1/:u2", (req, res, next) => {
         reqBody: {u1: req.params.u1, u2: req.params.u2}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -299,7 +299,7 @@ UserRoutes.put("/user/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -315,7 +315,7 @@ UserRoutes.put("/user/bookmarkAnswer/:userId/:answerId", (req, res, next) => {
         reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -329,7 +329,7 @@ UserRoutes.put("/user/bookmarkQuestion/:userId/:questionId", (req, res, next) =>
         reqBody: {userId: req.params.userId, questionId: req.params.questionId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -343,7 +343,7 @@ UserRoutes.delete("/user/:userId", (req, res, next) => {
         reqBody: { userId: req.params.userId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 

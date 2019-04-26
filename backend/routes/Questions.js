@@ -20,7 +20,7 @@ QuestionRoutes.post("/question", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -34,7 +34,7 @@ QuestionRoutes.get("/question/:questionId", (req, res, next) => {
         reqBody: { questionId: req.params.questionId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -48,7 +48,7 @@ QuestionRoutes.get("/questions", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -62,7 +62,7 @@ QuestionRoutes.get("/questions/byUserId/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -77,7 +77,7 @@ QuestionRoutes.get("/questions/searchByQuestion/:searchQuery", (req, res, next) 
         reqBody: {searchQuery: req.params.searchQuery}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -92,7 +92,7 @@ QuestionRoutes.get("/questions/searchByTopic/:searchQuery", (req, res, next) => 
         reqBody: {searchQuery: req.params.searchQuery}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -106,7 +106,7 @@ QuestionRoutes.put("/question/:questionId", (req, res, next) => {
         reqBody: {questionId: req.params.questionId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -120,7 +120,7 @@ QuestionRoutes.delete("/question/:questionId", (req, res, next) => {
         reqBody: { questionId: req.params.questionId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 

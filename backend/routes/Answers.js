@@ -22,7 +22,7 @@ AnswerRoutes.post("/answer", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -36,7 +36,7 @@ AnswerRoutes.get("/answer/:answerId", (req, res, next) => {
         reqBody: { answerId: req.params.answerId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -50,7 +50,7 @@ AnswerRoutes.get("/answers", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -64,7 +64,7 @@ AnswerRoutes.get("/answers/orderByViews", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -78,7 +78,7 @@ AnswerRoutes.get("/answers/orderByUpVotes", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -92,7 +92,7 @@ AnswerRoutes.get("/answers/orderByDownVotes", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -106,7 +106,7 @@ AnswerRoutes.get("/answers/byUserId/:userId", (req, res, next) => {
         reqBody: {userId: req.params.userId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -121,7 +121,7 @@ AnswerRoutes.get("/answersWith/comments", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 // Add Upvote to an answer
@@ -135,7 +135,7 @@ AnswerRoutes.put("/answer/upvoteInc/:userId/:answerId", (req, res, next) => {
         reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 // Remove Upvote of answer
@@ -149,7 +149,7 @@ AnswerRoutes.put("/answer/upvoteDec/:userId/:answerId", (req, res, next) => {
         reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -164,7 +164,7 @@ AnswerRoutes.put("/answer/downvote/:userId/:answerId", (req, res, next) => {
         reqBody: {userId: req.params.userId, answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -179,7 +179,7 @@ AnswerRoutes.put("/answer/view/:answerId", (req, res, next) => {
         reqBody: {answerId: req.params.answerId}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -193,7 +193,7 @@ AnswerRoutes.put("/answer/:answerId", (req, res, next) => {
         reqBody: {answerId: req.params.answerId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -207,7 +207,7 @@ AnswerRoutes.delete("/answer/:answerId", (req, res, next) => {
         reqBody: { answerId: req.params.answerId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 

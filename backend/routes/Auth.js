@@ -23,15 +23,11 @@ authRouter.post("/login", (req, res, next) => {
                 msg: "Fail",
                 data: err
             })
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
+            res.status(422).send(err);
         } else {
             console.log("in else")
             console.log(results);
-            res.send(results);
+            res.status(results.status).send(results.data);
         }
     });
 });
@@ -48,14 +44,10 @@ authRouter.post("/user", (req, res, next) => {
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         if (err) {
             console.log(err);
-            res.send({
-                status: 422,
-                msg: "Fail",
-                data: err
-            });
+            res.status(422).send(err);
         } else {
             console.log(results);
-            res.send(results);
+            res.status(results.status).send(results.data);
         }
     });
 });

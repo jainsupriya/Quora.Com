@@ -18,7 +18,7 @@ MessageRoutes.post("/message", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -32,7 +32,7 @@ MessageRoutes.get("/message/:messageId", (req, res, next) => {
         reqBody: { messageId: req.params.messageId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -46,7 +46,7 @@ MessageRoutes.get("/messages", (req, res, next) => {
         reqBody: null
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -60,7 +60,7 @@ MessageRoutes.get("/messages/:u1/:u2", (req, res, next) => {
         reqBody: {u1: req.params.u1, u2:req.params.u2}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -74,7 +74,7 @@ MessageRoutes.put("/message/:messageId", (req, res, next) => {
         reqBody: {messageId: req.params.messageId, body: req.body}
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
@@ -88,7 +88,7 @@ MessageRoutes.delete("/message/:messageId", (req, res, next) => {
         reqBody: { messageId: req.params.messageId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.send(results);
+        res.status(results.status).send(results.data);
     });
 });
 
