@@ -2,6 +2,9 @@ const express = require("express");
 const ContentRoutes = express.Router();
 var kafka = require("../kafka/client");
 const TOPIC = "content";
+// CREATE_QUESTION
+// FOLLOW_QUESTION
+// CREATE_ANSWER
 
 ContentRoutes.post("/content", (req, res, next) => {
     console.log(
@@ -39,6 +42,62 @@ ContentRoutes.get("/content/byUserId/:userId", (req, res, next) => {
     var reqMsg = {
         api: "get/content/byUserId/:userId",
         reqBody: { userId: req.params.userId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.send(results);
+    });
+});
+
+ContentRoutes.get("/content/byUserId/:userId/onlyAnswers", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/content/byUserId/:userId/onlyAnswers");
+    var reqMsg = {
+        api: "get/content/byUserId/:userId/onlyAnswers",
+        reqBody: { userId: req.params.userId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.send(results);
+    });
+});
+
+ContentRoutes.get("/content/byUserId/:userId/onlyQuestions", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/content/byUserId/:userId/onlyQuestions");
+    var reqMsg = {
+        api: "get/content/byUserId/:userId/onlyQuestions",
+        reqBody: { userId: req.params.userId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.send(results);
+    });
+});
+
+ContentRoutes.get("/content/byUserId/:userId/onlyFollowQuestions", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/content/byUserId/:userId/onlyFollowQuestions");
+    var reqMsg = {
+        api: "get/content/byUserId/:userId/onlyFollowQuestions",
+        reqBody: { userId: req.params.userId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.send(results);
+    });
+});
+
+ContentRoutes.get("/content/byUserId/:userId/year/:year", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/content/byUserId/:userId/year/:year");
+    var reqMsg = {
+        api: "get/content/byUserId/:userId/year/:year",
+        reqBody: { userId: req.params.userId, year: req.params.year }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.send(results);

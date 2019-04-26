@@ -63,10 +63,60 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
+        case "get/content/byUserId/:userId/onlyQuestions":
+            Content
+                .find({ userId: msg.reqBody.userId, contentType: "CREATE_QUESTION" })
+                .populate('contentId')
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "get/content/byUserId/:userId/onlyFollowQuestions":
+            Content
+                .find({ userId: msg.reqBody.userId, contentType: "FOLLOW_QUESTION" })
+                .populate('contentId')
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "get/content/byUserId/:userId/year/:year":
+            let gtYear = parseInt(msg.reqBody.year)
+            let ltYear = parseInt(msg.reqBody.year)+1
+            Content
+                .find({ 
+                    userId: msg.reqBody.userId, 
+                    timeStamp: {$gte:gtYear+"",$lt:ltYear+""} 
+                })
+                .populate('contentId')
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
         case "get/contents":
             Content
                 .find({})
-                .populate('contentId')
+                // .populate('contentId')
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);

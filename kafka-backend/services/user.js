@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Answer = require("../models/answer");
 const Question = require("../models/question");
+const Content = require("../models/content");
 const mysql = require("mysql");
 const pool = require("../config/mysqlConnection");
 
@@ -241,7 +242,27 @@ function handle_request(msg, callback) {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        myCallback(null, result, callback);
+                        Content
+                            .create({
+                                userId: msg.reqBody.userId,
+                                contentType: "FOLLOW_QUESTION",
+                                contentId: msg.reqBody.questionId,
+                                contentIdModel: "question"
+                            })
+                            .then((result1, err1) => {
+                                if (err1) {
+                                    myCallback(err1, null, callback);
+                                } else {
+                                    console.log(
+                                        "__________result1_________________\n",
+                                        result1
+                                    );
+                                    myCallback(null, result, callback);
+                                }
+                            })
+                            .catch(err1 => {
+                                myCallback(err1, null, callback);
+                            });
                     }
                 })
                 .catch(err => {

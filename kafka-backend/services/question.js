@@ -1,5 +1,6 @@
 const Question = require("../models/question");
 const User = require("../models/user");
+const Content = require("../models/content");
 
 myCallback = (err, result, callback) => {
     if (err) {
@@ -34,11 +35,31 @@ function handle_request(msg, callback) {
                                 if (err1) {
                                     myCallback(err1, null, callback);
                                 } else {
-                                    console.log(
-                                        "__________result1_________________\n",
-                                        result1
-                                    );
-                                    myCallback(null, result, callback);
+                                    Content
+                                        .create({
+                                            userId: msg.reqBody.questionOwner,
+                                            contentType: "CREATE_QUESTION",
+                                            contentId: result._id,
+                                            contentIdModel: "question"
+                                        })
+                                        .then((result2, err2) => {
+                                            if (err2) {
+                                                myCallback(err2, null, callback);
+                                            } else {
+                                                console.log(
+                                                    "__________result1_________________\n",
+                                                    result1
+                                                );
+                                                console.log(
+                                                    "__________result2_________________\n",
+                                                    result2
+                                                );
+                                                myCallback(null, result, callback);
+                                            }
+                                        })
+                                        .catch(err2 => {
+                                            myCallback(err2, null, callback);
+                                        });
                                 }
                             })
                             .catch(err1 => {
