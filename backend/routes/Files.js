@@ -1,3 +1,5 @@
+const CLOUD_URL = "http://52.9.137.32:5000";
+const Local_URL = "http://localhost:5000";
 const express = require("express");
 const multer = require("multer");
 const filesRoutes = express.Router();
@@ -14,6 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage
 }).single('file');
+var kafka = require("../kafka/client");
 const TOPIC = "user";
 
 
@@ -34,10 +37,10 @@ filesRoutes.put("/file/updateProfileImg", (req, res) => {
             });
         } else {
             let sourceUrl =
-                "../Backend/public/uploads/temp/" + req.file.filename;
+                "../backend/public/uploads/temp/" + req.file.filename;
             let destinationUrl =
-                "../Backend/public/uploads/profilePics/" + req.body.filename;
-            let dbUrl = "http://localhost:5000/uploads/profilePics/" + req.body.filename;
+                "../backend/public/uploads/profilePics/" + req.body.filename;
+            let dbUrl = CLOUD_URL+"/uploads/profilePics/" + req.body.filename;
             fsx.move(sourceUrl, destinationUrl,{ overwrite: true }, function(err) {
                 if (err) {
                     console.log(err);
