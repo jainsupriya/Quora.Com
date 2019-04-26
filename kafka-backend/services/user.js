@@ -361,6 +361,24 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
+        case "put/file/updateProfileImg":
+            User.findOneAndUpdate(
+                { _id: msg.reqBody.userId },
+                {profileImg: msg.reqBody.imgUrl},
+                { new: true }
+            )
+                // .findOneAndUpdate({ sqlUserId: msg.reqBody.userId }, msg.reqBody.body)
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
         case "delete/user/:userId":
             pool.getConnection(function(err, connection) {
                 if (err) {
