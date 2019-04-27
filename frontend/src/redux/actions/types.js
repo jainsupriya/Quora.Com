@@ -9,3 +9,6 @@ export const CLEAR_PROFILE = "CLEAR_PROFILE";
 export const GET_QUESTIONS = "GET_QUESTIONS";
 export const GET_QUESTION = "GET_QUESTION";
 export const GET_USER_DETAILS = "GET_USER_DETAILS";
+
+//CONTENT
+export const GET_CONTENTS = "GET_CONTENTS";
