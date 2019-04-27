@@ -3,7 +3,6 @@ const UserRoutes = express.Router();
 var kafka = require("../kafka/client");
 const TOPIC = "user";
 const redis = require('redis');
-const KEY = "key";
 const EXP_TIME = 40;
 
 // Create Redis Client
@@ -82,7 +81,7 @@ UserRoutes.get("/user/:userId", (req, res, next) => {
         "===================================================================================================================================================="
     );
     console.log("/get/user/:userId");
-    client.hget("get/user/"+req.params.userId, "key", function (err, reply) {
+    client.get("get/user/"+req.params.userId, function (err, reply) {
         if (err) {
             console.log(err);
             res.status(422).send(err);
@@ -97,8 +96,8 @@ UserRoutes.get("/user/:userId", (req, res, next) => {
                 };
                 kafka.make_request(TOPIC, reqMsg, function(err, results) {
                     res.status(results.status).send(results.data);
-                    client.hmset("get/user/"+req.params.userId,KEY ,JSON.stringify(results.data))
-                    client.expire("get/user/"+req.params.userId ,EXP_TIME)
+                    client.setex("get/user/"+req.params.userId,EXP_TIME ,JSON.stringify(results.data))
+                    // client.expire("get/user/"+req.params.userId ,EXP_TIME)
                 });
             }
         }

@@ -4,6 +4,7 @@ const Question = require("../models/question");
 const Content = require("../models/content");
 const mysql = require("mysql");
 const pool = require("../config/mysqlConnection");
+const Activity = require("../models/activity");
 
 myCallback = (err, result, callback) => {
     if (err) {
@@ -242,12 +243,11 @@ function handle_request(msg, callback) {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        Content
+                        Activity
                             .create({
                                 userId: msg.reqBody.userId,
-                                contentType: "FOLLOW_QUESTION",
-                                contentId: msg.reqBody.questionId,
-                                contentIdModel: "question"
+                                activityType: "FOLLOW_QUESTION",
+                                followedQuestion: msg.reqBody.questionId
                             })
                             .then((result1, err1) => {
                                 if (err1) {

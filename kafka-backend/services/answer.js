@@ -2,6 +2,7 @@ const Answer = require("../models/answer");
 const User = require("../models/user");
 const Question = require("../models/question");
 const Content = require("../models/content");
+const Activity = require("../models/activity");
 
 myCallback = (err, result, callback) => {
     if (err) {
@@ -55,12 +56,11 @@ function handle_request(msg, callback) {
                                                     callback
                                                 );
                                             } else {
-                                                Content.create(
+                                                Activity.create(
                                                     {
                                                         userId: msg.reqBody.answerOwner,
-                                                        contentType: "CREATE_ANSWER",
-                                                        contentId: result._id,
-                                                        contentIdModel: "answer"
+                                                        activityType: "CREATE_ANSWER",
+                                                        createdAnswer: result._id
                                                     }
                                                 )
                                                     // .updateOne({sqlUserId:msg.reqBody.answerOwner},{ $addToSet: { myAnswerList: result._id } })

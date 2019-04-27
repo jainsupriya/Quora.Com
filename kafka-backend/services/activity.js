@@ -51,8 +51,10 @@ function handle_request(msg, callback) {
         case "get/activity/byUserId/:userId":
             Activity
                 .find({ userId: msg.reqBody.userId })
-                .populate({path: 'createdQuestion',populate: {path: 'answerList', model: "answer"}, model: "question"})
-                .populate({path: 'followedQuestion',populate: {path: 'answerList', model: "answer"}, model: "question"})
+                // .populate({path: 'createdQuestion',populate: {path: 'answerList', model: "answer"}, model: "question"})
+                .populate({path: 'createdQuestion', model: "question"})
+                // .populate({path: 'followedQuestion',populate: {path: 'answerList', model: "answer"}, model: "question"})
+                .populate({path: 'followedQuestion', model: "question"})
                 .populate({path: 'createdAnswer',populate: {path: 'questionId', model: "question"}, model: "answer"})
                 // .populate({path: 'createdAnswer',populate: {path: 'questionId', model: "question"},populate: {path: 'commentList', model: "comment"}, model: "answer"})
                 .then((result, err) => {

@@ -1,6 +1,7 @@
 const Question = require("../models/question");
 const User = require("../models/user");
 const Content = require("../models/content");
+const Activity = require("../models/activity");
 
 myCallback = (err, result, callback) => {
     if (err) {
@@ -35,12 +36,11 @@ function handle_request(msg, callback) {
                                 if (err1) {
                                     myCallback(err1, null, callback);
                                 } else {
-                                    Content
+                                    Activity
                                         .create({
                                             userId: msg.reqBody.questionOwner,
-                                            contentType: "CREATE_QUESTION",
-                                            contentId: result._id,
-                                            contentIdModel: "question"
+                                            activityType: "CREATE_QUESTION",
+                                            createdQuestion: result._id
                                         })
                                         .then((result2, err2) => {
                                             if (err2) {
