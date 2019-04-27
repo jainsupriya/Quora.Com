@@ -2,6 +2,14 @@ const express = require("express");
 const UserRoutes = express.Router();
 var kafka = require("../kafka/client");
 const TOPIC = "user";
+const redis = require('redis');
+
+// Create Redis Client
+let client = redis.createClient();
+
+client.on('connect', function(){
+  console.log('Connected to Redis...');
+});
 
 // fname
 // lname
@@ -71,13 +79,29 @@ UserRoutes.get("/user/:userId", (req, res, next) => {
         "===================================================================================================================================================="
     );
     console.log("/get/user/:userId");
-    var reqMsg = {
-        api: "get/user/:userId",
-        reqBody: { userId: req.params.userId }
-    };
-    kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.status(results.status).send(results.data);
+    client.hget("get/user/"+req.params.userId, "key", function (err, reply) {
+        if (err) {
+            console.log(err);
+            res.status(422).send(err);
+        }else{
+            if (reply) {
+                res.status(200).send(JSON.parse(reply));
+            }
+            else{
+                var reqMsg = {
+                    api: "get/user/:userId",
+                    reqBody: { userId: req.params.userId }
+                };
+                kafka.make_request(TOPIC, reqMsg, function(err, results) {
+                    client.hmset("get/user/"+req.params.userId,"key" ,JSON.stringify(results.data))
+                    client.expire("get/user/"+req.params.userId ,30)
+                    res.status(results.status).send(results.data);
+                });
+            }
+        }
+
     });
+    
 });
 
 // search user by username

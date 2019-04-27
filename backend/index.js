@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const redis = require('redis');
 // require('./config/db');
 
 //use cors to allow cross origin resource sharing
@@ -38,6 +39,12 @@ app.use(function(req, res, next) {
     next();
 });
 
+// Create Redis Client
+// let client = redis.createClient();
+
+// client.on('connect', function(){
+//   console.log('Connected to Redis...');
+// });
 
 // include all routes
 app.use(require("./routes/Answers"));
