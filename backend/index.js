@@ -54,8 +54,9 @@ app.use(require("./routes/Messages"));
 app.use(require("./routes/Questions"));
 app.use(require("./routes/Topics"));
 app.use(require("./routes/Users"));
-app.use(require("./routes/Content"));
 app.use(require("./routes/Files"));
+app.use(require("./routes/Content"));
+app.use(require("./routes/Activity"));
 // app.use(passport.authenticate('jwt', {session: false}), userRoutes);
 
 // error handling middleware

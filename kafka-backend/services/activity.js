@@ -1,4 +1,4 @@
-const Content = require("../models/content");
+const Activity = require("../models/activity");
 
 myCallback = (err, result, callback) => {
     if (err) {
@@ -20,8 +20,8 @@ myCallback = (err, result, callback) => {
 
 function handle_request(msg, callback) {
     switch (msg.api) {
-        case "post/content":
-            Content.create(msg.reqBody)
+        case "post/activity":
+            Activity.create(msg.reqBody)
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -33,10 +33,10 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "get/content/:contentId":
-            Content
-                .find({ _id: msg.reqBody.contentId })
-                .populate('contentId')
+        case "get/activity/:activityId":
+            Activity
+                .find({ _id: msg.reqBody.activityId })
+                .populate('activityId')
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -48,30 +48,13 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "get/content/byUserId/:userId":
-            Content
+        case "get/activity/byUserId/:userId":
+            Activity
                 .find({ userId: msg.reqBody.userId })
-                .populate('contentId')
-                // .populate('userId')
-                // .populate({
-                //     path:'contentId',
-                //     populate: {
-                //         path: 'contentId.answerList',
-                //         model: 'answer'
-                //     },
-                //     // populate: {
-                //     //     path: 'commentList',
-                //     //     model: 'comment'
-                //     // } 
-                // })
-                .populate({
-                    path:'contentId.commentList',
-                    model: 'comment'
-                })
-                // .populate({
-                //     path:'contentId.answerList',
-                //     model: 'answer'
-                // })
+                .populate({path: 'createdQuestion',populate: {path: 'answerList', model: "answer"}, model: "question"})
+                .populate({path: 'followedQuestion',populate: {path: 'answerList', model: "answer"}, model: "question"})
+                .populate({path: 'createdAnswer',populate: {path: 'questionId', model: "question"}, model: "answer"})
+                // .populate({path: 'createdAnswer',populate: {path: 'questionId', model: "question"},populate: {path: 'commentList', model: "comment"}, model: "answer"})
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -83,10 +66,10 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "get/content/byUserId/:userId/onlyQuestions":
-            Content
-                .find({ userId: msg.reqBody.userId, contentType: "CREATE_QUESTION" })
-                .populate('contentId')
+        case "get/activity/byUserId/:userId/onlyQuestions":
+            Activity
+                .find({ userId: msg.reqBody.userId, activityType: "CREATE_QUESTION" })
+                .populate('activityId')
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -98,10 +81,10 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "get/content/byUserId/:userId/onlyFollowQuestions":
-            Content
-                .find({ userId: msg.reqBody.userId, contentType: "FOLLOW_QUESTION" })
-                .populate('contentId')
+        case "get/activity/byUserId/:userId/onlyFollowQuestions":
+            Activity
+                .find({ userId: msg.reqBody.userId, activityType: "FOLLOW_QUESTION" })
+                .populate('activityId')
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -113,15 +96,15 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "get/content/byUserId/:userId/year/:year":
+        case "get/activity/byUserId/:userId/year/:year":
             let gtYear = parseInt(msg.reqBody.year)
             let ltYear = parseInt(msg.reqBody.year)+1
-            Content
+            Activity
                 .find({ 
                     userId: msg.reqBody.userId, 
                     timeStamp: {$gte:gtYear+"",$lt:ltYear+""} 
                 })
-                .populate('contentId')
+                .populate('activityId')
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -133,10 +116,10 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "get/contents":
-            Content
+        case "get/activitys":
+            Activity
                 .find({})
-                // .populate('contentId')
+                // .populate('activityId')
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -148,9 +131,9 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "put/content/:contentId":
-            Content.findOneAndUpdate(
-                { _id: msg.reqBody.contentId },
+        case "put/activity/:activityId":
+            Activity.findOneAndUpdate(
+                { _id: msg.reqBody.activityId },
                 msg.reqBody.body
             )
                 .then((result, err) => {
@@ -164,8 +147,8 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "delete/content/:contentId":
-            Content.remove({ _id: msg.reqBody.contentId })
+        case "delete/activity/:activityId":
+            Activity.remove({ _id: msg.reqBody.activityId })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
