@@ -4,25 +4,21 @@ const Schema = mongoose.Schema;
 const AnswerSchema = new Schema({
     answer: {
         type: String,
-        required: [true, "First Name is required"]
+        // required: [true, "First Name is required"]
     },
-    // answerOwner: {
-    //     type: String
-    // },
-    questionId: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "question",
-            required: [true, "First Name is required"]
-
-        }
-    ],
-    answerOwner: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
-        }
-    ],
+    answerWithGridQuill: {
+        type: Buffer,
+        // required: [true, "First Name is required"]
+    },
+    questionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "question",
+        required: [true, "Question ID is required"]
+    },
+    answerOwner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    },
     imageList: [
         {
             type: String
@@ -50,20 +46,6 @@ const AnswerSchema = new Schema({
         type: Number,
         default: 0
     },
-    // downVotes: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "user"
-    //     }
-    // ],
-    // upVotes: {
-    //     type: Number,
-    //     default: 0
-    // },
-    // downVotes: {
-    //     type: Number,
-    //     default: 0
-    // },
     commentList: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -2,25 +2,21 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ContentSchema = new Schema({
-    userId: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user'
-        }
-    ],
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    },
     contentType: {
         type: String,
         required: [true, "Content Type is required"]
     },
-    contentId: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            refPath: "contentIdModel"
-        }
-    ],
+    contentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: "contentIdModel"
+    },
     contentIdModel: {
         type: String,
-        required: true,
+        required: true
     },
     timeStamp: {
         type: Date,

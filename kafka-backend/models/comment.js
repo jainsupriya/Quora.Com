@@ -6,23 +6,15 @@ const CommentSchema = new Schema({
         type: String,
         required: [true, "comment is required"]
     },
-    answerId: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "answer",
+    answerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "answer",
         required: [true, "Answer Id is required"]
-        }
-    ],
-    // commentOwner: {
-    //     type: String,
-    //     required: [true, "Comment Owner is required"]
-    // },
-    commentOwner: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
-        }
-    ],
+    },
+    commentOwner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    },
     postedTime: {
         type: Date,
         default: Date.now()

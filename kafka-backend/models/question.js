@@ -6,26 +6,16 @@ const QuestionSchema = new Schema({
         type: String,
         required: [true, "Question is required"]
     },
-    // questionOwner: {
-    //     type: String,
-    //     required: [true, "User is required"]
-    // },
-    questionOwner: [
+    questionOwner: 
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
         }
-    ],
+    ,
     topicList: {
         type: String,
         required: [true, "Topic List String is required"]
     },
-    // topicList: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: Topic
-    //     }
-    // ],
     followersUserList: [
         {
             type: mongoose.Schema.Types.ObjectId,

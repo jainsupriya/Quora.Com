@@ -52,6 +52,7 @@ function handle_request(msg, callback) {
             Content
                 .find({ userId: msg.reqBody.userId })
                 .populate('contentId')
+                .populate('userId')
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);

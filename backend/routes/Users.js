@@ -3,6 +3,8 @@ const UserRoutes = express.Router();
 var kafka = require("../kafka/client");
 const TOPIC = "user";
 const redis = require('redis');
+const KEY = "key";
+const EXP_TIME = 40;
 
 // Create Redis Client
 let client = redis.createClient();
@@ -10,6 +12,7 @@ let client = redis.createClient();
 client.on('connect', function(){
   console.log('Connected to Redis...');
 });
+
 
 // fname
 // lname
@@ -93,9 +96,9 @@ UserRoutes.get("/user/:userId", (req, res, next) => {
                     reqBody: { userId: req.params.userId }
                 };
                 kafka.make_request(TOPIC, reqMsg, function(err, results) {
-                    client.hmset("get/user/"+req.params.userId,"key" ,JSON.stringify(results.data))
-                    client.expire("get/user/"+req.params.userId ,30)
                     res.status(results.status).send(results.data);
+                    client.hmset("get/user/"+req.params.userId,KEY ,JSON.stringify(results.data))
+                    client.expire("get/user/"+req.params.userId ,EXP_TIME)
                 });
             }
         }
