@@ -15,7 +15,8 @@ import Home from "./homeComponents/Home";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import { getContentDetails } from "../../redux/actions/contentAction";
-import { getUserDetails } from "../../redux/actions/homeAction";
+import { getUserDetails, } from "../../redux/actions/homeAction";
+import _ from 'lodash';
 
 const styles = theme => ({});
 
@@ -28,6 +29,7 @@ class Content extends Component {
       header: "Your Content",
       selectedYear: "All Time",
       sortOrder: "Oldest First",
+      topic: '',
       userDetails: {},
       contentDetails: []
     };
@@ -35,6 +37,7 @@ class Content extends Component {
 
   componentDidMount = () => {
     this.props.getContentDetails("5cbe44ad5445656fa98b6f7d");
+    this.abc("a")
   };
 
   handleTypeChange = type => {
@@ -58,6 +61,7 @@ class Content extends Component {
         header = "Your Answers";
         break;
     }
+
     this.setState({
       type: type,
       header: header
@@ -75,12 +79,44 @@ class Content extends Component {
       sortOrder: order
     });
   };
+  handleTopic = (e) => {
+    console.log("In");
+    this.setState({
+      topic : e.target.value
+    })
+    // this.updateContent()
+    this.abc("a");
+    this.updateContent()
+  }
+
+  abc = (a) => {
+    console.log("called", this)
+  }
+
+  updateContent = () => {
+    console.log("In2",this);
+    let contentDetails = this.props.contentDetails.contents;
+    const type = this.state.type;
+    const year = this.state.year;
+    const topic = this.state.topic;
+    var tempDetails = _.filter(contentDetails, 
+      function(item){
+        if(item.activityType == "CREATE_QUESTION" && item.timeStamp.slice(0,4) == 2019)
+        {
+            if(item.createdQuestion.topicList.includes(topic))
+            {
+              return item;
+            }
+        }
+      })
+      console.log(tempDetails);
+  }
 
   showInfo = type => {
     console.log(type);
     let resultValue = "";
     switch (type) {
-      case "Create a Answer":
+      case "CREATE_ANSWER":
         resultValue = "Answered";
         break;
 
@@ -96,6 +132,7 @@ class Content extends Component {
     const { classes } = this.props;
 
     const contentDetails = this.props.contentDetails.contents;
+    console.log(contentDetails);
 
     return (
       <div>
@@ -147,12 +184,14 @@ class Content extends Component {
                   {/* By Topic */}
                   <div style={{ padding: "20% 4% 8%" }}>By Topic</div>
                   <Divider />
-                  <div style={{ padding: "5% 0" }}>All Topics</div>
+                  <div style={{ padding: "5% 4%" }}>All Topics</div>
                   <input
                     className="regular-search secondaryText"
                     placeholder="Search for a topic"
                     autoFocus="True"
                     type="text"
+                    value={this.topic}
+                    onChange={this.handleTopic}
                   />
 
                   <div style={{ padding: "20% 4% 8%" }}>By Year</div>
@@ -207,10 +246,10 @@ class Content extends Component {
                 <Divider />
 
                 <div
-                  style={{
-                    display:
-                      this.state.header === "Your Content" ? "block" : "none"
-                  }}
+                  // style={{
+                  //   display:
+                  //     this.state.header === "Your Content" ? "block" : "none"
+                  // }}
                 >
                   {Object.keys(contentDetails).map(index => {
                     return (
@@ -218,14 +257,15 @@ class Content extends Component {
                         <div style={{ padding: "2% 0" }}>
                           <div className="questionNav">
                             <a>
-                              {contentDetails[index].contentId[0].questionId}
+                              {}
+                              {/* {contentDetails[index].contentId[0].questionId} */}
                             </a>
                           </div>
                           <div
                             className="secondaryText"
                             style={{ padding: "1% 0 0" }}
                           >
-                            {this.showInfo(contentDetails[index].contentType)}{" "}
+                            {this.showInfo(contentDetails[index].activityType)}{" "}
                             {contentDetails[index].timeStamp.slice(0, 10)}
                           </div>
                         </div>
@@ -235,7 +275,7 @@ class Content extends Component {
                   })}
                 </div>
 
-                <div
+                {/* <div
                   style={{
                     display:
                       this.state.header === "Your Questions" ? "block" : "none"
@@ -334,7 +374,7 @@ class Content extends Component {
                       );
                     }
                   })}
-                </div>
+                </div> */}
               </Grid>
 
               <Grid item xs={2} className="fix-pos" />
