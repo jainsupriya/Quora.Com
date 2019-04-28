@@ -15,11 +15,11 @@ export const getUserDetails = userId => dispatch => {
         payload: res.data.data[0]
       })
     )
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.data
-      })
+    .catch(err =>{}
+      // dispatch({
+      //   type: GET_ERRORS,
+      //   payload: err.data
+      // })
     );
 };
 export const getQuestions = topic => dispatch => {
