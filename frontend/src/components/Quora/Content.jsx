@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import {
-  Route,
-  BrowserRouter,
-  Switch,
-  Link,
-  withRouter
+    Route,
+    BrowserRouter,
+    Switch,
+    Link,
+    withRouter
 } from "react-router-dom";
 import { Provider, connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -15,267 +15,396 @@ import Home from "./homeComponents/Home";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import { getContentDetails } from "../../redux/actions/contentAction";
-import { getUserDetails, } from "../../redux/actions/homeAction";
-import _ from 'lodash';
+import { getUserDetails } from "../../redux/actions/homeAction";
+import _ from "lodash";
 
 const styles = theme => ({});
 
 //Create a Main Component
 class Content extends Component {
-  constructor() {
-    super();
-    this.state = {
-      type: "All Types",
-      header: "Your Content",
-      selectedYear: "All Time",
-      sortOrder: "Oldest First",
-      topic: '',
-      userDetails: {},
-      contentDetails: []
+    constructor() {
+        super();
+        this.state = {
+            type: "All Types",
+            header: "Your Content",
+            selectedYear: "All Time",
+            sortOrder: "Oldest First",
+            topic: "",
+            userDetails: {},
+            contentDetails: []
+        };
+    }
+
+    componentDidMount = () => {
+        this.props.getContentDetails("5cbe44ad5445656fa98b6f7d");
     };
-  }
 
-  componentDidMount = () => {
-    this.props.getContentDetails("5cbe44ad5445656fa98b6f7d");
-    this.abc("a")
-  };
+    handleTypeChange = type => {
+        console.log("Hello", type);
+        var header = "";
+        var typeInRes = "";
+        switch (type) {
+            case "All Types":
+                header = "Your Content";
+                typeInRes = "ALL_TYPES";
 
-  handleTypeChange = type => {
-    console.log("Hello", type);
-    var header = "";
-    switch (type) {
-      case "All Types":
-        header = "Your Content";
+                break;
 
-        break;
+            case "Questions Asked":
+                header = "Your Questions";
+                typeInRes = "CREATE_QUESTION";
+                break;
 
-      case "Questions Asked":
-        header = "Your Questions";
-        break;
+            case "Questions Followed":
+                header = "Your Followed Questions";
+                typeInRes = "FOLLOWED_QUESTION";
+                break;
 
-      case "Questions Followed":
-        header = "Your Followed Questions";
-        break;
-
-      case "Answers":
-        header = "Your Answers";
-        break;
-    }
-
-    this.setState({
-      type: type,
-      header: header
-    });
-  };
-
-  handleYearChange = year => {
-    this.setState({
-      selectedYear: year
-    });
-  };
-
-  handleOrderChange = order => {
-    this.setState({
-      sortOrder: order
-    });
-  };
-  handleTopic = (e) => {
-    console.log("In");
-    this.setState({
-      topic : e.target.value
-    })
-    // this.updateContent()
-    this.abc("a");
-    this.updateContent()
-  }
-
-  abc = (a) => {
-    console.log("called", this)
-  }
-
-  updateContent = () => {
-    console.log("In2",this);
-    let contentDetails = this.props.contentDetails.contents;
-    const type = this.state.type;
-    const year = this.state.year;
-    const topic = this.state.topic;
-    var tempDetails = _.filter(contentDetails, 
-      function(item){
-        if(item.activityType == "CREATE_QUESTION" && item.timeStamp.slice(0,4) == 2019)
-        {
-            if(item.createdQuestion.topicList.includes(topic))
-            {
-              return item;
-            }
+            case "Answers":
+                header = "Your Answers";
+                typeInRes = "CREATE_ANSWER";
+                break;
         }
-      })
-      console.log(tempDetails);
-  }
 
-  showInfo = type => {
-    console.log(type);
-    let resultValue = "";
-    switch (type) {
-      case "CREATE_ANSWER":
-        resultValue = "Answered";
-        break;
+        this.setState(
+            {
+                type: typeInRes,
+                header: header
+            },
+            () => this.updateContent()
+        );
+    };
 
-      case "CREATE_QUESTION":
-        resultValue = "Asked";
-        break;
-    }
+    handleYearChange = year => {
+        this.setState(
+            {
+                selectedYear: year
+            },
+            () => this.updateContent()
+        );
+    };
 
-    return <span>{resultValue}</span>;
-  };
+    handleOrderChange = order => {
+        this.setState(
+            {
+                sortOrder: order
+            },
+            () => this.updateContent()
+        );
+    };
+    handleTopic = e => {
+        console.log("In");
+        this.setState(
+            {
+                topic: e.target.value
+            },
+            () => this.updateContent()
+        );
+    };
 
-  render() {
-    const { classes } = this.props;
+    updateContent = () => {
+        console.log("In2", this);
+        let contentDetails = this.props.contentDetails.contents;
+        const type = this.state.type;
+        const year = this.state.selectedYear;
+        const topic = this.state.topic;
+        var tempDetails = _.filter(contentDetails, function(item) {
+          console.log(type)
+          console.log(year)
+          console.log(topic)
+            if (type == "ALL_TYPES") {
+                if (year == "All Time") {
+                    if (topic == "") {
+                      console.log("item")
+                      console.log(item)
+                        return item;
+                    } else {
+                        if (
+                            item.activityType === "CREATE_QUESTION" &&
+                            item.createdQuestion.topicList.includes(topic)
+                        ) {
+                            return item;
+                        } else if (
+                            item.activityType === "FOLLOWED_QUESTION" &&
+                            item.followedQuestion.topicList.includes(topic)
+                        ) {
+                            return item;
+                        } else if (
+                            item.activityType === "CREATE_ANSWER" &&
+                            item.createdAnswer.questionId.topicList.includes(topic)
+                        ) {
+                            return item;
+                        }
+                    }
+                } else {
+                    if (topic == "" && item.timeStamp.slice(0, 4) == year) {
+                        return item;
+                    } else {
+                        if (
+                            item.activityType === "CREATE_QUESTION" &&
+                            item.createdQuestion.topicList.includes(topic) &&
+                            item.timeStamp.slice(0, 4) == year
+                        ) {
+                            return item;
+                        } else if (
+                            item.activityType === "FOLLOWED_QUESTION" &&
+                            item.followedQuestion.topicList.includes(topic) &&
+                            item.timeStamp.slice(0, 4) == year
+                        ) {
+                            return item;
+                        } else if (
+                            item.activityType === "CREATE_ANSWER" &&
+                            item.createdAnswer.questionId.topicList.includes(topic) &&
+                            item.timeStamp.slice(0, 4) == year
+                        ) {
+                            return item;
+                        }
+                    }
+                }
+            } else {
+            }
+            // if (
+            //     item.activityType == type &&
+            //     item.timeStamp.slice(0, 4) == year
+            // ) {
+            //     if (item.createdQuestion.topicList.includes(topic)) {
+            //         return item;
+            //     }
+            // }
+        });
+        console.log(tempDetails);
+    };
 
-    const contentDetails = this.props.contentDetails.contents;
-    console.log(contentDetails);
+    showInfo = type => {
+        console.log(type);
+        let resultValue = "";
+        switch (type) {
+            case "CREATE_ANSWER":
+                resultValue = "Answered";
+                break;
 
-    return (
-      <div>
-        <AppBar className="m-bg-color" position="sticky">
-          <NavHeader />
-        </AppBar>
+            case "CREATE_QUESTION":
+                resultValue = "Asked";
+                break;
+        }
 
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="flex-start"
-        >
-          <Grid item xs={2} />
-          <Grid item xs={8}>
-            <Grid
-              container
-              direction="row"
-              justify="space-between"
-              alignItems="flex-start"
-            >
-              <Grid item xs={2} className="fix-pos">
-                <div style={{ position: "relative", width: "90%" }}>
-                  <div style={{ padding: "0 4% 8%" }}>By Content Type</div>
-                  <Divider />
-                  <div style={{ padding: "8% 0" }}>
-                    {[
-                      "All Types",
-                      "Questions Asked",
-                      "Questions Followed",
-                      "Answers"
-                    ].map(type => {
-                      return (
-                        <div
-                          style={{
-                            padding: "1% 4%",
-                            backgroundColor:
-                              this.state.type === type ? "#e6e6e6" : "#fff"
-                          }}
-                        >
-                          <a onClick={() => this.handleTypeChange(type)}>
-                            {type}
-                          </a>
-                        </div>
-                      );
-                    })}
-                  </div>
+        return <span>{resultValue}</span>;
+    };
 
-                  {/* By Topic */}
-                  <div style={{ padding: "20% 4% 8%" }}>By Topic</div>
-                  <Divider />
-                  <div style={{ padding: "5% 4%" }}>All Topics</div>
-                  <input
-                    className="regular-search secondaryText"
-                    placeholder="Search for a topic"
-                    autoFocus="True"
-                    type="text"
-                    value={this.topic}
-                    onChange={this.handleTopic}
-                  />
+    render() {
+        const { classes } = this.props;
 
-                  <div style={{ padding: "20% 4% 8%" }}>By Year</div>
-                  <Divider />
-                  <div style={{ padding: "8% 0" }}>
-                    {["All Time", "2019", "2018", "2017"].map(year => {
-                      return (
-                        <div
-                          style={{
-                            padding: "1% 4%",
-                            backgroundColor:
-                              this.state.selectedYear === year
-                                ? "#e6e6e6"
-                                : "#fff"
-                          }}
-                        >
-                          <a onClick={() => this.handleYearChange(year)}>
-                            {year}
-                          </a>
-                        </div>
-                      );
-                    })}
-                  </div>
+        const contentDetails = this.props.contentDetails.contents;
+        console.log(contentDetails);
 
-                  <div style={{ padding: "20% 4% 8%" }}>Sort Order</div>
-                  <Divider />
-                  <div style={{ padding: "8% 0" }}>
-                    {["Newest First", "Oldest First"].map(order => {
-                      return (
-                        <div
-                          style={{
-                            padding: "1% 4%",
-                            backgroundColor:
-                              this.state.sortOrder === order
-                                ? "#e6e6e6"
-                                : "#fff"
-                          }}
-                        >
-                          <a onClick={() => this.handleOrderChange(order)}>
-                            {order}
-                          </a>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </Grid>
-              <Grid item xs={8} className="m-padding-left-right-15">
-                <div>
-                  <div style={{ padding: "0 0 2%" }}>{this.state.header}</div>
-                </div>
-                <Divider />
+        return (
+            <div>
+                <AppBar className="m-bg-color" position="sticky">
+                    <NavHeader />
+                </AppBar>
 
-                <div
-                  // style={{
-                  //   display:
-                  //     this.state.header === "Your Content" ? "block" : "none"
-                  // }}
+                <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="flex-start"
                 >
-                  {Object.keys(contentDetails).map(index => {
-                    return (
-                      <div>
-                        <div style={{ padding: "2% 0" }}>
-                          <div className="questionNav">
-                            <a>
-                              {}
-                              {/* {contentDetails[index].contentId[0].questionId} */}
-                            </a>
-                          </div>
-                          <div
-                            className="secondaryText"
-                            style={{ padding: "1% 0 0" }}
-                          >
-                            {this.showInfo(contentDetails[index].activityType)}{" "}
-                            {contentDetails[index].timeStamp.slice(0, 10)}
-                          </div>
-                        </div>
-                        <Divider />
-                      </div>
-                    );
-                  })}
-                </div>
+                    <Grid item xs={2} />
+                    <Grid item xs={8}>
+                        <Grid
+                            container
+                            direction="row"
+                            justify="space-between"
+                            alignItems="flex-start"
+                        >
+                            <Grid item xs={2} className="fix-pos">
+                                <div
+                                    style={{
+                                        position: "relative",
+                                        width: "90%"
+                                    }}
+                                >
+                                    <div style={{ padding: "0 4% 8%" }}>
+                                        By Content Type
+                                    </div>
+                                    <Divider />
+                                    <div style={{ padding: "8% 0" }}>
+                                        {[
+                                            "All Types",
+                                            "Questions Asked",
+                                            "Questions Followed",
+                                            "Answers"
+                                        ].map(type => {
+                                            return (
+                                                <div
+                                                    style={{
+                                                        padding: "1% 4%",
+                                                        backgroundColor:
+                                                            this.state.type ===
+                                                            type
+                                                                ? "#e6e6e6"
+                                                                : "#fff"
+                                                    }}
+                                                >
+                                                    <a
+                                                        onClick={() =>
+                                                            this.handleTypeChange(
+                                                                type
+                                                            )
+                                                        }
+                                                    >
+                                                        {type}
+                                                    </a>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
 
-                {/* <div
+                                    {/* By Topic */}
+                                    <div style={{ padding: "20% 4% 8%" }}>
+                                        By Topic
+                                    </div>
+                                    <Divider />
+                                    <div style={{ padding: "5% 4%" }}>
+                                        All Topics
+                                    </div>
+                                    <input
+                                        className="regular-search secondaryText"
+                                        placeholder="Search for a topic"
+                                        autoFocus="True"
+                                        type="text"
+                                        value={this.topic}
+                                        onChange={this.handleTopic}
+                                    />
+
+                                    <div style={{ padding: "20% 4% 8%" }}>
+                                        By Year
+                                    </div>
+                                    <Divider />
+                                    <div style={{ padding: "8% 0" }}>
+                                        {[
+                                            "All Time",
+                                            "2019",
+                                            "2018",
+                                            "2017"
+                                        ].map(year => {
+                                            return (
+                                                <div
+                                                    style={{
+                                                        padding: "1% 4%",
+                                                        backgroundColor:
+                                                            this.state
+                                                                .selectedYear ===
+                                                            year
+                                                                ? "#e6e6e6"
+                                                                : "#fff"
+                                                    }}
+                                                >
+                                                    <a
+                                                        onClick={() =>
+                                                            this.handleYearChange(
+                                                                year
+                                                            )
+                                                        }
+                                                    >
+                                                        {year}
+                                                    </a>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div style={{ padding: "20% 4% 8%" }}>
+                                        Sort Order
+                                    </div>
+                                    <Divider />
+                                    <div style={{ padding: "8% 0" }}>
+                                        {["Newest First", "Oldest First"].map(
+                                            order => {
+                                                return (
+                                                    <div
+                                                        style={{
+                                                            padding: "1% 4%",
+                                                            backgroundColor:
+                                                                this.state
+                                                                    .sortOrder ===
+                                                                order
+                                                                    ? "#e6e6e6"
+                                                                    : "#fff"
+                                                        }}
+                                                    >
+                                                        <a
+                                                            onClick={() =>
+                                                                this.handleOrderChange(
+                                                                    order
+                                                                )
+                                                            }
+                                                        >
+                                                            {order}
+                                                        </a>
+                                                    </div>
+                                                );
+                                            }
+                                        )}
+                                    </div>
+                                </div>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={8}
+                                className="m-padding-left-right-15"
+                            >
+                                <div>
+                                    <div style={{ padding: "0 0 2%" }}>
+                                        {this.state.header}
+                                    </div>
+                                </div>
+                                <Divider />
+
+                                <div
+                                // style={{
+                                //   display:
+                                //     this.state.header === "Your Content" ? "block" : "none"
+                                // }}
+                                >
+                                    {Object.keys(contentDetails).map(index => {
+                                        return (
+                                            <div>
+                                                <div
+                                                    style={{ padding: "2% 0" }}
+                                                >
+                                                    <div className="questionNav">
+                                                        <a>
+                                                            {}
+                                                            {/* {contentDetails[index].contentId[0].questionId} */}
+                                                        </a>
+                                                    </div>
+                                                    <div
+                                                        className="secondaryText"
+                                                        style={{
+                                                            padding: "1% 0 0"
+                                                        }}
+                                                    >
+                                                        {this.showInfo(
+                                                            contentDetails[
+                                                                index
+                                                            ].activityType
+                                                        )}{" "}
+                                                        {contentDetails[
+                                                            index
+                                                        ].timeStamp.slice(
+                                                            0,
+                                                            10
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <Divider />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* <div
                   style={{
                     display:
                       this.state.header === "Your Questions" ? "block" : "none"
@@ -375,31 +504,31 @@ class Content extends Component {
                     }
                   })}
                 </div> */}
-              </Grid>
+                            </Grid>
 
-              <Grid item xs={2} className="fix-pos" />
-            </Grid>
-          </Grid>
-          <Grid item xs={2} />
-        </Grid>
-      </div>
-    );
-  }
+                            <Grid item xs={2} className="fix-pos" />
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={2} />
+                </Grid>
+            </div>
+        );
+    }
 }
 
 Content.propTypes = {
-  classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  // auth: state.auth,
-  // userState: state.userState,
-  // errors: state.errors,
-  // userDetails: state.homeState.userDetails,
-  contentDetails: state.contents
+    // auth: state.auth,
+    // userState: state.userState,
+    // errors: state.errors,
+    // userDetails: state.homeState.userDetails,
+    contentDetails: state.contents
 });
 
 export default connect(
-  mapStateToProps,
-  { getContentDetails }
+    mapStateToProps,
+    { getContentDetails }
 )(withStyles(styles)(withRouter(Content)));
