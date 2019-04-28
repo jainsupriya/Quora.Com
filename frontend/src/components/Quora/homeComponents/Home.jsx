@@ -48,7 +48,7 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.getQuestions(this.state.topic);
     //this.props.getUserDetails(this.props.auth.user._id); //TODO
-    this.props.getUserDetails("5cbe44ad5445656fa98b6f7d");
+    this.props.getUserDetails("5cbe44d25445656fa98b6f7f");
   }
 
   handleTopicClick = newTopic => {
@@ -57,8 +57,8 @@ class Home extends React.Component {
 
   render() {
     //let temp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-    let userTopicList = this.props.userDetails.interestedTopicList;
-    let QuestionComp;
+    var userTopicList = this.props.userDetails.interestedTopicList;
+    var QuestionComp;
     if (this.props.questions && this.props.questions.length) {
       QuestionComp = this.props.questions.map(question => {
         return <QuestionCard question={question} />;
@@ -95,14 +95,18 @@ class Home extends React.Component {
             >
               <Grid item xs={2} className="fix-pos">
                 <div style={{ position: "fixed", width: "11%" }}>
-                  {userTopicList.map(topic => {
-                    return (
-                      <Feed
-                        topic={topic}
-                        handleTopicClick={() => this.handleTopicClick(topic)}
-                      />
-                    );
-                  })}
+                  {userTopicList !== undefined
+                    ? userTopicList.map(topic => {
+                        return (
+                          <Feed
+                            topic={topic}
+                            handleTopicClick={() =>
+                              this.handleTopicClick(topic)
+                            }
+                          />
+                        );
+                      })
+                    : ""}
                 </div>
               </Grid>
               <Grid item xs={8} className="m-padding-left-right-15">
