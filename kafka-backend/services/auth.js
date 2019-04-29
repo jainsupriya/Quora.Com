@@ -134,7 +134,7 @@ findLoginUser = (rows,callback) => {
             if (err) {
                 myCallback(err, null, callback);
             } else {
-                var payload = { id: rows[0].id, email: rows[0].email };
+                var payload = { id: rows[0].id, email: rows[0].email, _id:result._id };
                 var token = jwt.sign(payload, "secret_is_secret");
                 let resData = {
                     // status: 200,
@@ -167,7 +167,7 @@ sendTokenCreateMongo = (rows,callback) => {
             if (err) {
                 myCallback(err, null, callback);                
             } else {
-                var payload = { id: rows[0].id, email: rows[0].email };
+                var payload = { id: rows[0].id, email: rows[0].email, _id:result._id };
                 var token = jwt.sign(payload, "secret_is_secret");
                 let resData = {
                     // status: 200,
