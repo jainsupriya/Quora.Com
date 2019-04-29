@@ -16,7 +16,7 @@ import TextField from "@material-ui/core/TextField";
 import SimpleReactValidator from "simple-react-validator";
 import { withRouter } from "react-router-dom";
 import classnames from "classnames";
-//import "./SignUp.css";
+import "./SignUp.css";
 
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -77,6 +77,7 @@ export class SignUp extends Component {
     this.state = {
       fname: "",
       lname: "",
+      username: "",
       email: "",
       password: "",
       password2: "",
@@ -109,6 +110,7 @@ export class SignUp extends Component {
       const user = {
         fname: this.state.fname,
         lname: this.state.lname,
+        username: this.state.username,
         email: this.state.email,
         password: this.state.password,
         password2: this.state.password2
@@ -133,7 +135,7 @@ export class SignUp extends Component {
     const { errors } = this.props;
 
     return (
-      <div className="content">
+      <div className="signup-content">
         <div className="bg_container">
           <div className="bg_image" />
         </div>
@@ -160,7 +162,7 @@ export class SignUp extends Component {
                   <label>First Name</label>
                   <div className="input_wrapper">
                     <input
-                      className="text"
+                      className="text1"
                       type="text"
                       name="fname"
                       autocapitalize="words"
@@ -169,8 +171,6 @@ export class SignUp extends Component {
                       onChange={this.onChange}
                       tabindex="9"
                       data-group="js-editable"
-                      w2cid="wJNkelKg12"
-                      id="__w2_wJNkelKg12_first_name"
                     />
 
                     <span className="error">
@@ -186,7 +186,7 @@ export class SignUp extends Component {
                   <label>Last Name</label>
                   <div className="input_wrapper">
                     <input
-                      className="text"
+                      className="text1"
                       type="text"
                       name="lname"
                       autocapitalize="words"
@@ -195,7 +195,6 @@ export class SignUp extends Component {
                       onChange={this.onChange}
                       tabindex="9"
                       data-group="js-editable"
-                      w2cid="wJNkelKg12"
                       id="last_name"
                     />
                     {this.validator.message(
@@ -206,19 +205,36 @@ export class SignUp extends Component {
                   </div>
                 </div>
               </div>
-              <div className="form_row" style={{ height: "50px", margin: 0 }}>
+              <div className="form_row" style={{ height: "18%", margin: 0 }}>
+                <label>Username</label>
+                <div className="input_wrapper">
+                  <input
+                    type="text"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.onChange}
+                    tabindex="9"
+                    className="text1"
+                  />
+                  {this.validator.message(
+                    "username",
+                    this.state.username,
+                    "required|username"
+                  )}
+                </div>
+              </div>
+              <div className="form_row" style={{ height: "18%", margin: 0 }}>
                 <label>Email</label>
                 <div className="input_wrapper">
                   <input
-                    className="text"
-                    type="text"
+                    type="email"
                     name="email"
                     value={this.state.email}
                     onChange={this.onChange}
                     tabindex="10"
                     data-group="js-editable"
                     w2cid="wJNkelKg12"
-                    id="__w2_wJNkelKg12_email"
+                    className="email1 overrides"
                   />
                   {this.validator.message(
                     "email",
@@ -232,7 +248,6 @@ export class SignUp extends Component {
                 <label>Password</label>
                 <div className="input_wrapper">
                   <input
-                    className="text"
                     type="password"
                     name="password"
                     value={this.state.password}
@@ -240,7 +255,7 @@ export class SignUp extends Component {
                     tabindex="11"
                     data-group="js-editable"
                     w2cid="wJNkelKg12"
-                    id="__w2_wJNkelKg12_password"
+                    className="password1 overrides"
                   />
                   {this.validator.message(
                     "password",
@@ -261,8 +276,7 @@ export class SignUp extends Component {
                     onChange={this.onChange}
                     tabindex="11"
                     data-group="js-editable"
-                    w2cid="wJNkelKg12"
-                    id="__w2_wJNkelKg12_password"
+                    className="password1"
                   />{" "}
                   {this.validator.message(
                     "password2",

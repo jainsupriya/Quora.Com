@@ -29,10 +29,10 @@ export const loginUser = userData => dispatch => {
       // Set token to Auth header
       authToken(token);
       // Decode token to get user data
-      const decoded = jwt_decode(token);
-      console.log("Decoded::" + JSON.stringify(decoded));
+      // const decoded = jwt_decode(token);
+      // console.log("Decoded::" + JSON.stringify(decoded));
       // Set current user
-      dispatch(setCurrentUser(decoded));
+      dispatch(setCurrentUser(res.data.MongoData[0]));
     })
     .catch(err =>
       dispatch({

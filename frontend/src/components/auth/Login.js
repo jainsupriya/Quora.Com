@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-// import "./Login.css";
+import "./Login.css";
 import SimpleReactValidator from "simple-react-validator";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -94,7 +94,7 @@ export class Login extends Component {
     // console.log(this.props);
 
     return (
-      <div className="content">
+      <div className="login-content">
         <div className="bg_container">
           <div className="bg_image" />
         </div>
@@ -121,6 +121,7 @@ export class Login extends Component {
                 name="email"
                 placeholder="Email"
                 onChange={this.onChange}
+                className="text2"
               />
               {this.validator.message(
                 "email",
@@ -132,6 +133,7 @@ export class Login extends Component {
                 name="password"
                 placeholder="Password"
                 onChange={this.onChange}
+                className="password2"
               />
               {this.validator.message(
                 "password",
