@@ -27,3 +27,6 @@ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 -
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic user  
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic content  
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic activity  
+
+
+<img src="/Users/supriyajain/Desktop/Screen Shot 2019-04-28 at 11.51.35 PM.png" alt="My cool logo"/>
