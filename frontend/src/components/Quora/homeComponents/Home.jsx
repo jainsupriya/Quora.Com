@@ -48,7 +48,7 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.getQuestions(this.state.topic);
     //this.props.getUserDetails(this.props.auth.user._id); //TODO
-    this.props.getUserDetails("5cbe44d25445656fa98b6f7f");
+    this.props.getUserDetails(this.props.auth.user._id);
   }
 
   handleTopicClick = newTopic => {

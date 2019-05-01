@@ -21,6 +21,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+import { setProfileCredential } from "../../../redux/actions/profileActions";
 const styles = theme => ({});
 
 const DialogTitle = withStyles(theme => ({
@@ -70,13 +71,39 @@ const DialogActions = withStyles(theme => ({
 
 //Create a Main Component
 class DialogProfileCredential extends Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      profileCredential: ""
+    };
+    this.onChange = this.onChange.bind(this);
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ profileCredential: nextProps.profileCredential });
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleSave = e => {
+    e.preventDefault();
+    // console.log(this.props.state.userDetails._id);
+    const profileData = {
+      profileCredential: this.state.profileCredential
+    };
+
+    this.props.setProfileCredential(
+      this.props.state.userDetails._id,
+      profileData
+    );
+  };
 
   render() {
     const { classes } = this.props;
+
+    const profilecredential = this.props.profileCredential;
 
     return (
       <div>
@@ -142,7 +169,7 @@ class DialogProfileCredential extends Component {
                 </Grid>
                 <Grid item xs={11}>
                   <Grid item className="black-clr">
-                    <div class="title">Add employment credential</div>
+                    <div class="title">Add Profile credential</div>
                   </Grid>
                   {/* <Grid item className="fnt-13">
                                             {"Answered 7H ago"}
@@ -156,14 +183,15 @@ class DialogProfileCredential extends Component {
                 </Grid>
                 <Grid item xs={10}>
                   <textarea
-                    class="selector_input text"
+                    class="selector_input"
+                    name="profileCredential"
                     type="text"
                     rows="1"
                     title="Position"
+                    onChange={this.onChange}
+                    value={this.state.profileCredential}
                     data-group="js-editable"
-                    placeholder="Position"
-                    w2cid="wHEAXKDm8"
-                    id="__w2_wHEAXKDm8_input"
+                    placeholder="Something special about you!"
                     style={{ paddingLeft: "12%" }}
                   />
                 </Grid>
@@ -185,12 +213,18 @@ class DialogProfileCredential extends Component {
 }
 
 DialogProfileCredential.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
+  setProfileCredential: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth,
+  state: state.homeState,
+  userDetails: state.userDetails
+});
 
 export default connect(
   mapStateToProps,
-  {}
+  { setProfileCredential }
 )(withStyles(styles)(withRouter(DialogProfileCredential)));

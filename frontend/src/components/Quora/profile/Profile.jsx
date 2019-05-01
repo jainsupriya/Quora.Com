@@ -117,7 +117,10 @@ class Profile extends React.Component {
       openProfileCredential: false,
       fname: "",
       lname: "",
-      id: ""
+      id: "",
+      profileCredential: "",
+      profileImage: "",
+      isChanged: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -148,6 +151,9 @@ class Profile extends React.Component {
     };
 
     this.props.setProfileName(this.state.id, profileData);
+    this.setState({
+      openEditName: false
+    });
   };
 
   handleClickOpenProfileCredential = () => {
@@ -239,11 +245,49 @@ class Profile extends React.Component {
 
   componentDidMount() {
     //  console.log(this.props.state.userDetails);
-    if (this.props.auth.user !== undefined) {
+    if (this.props.state.userDetails !== undefined) {
       this.setState({
-        fname: this.props.auth.user.fname,
-        lname: this.props.auth.user.lname,
-        id: this.props.auth.user._id
+        fname: this.props.state.userDetails.fname,
+        lname: this.props.state.userDetails.lname,
+        id: this.props.state.userDetails._id
+      });
+
+      if (this.props.state.userDetails.profileCredential !== undefined) {
+        this.setState({
+          profileCredential: this.props.state.userDetails.profileCredential
+        });
+      }
+
+      if (this.props.state.userDetails.profileImg !== undefined) {
+        console.log("componentDidMount");
+        this.setState({
+          profileImage: this.props.state.userDetails.profileImg
+        });
+      }
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    if (nextProps.state.userDetails.profileCredential !== undefined) {
+      this.setState({
+        profileCredential: nextProps.state.userDetails.profileCredential
+      });
+    } else {
+      this.setState({
+        profileCredential: ""
+      });
+    }
+
+    if (nextProps.state.userDetails.profileImg !== undefined) {
+      console.log("componentWillReceiveProps");
+      this.setState({
+        profileImage: nextProps.state.userDetails.profileImg,
+        isChanged: nextProps.state.userDetails.isChanged
+      });
+    } else {
+      this.setState({
+        profileImage: ""
       });
     }
   }
@@ -263,7 +307,6 @@ class Profile extends React.Component {
             className="ui_button u-nowrap ui_button--styled ui_button--SimpleLinkStyle ui_button--SimpleLinkStyle--blue ui_button--size_small u-inline-block"
             href="#"
             role="button"
-            id="__w2_w083ZVOZ62_button"
             onClick={() => {
               this.setState({
                 openUploadPhoto: true
@@ -369,6 +412,7 @@ class Profile extends React.Component {
       <DialogProfileCredential
         open={this.state.openProfileCredential}
         onClose={this.handleClose}
+        profileCredential={userDetails.profileCredential}
       />
     );
 
@@ -559,13 +603,10 @@ class Profile extends React.Component {
                     >
                       <div class="profile_photo" id="__w2_w4a2NguV48_photo">
                         <div id="w4a2NguV56">
-                          <span
-                            class="photo_tooltip IdentityPhoto HoverMenu Photo"
-                            id="__w2_w4a2NguV57_link"
-                          >
+                          <span class="photo_tooltip IdentityPhoto HoverMenu Photo">
                             <Avatar
                               className={classes.bigAvatar}
-                              src={this.props.auth.user.profileImg}
+                              src={this.state.profileImage}
                               alt="Remy Sharp"
                               height="200"
                               width="200"
@@ -617,7 +658,9 @@ class Profile extends React.Component {
                                     });
                                   }}
                                 >
-                                  Add profile credential
+                                  {this.state.profileCredential !== ""
+                                    ? this.state.profileCredential
+                                    : "Add profile credential"}
                                 </a>
                               </span>
                             </div>

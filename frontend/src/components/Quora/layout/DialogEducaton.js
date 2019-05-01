@@ -21,6 +21,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+import { setProfileCredential } from "../../../redux/actions/profileActions";
 const styles = theme => ({});
 
 const DialogTitle = withStyles(theme => ({
@@ -69,14 +70,40 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 //Create a Main Component
-class DialogEmployment extends Component {
-  constructor() {
-    super();
-    this.state = {};
+class DialogEducation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      profileCredential: ""
+    };
+    this.onChange = this.onChange.bind(this);
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ profileCredential: nextProps.profileCredential });
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleSave = e => {
+    e.preventDefault();
+    // console.log(this.props.state.userDetails._id);
+    const profileData = {
+      profileCredential: this.state.profileCredential
+    };
+
+    this.props.setProfileCredential(
+      this.props.state.userDetails._id,
+      profileData
+    );
+  };
 
   render() {
     const { classes } = this.props;
+
+    const profilecredential = this.props.profileCredential;
 
     return (
       <div>
@@ -114,37 +141,35 @@ class DialogEmployment extends Component {
                 // className="m-margin-up-down"
               >
                 <Grid item xs={1}>
-                  <div class="u-absolute u-top--0 u-left--0 u-margin-left--md u-margin-top--md">
-                    <span
-                      class="ui_icon ui_icon_color--gray ui_icon_size--small_medium ui_icon_outline--default"
-                      aria-hidden="true"
+                  <span
+                    class="ui_icon ui_icon_color--gray ui_icon_size--small_medium ui_icon_outline--default"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      width="24px"
+                      height="24px"
+                      viewBox="0 0 24 24"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xlink="http://www.w3.org/1999/xlink"
                     >
-                      <svg
-                        width="24px"
-                        height="24px"
-                        viewBox="0 0 24 24"
-                        version="1.1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xlink="http://www.w3.org/1999/xlink"
-                      >
+                      <g stroke="none" fill="none" fill-rule="evenodd">
                         <g
                           class="icon_svg-stroke"
-                          stroke="#666"
+                          transform="translate(6.000000, 3.000000)"
+                          stroke="#666666"
                           stroke-width="1.5"
-                          fill="none"
-                          fill-rule="evenodd"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
                         >
-                          <path d="M20.5,11 L20.5,18 C20.5,18.5522847 20.0522847,19 19.5,19 L4.5,19 C3.94771525,19 3.5,18.5522847 3.5,18 L3.5,11 M10.40625,15 L5.625,15 C4.45139491,15 3.5,13.9766509 3.5,12.7142857 L3.5,7 L3.5,7 L20.5,7 L20.5,12.7142857 C20.5,13.9766509 19.5486051,15 18.375,15 L13.59375,15 M9,7 L9,6 C9,4.8954305 9.8954305,4 11,4 L11,4 L13,4 C14.1045695,4 15,4.8954305 15,6 L15,7 M11,13.5 L13,13.5 C13.2761424,13.5 13.5,13.7238576 13.5,14 L13.5,16 C13.5,16.2761424 13.2761424,16.5 13,16.5 L11,16.5 C10.7238576,16.5 10.5,16.2761424 10.5,16 L10.5,14 C10.5,13.7238576 10.7238576,13.5 11,13.5 Z" />
+                          <path d="M13,18 C13,14.6862915 10.0898509,12 6.5,12 C2.91014913,12 0,14.6862915 0,18" />
+                          <circle cx="6.5" cy="5" r="4.5" />
                         </g>
-                      </svg>
-                    </span>
-                  </div>
+                      </g>
+                    </svg>
+                  </span>
                 </Grid>
                 <Grid item xs={11}>
                   <Grid item className="black-clr">
-                    <div class="title">Add employment credential</div>
+                    <div class="title">Add Profile credential</div>
                   </Grid>
                   {/* <Grid item className="fnt-13">
                                             {"Answered 7H ago"}
@@ -159,51 +184,14 @@ class DialogEmployment extends Component {
                 <Grid item xs={10}>
                   <textarea
                     class="selector_input"
+                    name="profileCredential"
                     type="text"
                     rows="1"
                     title="Position"
+                    onChange={this.onChange}
+                    value={this.state.profileCredential}
                     data-group="js-editable"
-                    placeholder="Position"
-                    w2cid="wHEAXKDm8"
-                    id="__w2_wHEAXKDm8_input"
-                    style={{ paddingLeft: "12%" }}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid item xs={9}>
-                <Grid item xs={2}>
-                  {"    "}
-                </Grid>
-                <Grid item xs={10}>
-                  <textarea
-                    class="selector_input"
-                    type="text"
-                    rows="1"
-                    title="Position"
-                    data-group="js-editable"
-                    placeholder="Position"
-                    w2cid="wHEAXKDm8"
-                    id="__w2_wHEAXKDm8_input"
-                    style={{ paddingLeft: "12%" }}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid item xs={9}>
-                <Grid item xs={2}>
-                  {"    "}
-                </Grid>
-                <Grid item xs={10}>
-                  <textarea
-                    class="selector_input"
-                    type="text"
-                    rows="1"
-                    title="Position"
-                    data-group="js-editable"
-                    placeholder="Position"
-                    w2cid="wHEAXKDm8"
-                    id="__w2_wHEAXKDm8_input"
+                    placeholder="Something special about you!"
                     style={{ paddingLeft: "12%" }}
                   />
                 </Grid>
@@ -214,8 +202,8 @@ class DialogEmployment extends Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary">
-              Add Question
+            <Button onClick={this.handleSave} color="primary">
+              Save
             </Button>
           </DialogActions>
         </Dialog>
@@ -224,13 +212,19 @@ class DialogEmployment extends Component {
   }
 }
 
-DialogEmployment.propTypes = {
-  classes: PropTypes.object.isRequired
+DialogEducation.propTypes = {
+  classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
+  setProfileCredential: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth,
+  state: state.homeState,
+  userDetails: state.userDetails
+});
 
 export default connect(
   mapStateToProps,
-  {}
-)(withStyles(styles)(withRouter(DialogEmployment)));
+  { setProfileCredential }
+)(withStyles(styles)(withRouter(DialogEducation)));

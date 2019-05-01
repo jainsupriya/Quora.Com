@@ -12,3 +12,7 @@ export const GET_USER_DETAILS = "GET_USER_DETAILS";
 
 //CONTENT
 export const GET_CONTENTS = "GET_CONTENTS";
+
+//Profile set
+export const SET_USER_DETAILS = "SET_USER_DETAILS";
+
