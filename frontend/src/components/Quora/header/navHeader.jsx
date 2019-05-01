@@ -189,7 +189,7 @@ class NavHeader extends Component {
                             {notificationList.user + " "}
                           </span>
                           answered:
-                          <span style={{ color: "#021ebe" }}>
+                          <span className="questionNav">
                             {" " + notificationList.question}
                           </span>
                         </Grid>
@@ -229,7 +229,7 @@ class NavHeader extends Component {
                             {notificationList.user + " "}
                           </span>
                           answered:
-                          <span style={{ color: "#021ebe" }}>
+                          <span className="questionNav">
                             {" " + notificationList.question}
                           </span>
                         </Grid>

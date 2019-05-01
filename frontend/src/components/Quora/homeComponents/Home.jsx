@@ -14,9 +14,11 @@ import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
+
 import {
-  getQuestions,
-  getUserDetails
+  getUserDetails,
+  getTopicQuestions,
+  getQuestions
 } from "../../../redux/actions/homeAction";
 
 import Feed from "../layout/feed";
@@ -45,27 +47,47 @@ class Home extends React.Component {
     this.setState({ openAddQuestion: false });
   };
 
-  componentDidMount() {
-    this.props.getQuestions(this.state.topic);
-    //this.props.getUserDetails(this.props.auth.user._id); //TODO
-    this.props.getUserDetails(this.props.auth.user._id);
+  async componentDidMount() {
+    await this.props.getUserDetails(this.props.auth.user._id);
+
+    if (
+      this.props.userDetails.interestedTopicList &&
+      this.props.userDetails.interestedTopicList.length > 0
+    ) {
+      this.props.getTopicQuestions(
+        this.props.userDetails.interestedTopicList[0]
+      );
+    } else {
+      this.props.getQuestions();
+    }
   }
 
   handleTopicClick = newTopic => {
-    this.props.getQuestions(newTopic);
+    this.props.getTopicQuestions(newTopic);
   };
 
   render() {
-    //let temp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     var userTopicList = this.props.userDetails.interestedTopicList;
     var QuestionComp;
-    if (this.props.questions && this.props.questions.length) {
-      QuestionComp = this.props.questions.map(question => {
-        return <QuestionCard question={question} />;
-      });
+
+    if (this.props.questions && this.props.questions.length > 0) {
+      QuestionComp = this.props.questions
+        .sort(
+          (ques1, ques2) =>
+            new Date(ques2.postedTime) - new Date(ques1.postedTime)
+        )
+        .map(question => {
+          return (
+            <QuestionCard
+              question={question}
+              answerList={question.answerList}
+            />
+          );
+        });
     } else {
       QuestionComp = <React.Fragment>No Data Found</React.Fragment>;
     }
+
     var addQuestion = "";
 
     if (this.state.openAddQuestion === true)
@@ -163,7 +185,6 @@ class Home extends React.Component {
 }
 const mapStateToProps = state => ({
   auth: state.auth,
-  userState: state.userState,
   errors: state.errors,
   userDetails: state.homeState.userDetails,
   questions: state.homeState.questions
@@ -171,5 +192,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getQuestions, getUserDetails }
+  { getUserDetails, getTopicQuestions, getQuestions }
 )(withStyles(styles)(Home));

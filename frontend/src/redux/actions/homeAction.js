@@ -22,13 +22,30 @@ export const getUserDetails = userId => dispatch => {
       })
     );
 };
-export const getQuestions = topic => dispatch => {
+export const getTopicQuestions = topic => dispatch => {
   axios
     .get(`/questions/searchByTopic/${topic}`)
     .then(res =>
       dispatch({
         type: GET_QUESTIONS,
-        payload: res.data.data
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.data
+      })
+    );
+};
+
+export const getQuestions = topic => dispatch => {
+  axios
+    .get(`/questions`)
+    .then(res =>
+      dispatch({
+        type: GET_QUESTIONS,
+        payload: res.data
       })
     )
     .catch(err =>

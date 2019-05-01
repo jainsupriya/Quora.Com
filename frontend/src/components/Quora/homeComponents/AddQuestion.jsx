@@ -118,7 +118,7 @@ export function AddQuestion(props) {
 
             <Grid item xs={9}>
               <textarea
-                class="selector_input text"
+                class="selector_input"
                 type="text"
                 rows="1"
                 title='Start your question with "What", "How", "Why", etc.'
@@ -131,7 +131,7 @@ export function AddQuestion(props) {
 
             <Grid item xs={9}>
               <textarea
-                class="selector_input text"
+                class="selector_input"
                 type="text"
                 rows="1"
                 title="Enter your topic here."

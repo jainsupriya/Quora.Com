@@ -24,6 +24,14 @@ export const getContentDetails = userId => dispatch => {
     );
 };
 
+export const updateContentDetails = contents => dispatch => {
+  console.log(contents);
+  dispatch({
+    type: GET_CONTENTS,
+    payload: contents
+  })
+}
+
 export const getOnlyAnswers = userId => dispatch => {
     axios
       .get(`/content/byUserId/${userId}/onlyAnswers`)
