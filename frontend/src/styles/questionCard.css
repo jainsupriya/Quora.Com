@@ -95,3 +95,23 @@
   cursor: pointer;
   line-height: 1.6;
 }
+
+.icon_svg-fill {
+  fill: #329bff !important;
+}
+
+.icon_svg-stroke {
+  stroke: #329bff !important;
+  stroke-width: 1.5 !important;
+}
+
+g[Attributes] {
+  stroke-width: 1.5;
+  stroke: rgb(102, 102, 102);
+  fill: none;
+  fill-rule: evenodd;
+  stroke-linejoin: round;
+}
+.upvote-pressed {
+  color: #329bff !important;
+}
