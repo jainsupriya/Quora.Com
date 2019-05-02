@@ -1,0 +1,77 @@
+/* chat */
+
+.m-brdr-white{
+    background-color: #373943;
+    height: 100%;
+    width: 100%;
+    margin-top: -50px;
+   }
+   .m-chat-receiver{
+    position: fixed;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    top: 0px;
+    width: 100%;
+    z-index: 10;
+    background-color: white
+   }
+   .m-chat-bg {
+    /* background-color: #eeeeee; */
+    /* background-color: #eeeeee; */
+    height: max-content;
+    width: 100%;
+    overflow: hidden;
+    /* margin-bottom: 50px; */
+    padding-top: 100px !important;
+    padding-bottom: 50px !important;
+    /* display: hidden; */
+   }
+   .m-chat-left {
+    /* color: white; */
+    padding: 18px 20px;
+    /* line-height: 26px; */
+    /* font-size: 16px; */
+    border-radius: 25px;
+    margin-top: 20px;
+    margin-left: 5px;
+    width: 45%;
+    clear: both;
+    float: left !important;
+    /* position: relative; */
+    /* background: #86BB71; */
+    background: #eeeeee;
+    
+   }
+   .m-chat-right {
+    /* color: white; */
+    padding: 18px 20px;
+    /* line-height: 26px; */
+    /* font-size: 16px; */
+    border-radius: 25px;
+    margin-top: 20px;
+    margin-right: 5px;
+    width: 45%;
+    /* align-self: right; */
+    clear: both;
+    float: right !important;
+    /* position: absolute; */
+    /* background: #86BB71; */
+    background: #eeeeee;
+   }
+   .m-chat-write {
+    position: fixed;
+    bottom: 0px;
+    padding-bottom: 30px;
+    width: 100%;
+    background-color: white
+   }
+   .m-center-content{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+   }
+   .m-bigAvatar {
+    margin: 10px;
+    width: 60px;
+    height: 60px; 
+   }

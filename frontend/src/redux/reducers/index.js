@@ -4,11 +4,13 @@ import authReducer from "./authReducer";
 import profileReducer from "./profileReducer";
 import errorReducer from "./errorReducer";
 import contentReducer from "./contentReducer";
+import messageReducer from "./messageReducer";
 
 export default combineReducers({
   homeState: homeReducer,
   auth: authReducer,
   profile: profileReducer,
   errors: errorReducer,
-  contents: contentReducer
+  contents: contentReducer,
+  message: messageReducer
 });

@@ -23,6 +23,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 
 import Feed from "../layout/feed";
+import Content from "./ProfileContent";
 import QuestionCard from "../layout/QuestionCard";
 import NavHeader from "../header/navHeader";
 import DialogPersonal from "../layout/DialogPersonal";
@@ -580,15 +581,7 @@ class Profile extends React.Component {
               justify="space-between"
               alignItems="flex-start"
             >
-              <Grid item xs={1} className="fix-pos">
-                <div style={{ position: "fixed", width: "11%" }}>
-                  {temp.map(item => {
-                    // console.log(item);
-                    return <Feed />;
-                  })}
-                </div>
-              </Grid>
-              <Grid item xs={8} className="m-padding-left-right-15">
+              <Grid item xs={9} className="m-padding-left-right-15">
                 <Grid
                   container
                   direction="row"
@@ -670,25 +663,21 @@ class Profile extends React.Component {
                     </div>
                   </Grid>
                 </Grid>
+                <Divider />
                 <Grid
                   container
                   direction="row"
                   justify="space-between"
                   alignItems="center"
                 />
-                {/* <QuestionCard />
-                <QuestionCard />
-                <QuestionCard /> */}
+                <Content />
               </Grid>
 
               <Grid item xs={3} className="fix-pos">
                 <Paper className="m-paper" elevation={1}>
                   Credentials & Highlights
                   <Divider />
-                  {/* {for (let index = 0; index < 10; index++) {
-
-                                        
-                                    }} */}
+                 
                   <Grid
                     container
                     direction="row"
@@ -795,7 +784,6 @@ class Profile extends React.Component {
                                   <a
                                     class="EditCredentialModalLink CredentialModalLink"
                                     href="#"
-                                    id="__w2_wsV1hsO514_modal_link"
                                   >
                                     Add education credential
                                   </a>
@@ -913,7 +901,7 @@ class Profile extends React.Component {
                                   <a
                                     class="EditCredentialModalLink CredentialModalLink"
                                     href="#"
-                                    id="__w2_wsV1hsO517_modal_link"
+                                    id="_modal_link"
                                   >
                                     Add a location credential
                                   </a>

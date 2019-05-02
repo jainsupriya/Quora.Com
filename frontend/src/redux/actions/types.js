@@ -16,3 +16,6 @@ export const GET_CONTENTS = "GET_CONTENTS";
 //Profile set
 export const SET_USER_DETAILS = "SET_USER_DETAILS";
 
+//Message
+export const SET_MESSAGE_HISTORY = "SET_MESSAGE_HISTORY";
+export const SET_RECEIVER_DATA = "SET_RECEIVER_DATA";
