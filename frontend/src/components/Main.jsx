@@ -38,7 +38,7 @@ class Main extends Component {
         <BrowserRouter>
           <div>
             <Switch>
-              <Route exact path="/" component={Quora} />
+              <PrivateRoute exact path="/" component={Quora} />
               <Route path="/signup" component={SignUp} />
               <Route path="/login" component={Login} />
               <Route path="/content" component={Content} />
