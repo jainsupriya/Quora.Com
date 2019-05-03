@@ -14,8 +14,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Popover from "@material-ui/core/Popover";
-import { AddQuestion } from "../homeComponents/AddQuestion";
+import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
+import { addQuestion } from "../../../redux/actions/homeAction";
 
 const styles = theme => ({
   notificationDialog: {
@@ -69,14 +70,28 @@ const styles = theme => ({
 
 //Create a Main Component
 class NavHeader extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       openAddQuestion: false,
       navSelectedItem: "home",
-      openNotification: false
+      openNotification: false,
+      topic: "",
+      question: ""
     };
+    this.handleAddQuestion = this.handleAddQuestion.bind(this);
   }
+
+  handleAddQuestion = (question, topic) => {
+    var questionData = {
+      question: question,
+      questionOwner: this.props.auth.user._id,
+      topicList: topic
+    };
+
+    this.props.addQuestion(questionData);
+    this.setState({ openAddQuestion: false });
+  };
 
   handleClickOpen = () => {
     this.setState({
@@ -121,6 +136,7 @@ class NavHeader extends Component {
       <AddQuestion
         openAddQuestion={this.state.openAddQuestion}
         handleClose={() => this.handleClose()}
+        handleAddQuestion={this.handleAddQuestion}
       />
     );
 
@@ -417,9 +433,11 @@ NavHeader.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
 export default connect(
   mapStateToProps,
-  {}
+  { addQuestion }
 )(withStyles(styles)(withRouter(NavHeader)));

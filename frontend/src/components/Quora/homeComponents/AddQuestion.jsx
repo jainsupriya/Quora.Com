@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Avatar from "@material-ui/core/Avatar";
 import withStyles from "@material-ui/core/styles/withStyles";
+import SimpleReactValidator from "simple-react-validator";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -57,101 +58,161 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-export function AddQuestion(props) {
-  return (
-    <div>
-      <Dialog
-        fullWidth
-        onClose={props.handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={props.openAddQuestion}
-      >
-        <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
-          <span style={{ color: "#bc3531" }}> Add Question</span>
-        </DialogTitle>
-        <DialogContent>
-          <Typography gutterBottom>
-            Tips on getting good answers quickly
-            <br />
-            <br />
-            <li>Make sure your question hasn't been asked already</li>
-            <br />
-            <li>Keep your question short and to the point</li>
-            <br />
-            <li>Double-check grammar and spelling</li>
-            <br />
-          </Typography>
-          <Divider />
-          <Grid
-            container
-            direction="column"
-            justify="space-between"
-            // className="m-margin-up-down"
+class AddQuestion extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      topic: "",
+      question: ""
+    };
+    this.validator = new SimpleReactValidator();
+  }
+
+  componentDidMount() {
+    this.setState({
+      topic: "",
+      question: ""
+    });
+  }
+
+  handleAddQuestion() {
+    if (this.validator.allValid()) {
+      this.props.handleAddQuestion(this.state.question, this.state.topic);
+      this.setState({
+        topic: "",
+        question: ""
+      });
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
+  }
+
+  handleOnChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+  render() {
+    return (
+      <div>
+        <Dialog
+          fullWidth
+          onClose={this.props.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.props.openAddQuestion}
+        >
+          <DialogTitle
+            id="customized-dialog-title"
+            onClose={this.props.handleClose}
           >
+            <span style={{ color: "#bc3531" }}> Add Question</span>
+          </DialogTitle>
+          <DialogContent>
+            <Typography gutterBottom>
+              Tips on getting good answers quickly
+              <br />
+              <br />
+              <li>Make sure your question hasn't been asked already</li>
+              <br />
+              <li>Keep your question short and to the point</li>
+              <br />
+              <li>Double-check grammar and spelling</li>
+              <br />
+            </Typography>
+            <Divider />
             <Grid
               container
-              direction="row"
-              justify="flex-start"
-              alignItems="flex-start"
+              direction="column"
+              justify="space-between"
               // className="m-margin-up-down"
             >
-              <Grid item>
-                <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
-              </Grid>
-              <Grid item>
-                <Grid
-                  container
-                  direction="column"
-                  justify="flex-start"
-                  alignItems="flex-start"
-                  className="m-margin-up-down"
-                >
-                  <Grid item className="black-clr">
-                    {"Mayank Padshala Asked"}
-                  </Grid>
-                  {/* <Grid item className="fnt-13">
+              <Grid
+                container
+                direction="row"
+                justify="flex-start"
+                alignItems="flex-start"
+                // className="m-margin-up-down"
+              >
+                <Grid item>
+                  <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+                </Grid>
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    justify="flex-start"
+                    alignItems="flex-start"
+                    className="m-margin-up-down"
+                  >
+                    <Grid item className="black-clr">
+                      {"Mayank Padshala Asked"}
+                    </Grid>
+                    {/* <Grid item className="fnt-13">
                                             {"Answered 7H ago"}
                                         </Grid> */}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
 
-            <Grid item xs={9}>
-              <textarea
-                class="selector_input"
-                type="text"
-                rows="1"
-                title='Start your question with "What", "How", "Why", etc.'
-                data-group="js-editable"
-                placeholder='Start your question with "What", "How", "Why", etc.'
-                w2cid="wHEAXKDm8"
-                id="__w2_wHEAXKDm8_input"
-              />
-            </Grid>
+              <Grid item xs={9}>
+                <textarea
+                  class="selector_input"
+                  type="text"
+                  rows="1"
+                  name="question"
+                  title='Start your question with "What", "How", "Why", etc.'
+                  data-group="js-editable"
+                  placeholder='Start your question with "What", "How", "Why", etc.'
+                  w2cid="wHEAXKDm8"
+                  id="__w2_wHEAXKDm8_input"
+                  onChange={e => this.handleOnChange(e)}
+                  required
+                />
+                <span className="error">
+                  {this.validator.message(
+                    "question",
+                    this.state.question,
+                    "required|max:200"
+                  )}
+                </span>
+              </Grid>
 
-            <Grid item xs={9}>
-              <textarea
-                class="selector_input"
-                type="text"
-                rows="1"
-                title="Enter your topic here."
-                data-group="js-editable"
-                placeholder="Enter your topic here."
-                w2cid="wHEAXKDm8"
-                id="__w2_wHEAXKDm8_input"
-              />
+              <Grid item xs={9}>
+                <textarea
+                  class="selector_input"
+                  type="text"
+                  name="topic"
+                  rows="1"
+                  title="Enter your topic here."
+                  data-group="js-editable"
+                  placeholder="Enter your topic here."
+                  w2cid="wHEAXKDm8"
+                  id="__w2_wHEAXKDm8_input"
+                  onChange={e => this.handleOnChange(e)}
+                />
+                <span className="error">
+                  {this.validator.message(
+                    "topic",
+                    this.state.topic,
+                    "required|max:200"
+                  )}
+                </span>
+              </Grid>
             </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={props.handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={props.handleClose} color="primary">
-            Add Question
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.props.handleClose} color="secondary">
+              Cancel
+            </Button>
+            <Button onClick={() => this.handleAddQuestion()} color="primary">
+              Add Question
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
 }
+
+export default AddQuestion;
