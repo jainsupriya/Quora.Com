@@ -24,7 +24,7 @@ import {
 import Feed from "../layout/feed";
 import QuestionCard from "../layout/QuestionCard";
 import { AskQuestionCard } from "../layout/AskQuestionCard";
-import { AddQuestion } from "../homeComponents/AddQuestion";
+import  AddQuestion  from "../homeComponents/AddQuestion"
 import AnswerCard from "./AnswerCard";
 
 const styles = theme => ({});
