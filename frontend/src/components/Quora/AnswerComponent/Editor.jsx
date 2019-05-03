@@ -11,7 +11,8 @@ import ReactQuill from 'react-quill'; // ES6
 // import MenuIcon from "@material-ui/icons/Menu";
 import PropTypes from 'prop-types';
 import 'react-quill/dist/quill.snow.css'; // ES6
-
+import Button from "@material-ui/core/Button";
+const axios = require('axios');
 const styles = theme => ({
     root: {
       width: '100%',
@@ -26,12 +27,19 @@ const styles = theme => ({
 class Editor extends React.Component {
     constructor (props) {
       super(props)
-      this.state = { editorHtml: '', theme: 'snow' }
+      this.state =
+       { 
+         editorHtml: '', 
+        theme: 'snow' 
+      }
+
       this.handleChange = this.handleChange.bind(this)
+      this.handleSubmit = this.handleSubmit.bind(this)
     }
     
     handleChange (html) {
         this.setState({ editorHtml: html });
+        console.log(html)
     }
     
     handleThemeChange (newTheme) {
@@ -39,6 +47,35 @@ class Editor extends React.Component {
       this.setState({ theme: newTheme })
     }
     
+    handleSubmit(event)
+    {
+
+      event.preventDefault();
+      const answer =
+        {
+          answer: this.state.editorHtml,
+          answerOwner: "5cbe44ad5445656fa98b6f7d",
+          isAnonymous: "false",
+          questionId: this.props.qid
+        }
+        console.log(answer);
+       axios.post('http://52.9.137.32:5000/answer', answer).
+          then(res=>{
+            console.log(res.status);
+            if(res.status === 200)
+            {
+              console.log(res.data);
+              this.setState( 
+                {  
+                  editorHtml: ''
+                });
+            }
+          })
+          .catch(err =>{
+            console.log(err);
+          });
+    }
+  
     render () {
       return (
         <div>
@@ -52,15 +89,12 @@ class Editor extends React.Component {
             style={{height:150}}
             placeholder={this.props.placeholder}
            />
-          <div className="themeSwitcher">
-            <label>Theme </label>
-            <select onChange={(e) => 
-                this.handleThemeChange(e.target.value)}>
-              <option value="snow">Snow</option>
-              <option value="bubble">Bubble</option>
-              <option value="core">Core</option>
-            </select>
-          </div>
+          <Button variant="contained" className="btn-margin" style={{marginLeft: 10}} onClick={this.handleSubmit}> 
+            Add Comment
+          </Button>
+          <Button variant="secondary" className="btn-margin" style={{marginLeft: 10}} onClick={this.handleClose}> 
+            Cancel
+          </Button>
          </div>
        )
     }
