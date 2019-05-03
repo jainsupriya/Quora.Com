@@ -61,7 +61,7 @@ class AnswerCard extends React.Component {
       if (answer.isAnonymous) {
         username = "Anonymous user";
       } else {
-        username = "Pa rth Modi";
+        username = "Parth Modi";
       }
 
       answerComp = (
@@ -332,39 +332,52 @@ class AnswerCard extends React.Component {
             alignItems="flex-start"
             // className="m-margin-up-down"
           >
-            <Grid item>
-              <span className="reason-txt">
-                Question added · Healthy Eating
-              </span>
-
-              <svg
-                width="24px"
-                height="24px"
-                viewBox="0 0 24 24"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xlink="http://www.w3.org/1999/xlink"
+            <Grid 
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-start"
               >
-                <g
-                  id="small_close"
-                  class="icon_svg-stroke"
-                  fill="none"
-                  fill-rule="evenodd"
-                  stroke-linecap="round"
-                  stroke="#666666"
-                  stroke-width="1.5"
-                >
-                  <path
-                    d="M12,6 L12,18"
-                    transform="translate(12.000000, 12.000000) rotate(45.000000) translate(-12.000000, -12.000000) "
-                  />
-                  <path
-                    d="M18,12 L6,12"
-                    transform="translate(12.000000, 12.000000) rotate(45.000000) translate(-12.000000, -12.000000) "
-                  />
-                </g>
-              </svg>
+                
+                  <Grid item xs={11}>
+                    <span className="reason-txt">
+                      Question added · Healthy Eating
+                    </span>
+                  </Grid>
+                
+                <Grid item xs={1}>
+                  <svg
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <g
+                      id="small_close"
+                      class="icon_svg-stroke"
+                      fill="none"
+                      fill-rule="evenodd"
+                      stroke-linecap="round"
+                      stroke="#666666"
+                      stroke-width="1.5"
+                    >
+                      <path
+                        d="M12,6 L12,18"
+                        transform="translate(12.000000, 12.000000) rotate(45.000000) translate(-12.000000, -12.000000) "
+                      />
+                      <path
+                        d="M18,12 L6,12"
+                        transform="translate(12.000000, 12.000000) rotate(45.000000) translate(-12.000000, -12.000000) "
+                      />
+                    </g>
+                  </svg>
+                  </Grid>
+
+
             </Grid>
+
             <Grid item>
               <span className="question-txt">
                 <Link to={"/home/" + question._id} style={{ color: "#000000" }}>
