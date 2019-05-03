@@ -30,7 +30,10 @@ function handle_request(msg, callback) {
                         myCallback(err, null, callback);
                     } else {
                         User
-                            .updateOne({_id:msg.reqBody.questionOwner},{ $addToSet: { myQuestionList: result._id, interestedTopicList: result.topicList.split(", ")} })
+                            .updateOne(
+                                {_id:msg.reqBody.questionOwner},
+                                { $addToSet: { myQuestionList: result._id, interestedTopicList: result.topicList.split(", ")} }
+                            )
                             // .updateOne({sqlUserId:msg.reqBody.questionOwner},{ $addToSet: { myQuestionList: result._id } })
                             .then((result1, err1) => {
                                 if (err1) {
@@ -73,6 +76,13 @@ function handle_request(msg, callback) {
             break;
         case "get/question":
             Question.find({ _id: msg.reqBody.questionId })
+                .populate({ 
+                    path: 'answerList',
+                    populate: {
+                    path: 'answerOwner',
+                    select: 'profileImg lname fname',
+                    } 
+                })  
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
