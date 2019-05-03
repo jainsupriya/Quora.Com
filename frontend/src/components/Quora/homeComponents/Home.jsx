@@ -16,6 +16,7 @@ import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 
 import {
+  addQuestion,
   getUserDetails,
   getTopicQuestions,
   getQuestions
@@ -24,7 +25,7 @@ import {
 import Feed from "../layout/feed";
 import QuestionCard from "../layout/QuestionCard";
 import { AskQuestionCard } from "../layout/AskQuestionCard";
-import { AddQuestion } from "./AddQuestion";
+import AddQuestion from "./AddQuestion";
 const styles = theme => ({});
 
 class Home extends React.Component {
@@ -35,7 +36,19 @@ class Home extends React.Component {
       userDetails: {},
       openAddQuestion: false
     };
+    this.handleAddQuestion = this.handleAddQuestion.bind(this);
   }
+
+  handleAddQuestion = (question, topic) => {
+    var questionData = {
+      question: question,
+      questionOwner: this.props.auth.user._id,
+      topicList: topic
+    };
+
+    this.props.addQuestion(questionData);
+    this.setState({ openAddQuestion: false });
+  };
 
   handleClickOpen = () => {
     this.setState({
@@ -95,6 +108,7 @@ class Home extends React.Component {
         <AddQuestion
           openAddQuestion={this.state.openAddQuestion}
           handleClose={() => this.handleClose()}
+          handleAddQuestion={this.handleAddQuestion}
         />
       );
 
@@ -192,5 +206,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getUserDetails, getTopicQuestions, getQuestions }
+  { addQuestion, getUserDetails, getTopicQuestions, getQuestions }
 )(withStyles(styles)(Home));
