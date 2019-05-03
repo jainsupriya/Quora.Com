@@ -139,6 +139,33 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
+        case "get/questions/searchTopic/:searchQuery":
+            Question.find({topicList: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+                .populate({ 
+                    path: 'answerList',
+                    populate: {
+                    path: 'answerOwner',
+                    select: 'profileImg lname fname',
+                    } 
+                })                
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        // let respon = null;
+                        // console.log("-------------********************");
+                        // result.map(res => {
+                        //     if(res.anserList !== null){
+                        //         respon = res.answerList
+                        //     }
+                        // })
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
         case "put/question/:questionId":
             Question.findOneAndUpdate(
                 { _id: msg.reqBody.questionId },
