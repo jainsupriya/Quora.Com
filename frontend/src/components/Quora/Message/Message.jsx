@@ -64,10 +64,6 @@ class Message extends React.Component {
     document.getElementById("messageContent").value = "";
   };
   render() {
-    if (this.props.userState.userToken === "") {
-      this.props.history.push("/login");
-    }
-
     const { classes } = this.props;
     const u1 = this.props.match.params.u1;
     const u2 = this.props.match.params.u2;

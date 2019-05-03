@@ -21,7 +21,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-import { setProfileCredential } from "../../../redux/actions/profileActions";
+import { setProfileEducation } from "../../../redux/actions/profileActions";
 const styles = theme => ({});
 
 const DialogTitle = withStyles(theme => ({
@@ -74,13 +74,27 @@ class DialogEducation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profileCredential: ""
+      current: false,
+      school: "",
+      Concentration: "",
+      secondaryConcentration: "",
+      degreeType: "",
+      graduationYear: "",
+      description: ""
     };
     this.onChange = this.onChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ profileCredential: nextProps.profileCredential });
+    this.setState({
+      current: nextProps.current,
+      school: nextProps.school,
+      Concentration: nextProps.Concentration,
+      secondaryConcentration: nextProps.secondaryConcentration,
+      degreeType: nextProps.degreeType,
+      graduationYear: nextProps.graduationYear,
+      description: nextProps.description
+    });
   }
 
   onChange(e) {
@@ -91,10 +105,18 @@ class DialogEducation extends Component {
     e.preventDefault();
     // console.log(this.props.state.userDetails._id);
     const profileData = {
-      profileCredential: this.state.profileCredential
+      education: {
+        current: this.state.current,
+        school: this.state.school,
+        Concentration: this.state.Concentration,
+        secondaryConcentration: this.state.secondaryConcentration,
+        degreeType: this.state.degreeType,
+        graduationYear: this.state.graduationYear,
+        description: this.state.description
+      }
     };
 
-    this.props.setProfileCredential(
+    this.props.setProfileEducation(
       this.props.state.userDetails._id,
       profileData
     );
@@ -102,7 +124,7 @@ class DialogEducation extends Component {
 
   render() {
     const { classes } = this.props;
-
+console.log(this.props);
     const profilecredential = this.props.profileCredential;
 
     return (
@@ -215,7 +237,7 @@ class DialogEducation extends Component {
 DialogEducation.propTypes = {
   classes: PropTypes.object.isRequired,
   userDetails: PropTypes.object.isRequired,
-  setProfileCredential: PropTypes.func.isRequired
+  setProfileEducation: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -226,5 +248,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setProfileCredential }
+  { setProfileEducation }
 )(withStyles(styles)(withRouter(DialogEducation)));

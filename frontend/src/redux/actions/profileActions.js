@@ -43,6 +43,19 @@ export const setProfileCredential = (userId, profiledata) => dispatch => {
     .catch(err => console.log(err));
 };
 
+// set profile name
+export const setProfileEducation = (userId, profiledata) => dispatch => {
+  axios
+    .put(`/user/${userId}`, profiledata)
+    .then(res => {
+      dispatch({
+        type: GET_USER_DETAILS,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
 export const updateImage = (fd, history) => dispatch => {
   axios.put("/file/updateProfileImg", fd).then(res => {
     dispatch({
