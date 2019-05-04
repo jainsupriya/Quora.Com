@@ -261,7 +261,7 @@ class Profile extends React.Component {
                   justify="space-between"
                   alignItems="center"
                 />
-                <Content />
+                <Content user ={userDetails._id}/>
               </Grid>
 
               <Grid item xs={3} className="fix-pos">
@@ -274,7 +274,6 @@ class Profile extends React.Component {
                       direction="row"
                       justify="flex-start"
                       alignItems="baseline"
-                      style={{ paddingLeft: "2%" }}
                     >
                       <Grid item xs={1}>
                         <div class="u-margin-right--sm">
@@ -375,109 +374,115 @@ class Profile extends React.Component {
                       </Grid>
                     </Grid>
                   ) : null}
-                  <Grid
-                    container
-                    direction="row"
-                    justify="space-between"
-                    alignItems="flex-start"
-                  >
-                    <Grid item xs={1}>
-                      <div class="u-margin-right--sm">
-                        <span
-                          class="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            width="24px"
-                            height="24px"
-                            viewBox="0 0 24 24"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            xlink="http://www.w3.org/1999/xlink"
+                  {userDetails.aboutMe !== undefined ? (
+                    <Grid
+                      container
+                      direction="row"
+                      justify="space-between"
+                      alignItems="flex-start"
+                    >
+                      <Grid item xs={1}>
+                        <div class="u-margin-right--sm">
+                          <span
+                            class="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
+                            aria-hidden="true"
                           >
-                            <g
-                              class="icon_svg-stroke"
-                              stroke="#666"
-                              stroke-width="1.5"
-                              fill="none"
-                              fill-rule="evenodd"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                            <svg
+                              width="24px"
+                              height="24px"
+                              viewBox="0 0 24 24"
+                              version="1.1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              xlink="http://www.w3.org/1999/xlink"
                             >
-                              <path d="M2.5,9.5 L12,5 L21.5,9.5 L12,14 L2.5,9.5 Z M20,10.5 L20,16.5 M6.5,12 C6.5,14 6.5,15 6.5,15 C6.5,16.5048582 9.00219538,18 12,18 C14.9978046,18 17.5,16.4986226 17.5,15 C17.5,15 17.5,14 17.5,12 M20,16.5 L18,20 L22,20 L20,16.5 Z" />
-                            </g>
-                          </svg>
-                        </span>
-                      </div>
-                    </Grid>
-                    <Grid item xs={11}   className={classes.alignCredentails}>
-                      <div id="wsV1hsO53" style={{ alignItems: "left" }}>
-                        <div class="AddCredentialLis">
-                          <span class="u-flex u-padding-bottom--sm">
-                            <span class="body_text">
-                              <span class="main_text">
-                                <span id="wsV1hsO513">
-                                  {userDetails.aboutMe}
+                              <g
+                                class="icon_svg-stroke"
+                                stroke="#666"
+                                stroke-width="1.5"
+                                fill="none"
+                                fill-rule="evenodd"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M2.5,9.5 L12,5 L21.5,9.5 L12,14 L2.5,9.5 Z M20,10.5 L20,16.5 M6.5,12 C6.5,14 6.5,15 6.5,15 C6.5,16.5048582 9.00219538,18 12,18 C14.9978046,18 17.5,16.4986226 17.5,15 C17.5,15 17.5,14 17.5,12 M20,16.5 L18,20 L22,20 L20,16.5 Z" />
+                              </g>
+                            </svg>
+                          </span>
+                        </div>
+                      </Grid>
+                      <Grid item xs={11} className={classes.alignCredentails}>
+                        <div id="wsV1hsO53" style={{ alignItems: "left" }}>
+                          <div class="AddCredentialLis">
+                            <span class="u-flex u-padding-bottom--sm">
+                              <span class="body_text">
+                                <span class="main_text">
+                                  <span id="wsV1hsO513">
+                                    {userDetails.aboutMe}
+                                  </span>
                                 </span>
                               </span>
                             </span>
+                          </div>
+                        </div>
+                      </Grid>
+                    </Grid>
+                  ) : null}
+                  {userDetails.city !== undefined &&
+                  userDetails.state !== undefined ? (
+                    <Grid
+                      container
+                      direction="row"
+                      justify="space-between"
+                      alignItems="center"
+                    >
+                      <Grid item xs={1}>
+                        <div class="u-margin-right--sm">
+                          <span
+                            class="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              width="24px"
+                              height="24px"
+                              viewBox="0 0 24 24"
+                              version="1.1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              xlink="http://www.w3.org/1999/xlink"
+                            >
+                              <g
+                                class="icon_svg-stroke"
+                                stroke="#666"
+                                stroke-width="1.5"
+                                fill="none"
+                                fill-rule="evenodd"
+                                stroke-linecap="round"
+                              >
+                                <path d="M12,13 C13.6568542,13 15,11.6568542 15,10 C15,8.34314575 13.6568542,7 12,7 C10.3431458,7 9,8.34314575 9,10 C9,11.6568542 10.3431458,13 12,13 Z M12,20.73 C16.6375,16.5 19,12.9 19,10.2 C19,6.2235498 15.8659932,3 12,3 C8.13400675,3 5,6.2235498 5,10.2 C5,12.9 7.3625,16.41 12,20.73 L12,20.73 Z" />
+                              </g>
+                            </svg>
                           </span>
                         </div>
-                      </div>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="space-between"
-                    alignItems="center"
-                  >
-                    <Grid item xs={1}>
-                      <div class="u-margin-right--sm">
-                        <span
-                          class="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            width="24px"
-                            height="24px"
-                            viewBox="0 0 24 24"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            xlink="http://www.w3.org/1999/xlink"
-                          >
-                            <g
-                              class="icon_svg-stroke"
-                              stroke="#666"
-                              stroke-width="1.5"
-                              fill="none"
-                              fill-rule="evenodd"
-                              stroke-linecap="round"
-                            >
-                              <path d="M12,13 C13.6568542,13 15,11.6568542 15,10 C15,8.34314575 13.6568542,7 12,7 C10.3431458,7 9,8.34314575 9,10 C9,11.6568542 10.3431458,13 12,13 Z M12,20.73 C16.6375,16.5 19,12.9 19,10.2 C19,6.2235498 15.8659932,3 12,3 C8.13400675,3 5,6.2235498 5,10.2 C5,12.9 7.3625,16.41 12,20.73 L12,20.73 Z" />
-                            </g>
-                          </svg>
-                        </span>
-                      </div>
-                    </Grid>
-                    <Grid item xs={11}   className={classes.alignCredentails}>
-                      <div id="wsV1hsO55">
-                        <div class="AddCredentialListItem AboutListItem AddLocationCredentialListItem">
-                          <span class="u-flex u-padding-bottom--sm">
-                            <span class="body_text">
-                              <span class="main_text">
-                                <span id="wsV1hsO516">
-                                  {userDetails.city +
-                                    "    " +
-                                    userDetails.state}
+                      </Grid>
+                      <Grid item xs={11} className={classes.alignCredentails}>
+                        <div id="wsV1hsO55">
+                          <div class="AddCredentialListItem AboutListItem AddLocationCredentialListItem">
+                            <span class="u-flex u-padding-bottom--sm">
+                              <span class="body_text">
+                                <span class="main_text">
+                                  <span id="wsV1hsO516">
+                                    {"Lives in " +
+                                      userDetails.city +
+                                      "    " +
+                                      userDetails.state}
+                                  </span>
                                 </span>
                               </span>
                             </span>
-                          </span>
+                          </div>
                         </div>
-                      </div>
+                      </Grid>
                     </Grid>
-                  </Grid>
+                  ) : null}
                 </Paper>
               </Grid>
             </Grid>

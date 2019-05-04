@@ -21,6 +21,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+import { setProfilePersonal } from "../../../redux/actions/profileActions";
+
 const styles = theme => ({
   selector_input: {
     position: "relative",
@@ -78,13 +80,83 @@ const DialogActions = withStyles(theme => ({
 
 //Create a Main Component
 class DialogPersonal extends Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      mobile: "",
+      dob: "",
+      aboutMe: "",
+      gender: "",
+      city: "",
+      state: "",
+      zipCode: ""
+    };
+    this.onChange = this.onChange.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    this.setState({
+      mobile:
+        nextProps.state.userDetails.mobile !== undefined
+          ? nextProps.state.userDetails.mobile
+          : "",
+      dob:
+        nextProps.state.userDetails.dob !== undefined
+          ? nextProps.state.userDetails.dob
+          : "",
+      aboutMe:
+        nextProps.state.userDetails.aboutMe !== undefined
+          ? nextProps.state.userDetails.aboutMe
+          : "",
+      gender:
+        nextProps.state.userDetails.gender !== undefined
+          ? nextProps.state.userDetails.gender
+          : "",
+      city:
+        nextProps.state.userDetails.city !== undefined
+          ? nextProps.state.userDetails.city
+          : "",
+      state:
+        nextProps.state.userDetails.state !== undefined
+          ? nextProps.state.userDetails.state
+          : "",
+      zipCode:
+        nextProps.state.userDetails.zipCode !== undefined
+          ? nextProps.state.userDetails.zipCode
+          : ""
+    });
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleSave = e => {
+    e.preventDefault();
+    // console.log(this.props.state.userDetails._id);
+    const profileData = {
+      mobile: this.state.mobile,
+      dob: this.state.dob,
+      aboutMe: this.state.aboutMe,
+      gender: this.state.gender,
+      city: this.state.city,
+      state: this.state.state,
+      zipCode: this.state.zipCode
+    };
+    console.log(profileData);
+    console.log(this.props.state.userDetails._id);
+
+ 
+    this.props.setProfilePersonal(
+      this.props.state.userDetails._id,
+      profileData
+    );
+  };
   render() {
     const { classes } = this.props;
+    console.log(this.props);
+    // const userDetails
 
     return (
       <div>
@@ -184,6 +256,9 @@ class DialogPersonal extends Component {
                       class="text input_field"
                       type="text"
                       placeholder="123456789"
+                      value={this.state.mobile}
+                      onChange={this.onChange}
+                      name="mobile"
                       required="False"
                       maxlength="50"
                       data-group="js-editable"
@@ -217,6 +292,9 @@ class DialogPersonal extends Component {
                       class="date input_field"
                       type="date"
                       placeholder="123456789"
+                      value={this.state.dob}
+                      onChange={this.onChange}
+                      name="dob"
                       required="False"
                       maxlength="50"
                       data-group="js-editable"
@@ -250,6 +328,9 @@ class DialogPersonal extends Component {
                       class="text input_field"
                       type="text"
                       placeholder="Write about yourself"
+                      value={this.state.aboutMe}
+                      onChange={this.onChange}
+                      name="aboutMe"
                       required="False"
                       maxlength="50"
                       data-group="js-editable"
@@ -283,6 +364,9 @@ class DialogPersonal extends Component {
                       type="text"
                       placeholder="Male/Female"
                       required="False"
+                      value={this.state.gender}
+                      onChange={this.onChange}
+                      name="gender"
                       maxlength="50"
                       data-group="js-editable"
                       w2cid="wUZE3W2P32"
@@ -316,6 +400,9 @@ class DialogPersonal extends Component {
                       type="text"
                       placeholder="City"
                       required="False"
+                      value={this.state.city}
+                      onChange={this.onChange}
+                      name="city"
                       maxlength="50"
                       data-group="js-editable"
                       w2cid="wUZE3W2P32"
@@ -349,6 +436,9 @@ class DialogPersonal extends Component {
                       type="text"
                       placeholder="State"
                       required="False"
+                      value={this.state.state}
+                      onChange={this.onChange}
+                      name="state"
                       maxlength="50"
                       data-group="js-editable"
                       w2cid="wUZE3W2P32"
@@ -380,6 +470,9 @@ class DialogPersonal extends Component {
                       class="text input_field"
                       type="text"
                       placeholder="Zip code"
+                      value={this.state.zipCode}
+                      onChange={this.onChange}
+                      name="zipCode"
                       required="False"
                       maxlength="50"
                       data-group="js-editable"
@@ -396,8 +489,8 @@ class DialogPersonal extends Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary">
-              Add Question
+            <Button onClick={this.handleSave} color="primary">
+              Save
             </Button>
           </DialogActions>
         </Dialog>
@@ -407,12 +500,17 @@ class DialogPersonal extends Component {
 }
 
 DialogPersonal.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  setProfilePersonal: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth,
+  state: state.homeState,
+  userDetails: state.userDetails
+});
 
 export default connect(
   mapStateToProps,
-  {}
+  { setProfilePersonal }
 )(withStyles(styles)(withRouter(DialogPersonal)));
