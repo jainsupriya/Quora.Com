@@ -84,6 +84,10 @@ class DialogEmployment extends Component {
     this.onChange = this.onChange.bind(this);
   }
 
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
     if (nextProps.state.userDetails.employment !== undefined) {
@@ -124,7 +128,7 @@ class DialogEmployment extends Component {
     e.preventDefault();
     // console.log(this.props.state.userDetails._id);
     const profileData = {
-      education: {
+      employment: {
         current: this.state.current,
         position: this.state.position,
         company: this.state.company,
@@ -424,14 +428,15 @@ class DialogEmployment extends Component {
                     </Grid>
                     <Grid item xs={7}>
                       <input
-                        class="checkbox input_field"
+                        class="checkbox"
                         type="checkbox"
                         placeholder="123456789"
                         required="False"
                         maxlength="50"
                         data-group="js-editable"
                         value={this.state.current}
-                        onChange={this.onChange}
+                        checked={this.state.current}
+                        onChange={this.handleChange("current")}
                         name="current"
                         w2cid="wUZE3W2P32"
                         id="__w2_wUZE3W2P32_position"
@@ -459,7 +464,7 @@ class DialogEmployment extends Component {
 
 DialogEmployment.propTypes = {
   classes: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
+  userDetails: PropTypes.object,
   setProfileEmployment: PropTypes.func.isRequired
 };
 

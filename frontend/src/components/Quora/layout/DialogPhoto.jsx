@@ -233,7 +233,7 @@ class DialogPhoto extends Component {
 
 DialogPhoto.propTypes = {
   classes: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
+  userDetails: PropTypes.object,
   updateImage: PropTypes.func.isRequired
 };
 

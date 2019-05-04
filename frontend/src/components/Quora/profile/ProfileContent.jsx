@@ -266,6 +266,7 @@ class ProfileContent extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log(this.props);
 
     // const contentDetails = this.props.contentDetails.contents;
 
@@ -399,14 +400,14 @@ class ProfileContent extends Component {
 
 ProfileContent.propTypes = {
   classes: PropTypes.object.isRequired,
-  profile: PropTypes.object
+  profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   // auth: state.auth,
   // userState: state.userState,
   // errors: state.errors,
-  // userDetails: state.homeState.userDetails,
+  userDetails: state.homeState.userDetails,
   profile: state.profile,
   contentDetails: state.contents
 });

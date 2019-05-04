@@ -268,7 +268,7 @@ class Profile extends React.Component {
                 <Paper className="m-paper" elevation={1}>
                   Credentials & Highlights
                   <Divider />
-                  {userDetails.employment.position !== undefined ? (
+                  {userDetails.employment!==undefined ? (userDetails.employment.position  !== undefined ? (
                     <Grid
                       container
                       direction="row"
@@ -320,8 +320,8 @@ class Profile extends React.Component {
                         </div>
                       </Grid>
                     </Grid>
-                  ) : null}
-                  {userDetails.education.school !== undefined ? (
+                  ) : null):null}
+                  {userDetails.education !==undefined ? (userDetails.education.school !== undefined ? (
                     <Grid
                       container
                       direction="row"
@@ -373,7 +373,7 @@ class Profile extends React.Component {
                         </div>
                       </Grid>
                     </Grid>
-                  ) : null}
+                  ) : null):null}
                   {userDetails.aboutMe !== undefined ? (
                     <Grid
                       container

@@ -214,7 +214,7 @@ class DialogProfileCredential extends Component {
 
 DialogProfileCredential.propTypes = {
   classes: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
+  userDetails: PropTypes.object,
   setProfileCredential: PropTypes.func.isRequired
 };
 
