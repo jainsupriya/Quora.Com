@@ -40,11 +40,16 @@ class Editor extends React.Component {
 
       this.handleChange = this.handleChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
+      this.handleClose= this.handleClose.bind(this)
     }
 
     handleChange (html) {
         this.setState({ editorHtml: html });
         console.log(html)
+    }
+
+    handleClose(){
+      this.props.toggle();
     }
 
     handleThemeChange (newTheme) {
@@ -63,7 +68,7 @@ class Editor extends React.Component {
           questionId: this.props.qid
         }
         console.log(answer);
-       /*axios.post('http://52.9.137.32:5000/answer', answer).
+       axios.post('http://52.9.137.32:5000/answer', answer).
           then(res=>{
             console.log(res.status);
             if(res.status === 200)
@@ -77,7 +82,7 @@ class Editor extends React.Component {
           })
           .catch(err =>{
             console.log(err);
-          });*/
+          });
     }
     render () {
       return (
