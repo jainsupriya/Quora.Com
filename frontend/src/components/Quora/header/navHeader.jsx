@@ -524,11 +524,13 @@ class NavHeader extends Component {
                 autoFocus="True"
                 type="text"
               />
+              <div onClick={this.handleAvatarClick} className={classes.showCursor}>
               <Avatar
                 alt={auth.user.fname + auth.user.lname}
                 src={auth.user.profileImg}
                 className="avatar"
               />
+              </div>
               <button
                 className="askQuestionBtn"
                 onClick={() => {
