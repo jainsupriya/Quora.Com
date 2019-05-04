@@ -1,13 +1,14 @@
 import React from'react';
 import * as d3 from 'd3';
+import {Pie} from 'react-chartjs-2';
 
 const data = [1, 2, 4, 6];
 
-export const PieChart = () => {
-    const height = 800;
-    const width = 800;
-
-    let pie = d3.pie()(data);
+export const PieChart = (props) => {
+    const height = 600;
+    const width = 700;
+    console.log(props.data)
+    let pie = d3.pie().value(d => d.views)(props.data);
 
     return(
         <svg height={height} width={width}>
@@ -22,7 +23,7 @@ export const PieChart = () => {
 const Slice = props => {
     let {pie} = props;
 
-    let arc = d3.arc().innerRadius(0).outerRadius(100);
+    let arc = d3.arc().innerRadius(0).outerRadius(200);
 
     let interpolate = d3.interpolateRgb("#eaaf79", "#bc3358");
 
@@ -31,3 +32,36 @@ const Slice = props => {
          return <path d={arc(slice)} fill={sliceColor}></path>
     })
 }
+
+// class PieChart extends React.Component{
+
+//     constructor(props)
+//     {
+//         super(props);
+//         this.state={
+//             labels:['Under 18', 'Age 18-54',  'Age 55+'],
+//             datasets:[{
+//                 data: [2000, 4000, 6000],
+//                 bgColors: ['red', 'blue', 'greeb']
+//             }]
+//         }
+
+//     }
+
+//     render(){
+//         return(
+//             <div>
+//                 <Pie
+//                 data={{
+//                     labels:this.state.labels,
+//                     datasets: this.state.datasets
+//                 }}
+//                 height='50%'
+//                 />
+
+//             </div>
+//         )
+//     }
+// }
+
+// export default PieChart;
