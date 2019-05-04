@@ -12,6 +12,11 @@ import ReactQuill from 'react-quill'; // ES6
 import PropTypes from 'prop-types';
 import 'react-quill/dist/quill.snow.css'; // ES6
 import Button from "@material-ui/core/Button";
+import { connect } from "react-redux";
+
+import {
+  getUserDetails,
+} from "../../../redux/actions/homeAction";
 const axios = require('axios');
 const styles = theme => ({
     root: {
@@ -35,11 +40,16 @@ class Editor extends React.Component {
 
       this.handleChange = this.handleChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
+      this.handleClose= this.handleClose.bind(this)
     }
 
     handleChange (html) {
         this.setState({ editorHtml: html });
         console.log(html)
+    }
+
+    handleClose(){
+      this.props.toggle();
     }
 
     handleThemeChange (newTheme) {
@@ -53,7 +63,7 @@ class Editor extends React.Component {
       const answer =
         {
           answer: this.state.editorHtml,
-          answerOwner: "5cbe44ad5445656fa98b6f7d",
+          answerOwner: this.props.auth.user._id,
           isAnonymous: "false",
           questionId: this.props.qid
         }
@@ -135,4 +145,15 @@ class Editor extends React.Component {
     placeholder: PropTypes.string,
   }
 
-  export default withStyles(styles)(Editor); 
+  const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors,
+    userDetails: state.homeState.userDetails,
+
+  });
+  
+  export default connect(
+    mapStateToProps,
+    {  getUserDetails}
+  )(withStyles(styles)(Editor));
+  

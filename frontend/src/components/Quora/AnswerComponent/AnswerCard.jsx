@@ -41,7 +41,16 @@ class AnswerCard extends React.Component {
     this.GiveAnswer = this.GiveAnswer.bind(this);
   }
   GiveAnswer = () => {
-    this.setState({ openQuill: true });
+    this.setState({ openQuill: !this.state.openQuill });
+  };
+  passAnswer = () => {
+    this.setState({ openQuill: !this.state.openQuill });
+  };
+  followAnswer = () => {
+    this.setState({ openQuill: !this.state.openQuill });
+  };
+  handleClose = () => {
+    this.setState({ openQuill: false });
   };
   handleEditorChange = html => {
     this.setState({
@@ -143,7 +152,7 @@ class AnswerCard extends React.Component {
               //className="answer-actions"
             >
               <Grid item xs={2}>
-                <div  onClick={() => this.GiveAnswer()}>
+                <div  onClick={() => this.GiveAnswer()} style={{cursor:'pointer'}}>
                 <span class="ui_button_icon" aria-hidden="true">
                   <svg
                     width="24px"
@@ -196,6 +205,8 @@ class AnswerCard extends React.Component {
               </Grid>
 
               <Grid item xs={2}>
+                
+              <div  onClick={() => this.passAnswer()} style={{cursor:'pointer'}}>
                 <span class="ui_button_icon" aria-hidden="true">
                   <svg
                     width="24px"
@@ -244,9 +255,12 @@ class AnswerCard extends React.Component {
                   </svg>
                 </span>
                 <span>Pass</span>
+                </div>
               </Grid>
 
               <Grid item xs={2}>
+                
+              <div  onClick={() => this.followAnswer()} style={{cursor:'pointer'}}>
                 <span class="ui_button_icon" aria-hidden="true">
                   <svg
                     width="24px"
@@ -289,6 +303,7 @@ class AnswerCard extends React.Component {
                 <span class="ui_button_count_inner" id="__w2_wikv5yOF93_count">
                   1
                 </span>
+                </div>
               </Grid>
 
               <Grid item xs={5} />
@@ -387,7 +402,7 @@ class AnswerCard extends React.Component {
             {answerComp}
           </Grid>
 
-          {this.state.openQuill && <Editor />}
+          {this.state.openQuill && <Editor qid= {question._id}  toggle= {this.handleClose}/>}
         </Paper>
       </div>
     );
