@@ -11,6 +11,7 @@
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "enzyme-to-json": "^3.3.5",
+    "html-react-parser": "^0.7.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
