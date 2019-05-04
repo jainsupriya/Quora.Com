@@ -113,7 +113,10 @@ class NavHeader extends Component {
     this.setState({
       navSelectedItem: selectedItem
     });
-    this.props.history.push(`/answer`);
+    if(selectedItem=="home")
+      this.props.history.push(`/`);
+    else 
+      this.props.history.push(selectedItem);
   };
 
   handleNotificationClose = () => {
