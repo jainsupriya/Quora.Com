@@ -90,7 +90,7 @@ const styles = theme => ({
     }
   },
   showCursor: {
-    cursor: 'pointer'
+    cursor: "pointer"
   }
 });
 
@@ -150,7 +150,6 @@ class NavHeader extends Component {
   };
 
   handleAvatarClick = event => {
-    
     this.setState({
       openProfileMenu: event.currentTarget
     });
@@ -163,10 +162,11 @@ class NavHeader extends Component {
   };
 
   render() {
-    const { classes } = this.props;
     const { openNotification, openProfileMenu } = this.state;
     const open1 = Boolean(openNotification);
     const open2 = Boolean(openProfileMenu);
+    const { classes, auth } = this.props;
+
     const notificationList = {
       user: "Mayank Padshala",
       question:
@@ -231,7 +231,11 @@ class NavHeader extends Component {
                     // className="m-margin-up-down"
                   >
                     <Grid item>
-                      <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+                      <Avatar
+                        alt={auth.user.fname + auth.user.lname}
+                        src={auth.user.profileImg}
+                        className="avatar"
+                      />
                     </Grid>
                     <Grid item>
                       <Grid
@@ -271,7 +275,11 @@ class NavHeader extends Component {
                     // className="m-margin-up-down"
                   >
                     <Grid item>
-                      <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+                      <Avatar
+                        alt={auth.user.fname + auth.user.lname}
+                        src={auth.user.profileImg}
+                        className="avatar"
+                      />
                     </Grid>
                     <Grid item>
                       <Grid
@@ -510,9 +518,11 @@ class NavHeader extends Component {
                 autoFocus="True"
                 type="text"
               />
-              <div onClick={this.handleAvatarClick} className={classes.showCursor}>
-                <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
-              </div>
+              <Avatar
+                alt={auth.user.fname + auth.user.lname}
+                src={auth.user.profileImg}
+                className="avatar"
+              />
               <button
                 className="askQuestionBtn"
                 onClick={() => {
