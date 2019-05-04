@@ -12,6 +12,19 @@ import Divider from "@material-ui/core/Divider";
 import Avatar from "@material-ui/core/Avatar";
 import withStyles from "@material-ui/core/styles/withStyles";
 import SimpleReactValidator from "simple-react-validator";
+import { Provider, connect } from "react-redux";
+import PropTypes from "prop-types";
+import {
+  Route,
+  BrowserRouter,
+  Switch,
+  Link,
+  withRouter
+} from "react-router-dom";
+import { addQuestion } from "../../../redux/actions/homeAction";
+import { logoutUser } from "../../../redux/actions/authActions";
+
+const styles = theme => ({});
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -94,6 +107,7 @@ class AddQuestion extends React.Component {
     });
   };
   render() {
+    const {classes, auth} = this.props;
     return (
       <div>
         <Dialog
@@ -135,7 +149,7 @@ class AddQuestion extends React.Component {
                 // className="m-margin-up-down"
               >
                 <Grid item>
-                  <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+                  <Avatar alt="Remy Sharp" src={auth.user.profileImg} className="avatar" />
                 </Grid>
                 <Grid item>
                   <Grid
@@ -146,7 +160,7 @@ class AddQuestion extends React.Component {
                     className="m-margin-up-down"
                   >
                     <Grid item className="black-clr">
-                      {"Mayank Padshala Asked"}
+                      {auth.user.fname + " " + auth.user.lname + " Asked" }
                     </Grid>
                     {/* <Grid item className="fnt-13">
                                             {"Answered 7H ago"}
@@ -215,4 +229,16 @@ class AddQuestion extends React.Component {
   }
 }
 
-export default AddQuestion;
+
+AddQuestion.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { addQuestion, logoutUser }
+)(withStyles(styles)(withRouter(AddQuestion)));
