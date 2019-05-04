@@ -204,7 +204,9 @@ class QuestionCard extends React.Component {
                     <Avatar
                       alt={
                         answer.answerOwner !== undefined
-                          ? answer.answerOwner.fname + answer.answerOwner.lname
+                          ? answer.answerOwner.fname +
+                            " " +
+                            answer.answerOwner.lname
                           : "Anonymous User"
                       }
                       src={
@@ -225,7 +227,9 @@ class QuestionCard extends React.Component {
                     >
                       <Grid item className="black-clr">
                         {answer.answerOwner !== undefined
-                          ? answer.answerOwner.fname + answer.answerOwner.lname
+                          ? answer.answerOwner.fname +
+                            " " +
+                            answer.answerOwner.lname
                           : "Anonymous User"}
                       </Grid>
                       <Grid item className="fnt-13">
