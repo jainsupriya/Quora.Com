@@ -43,8 +43,34 @@ export const setProfileCredential = (userId, profiledata) => dispatch => {
     .catch(err => console.log(err));
 };
 
-// set profile name
+// set profile education
 export const setProfileEducation = (userId, profiledata) => dispatch => {
+  axios
+    .put(`/user/${userId}`, profiledata)
+    .then(res => {
+      dispatch({
+        type: GET_USER_DETAILS,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// set profile education
+export const setProfileEmployment = (userId, profiledata) => dispatch => {
+  axios
+    .put(`/user/${userId}`, profiledata)
+    .then(res => {
+      dispatch({
+        type: GET_USER_DETAILS,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// set profile personal
+export const setProfilePersonal = (userId, profiledata) => dispatch => {
   axios
     .put(`/user/${userId}`, profiledata)
     .then(res => {

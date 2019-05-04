@@ -86,14 +86,36 @@ class DialogEducation extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    //console.log(nextProps);
     this.setState({
-      current: nextProps.current,
-      school: nextProps.school,
-      Concentration: nextProps.Concentration,
-      secondaryConcentration: nextProps.secondaryConcentration,
-      degreeType: nextProps.degreeType,
-      graduationYear: nextProps.graduationYear,
-      description: nextProps.description
+      current:
+        nextProps.education.current !== undefined
+          ? nextProps.education.current
+          : "",
+      school:
+        nextProps.education.school !== undefined
+          ? nextProps.education.school
+          : "",
+      Concentration:
+        nextProps.education.Concentration !== undefined
+          ? nextProps.education.Concentration
+          : "",
+      secondaryConcentration:
+        nextProps.education.secondaryConcentration !== undefined
+          ? nextProps.education.secondaryConcentration
+          : "",
+      degreeType:
+        nextProps.education.degreeType !== undefined
+          ? nextProps.education.degreeType
+          : "",
+      graduationYear:
+        nextProps.education.graduationYear !== undefined
+          ? nextProps.education.graduationYear
+          : "",
+      description:
+        nextProps.education.description !== undefined
+          ? nextProps.education.description
+          : ""
     });
   }
 
@@ -124,8 +146,9 @@ class DialogEducation extends Component {
 
   render() {
     const { classes } = this.props;
-console.log(this.props);
-    const profilecredential = this.props.profileCredential;
+    console.log(this.props);
+
+    const education = this.props.education;
 
     return (
       <div>
@@ -199,23 +222,227 @@ console.log(this.props);
                 </Grid>
               </Grid>
 
-              <Grid item xs={9}>
-                <Grid item xs={2}>
-                  {"    "}
+              <Grid item xs={12}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                  //className="m-margin-up-down"
+                >
+                  <Grid item xs={1} />
+                  <Grid item xs={4}>
+                    <label
+                      class="input_label"
+                      for="__w2_wUZE3W2P32_position"
+                      id="__w2_wUZE3W2P32_label"
+                      // style={{ fontWeight: "bold" }}
+                    >
+                      School
+                    </label>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <input
+                      class="text input_field"
+                      type="text"
+                      placeholder="Harvard"
+                      value={this.state.school}
+                      onChange={this.onChange}
+                      name="school"
+                      required="False"
+                      maxlength="50"
+                      data-group="js-editable"
+                      w2cid="wUZE3W2P32"
+                      id="__w2_wUZE3W2P32_position"
+                      style={{ width: "100%" }}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={10}>
-                  <textarea
-                    class="selector_input"
-                    name="profileCredential"
-                    type="text"
-                    rows="1"
-                    title="Position"
-                    onChange={this.onChange}
-                    value={this.state.profileCredential}
-                    data-group="js-editable"
-                    placeholder="Something special about you!"
-                    style={{ paddingLeft: "12%" }}
-                  />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                  //className="m-margin-up-down"
+                >
+                  <Grid item xs={1} />
+                  <Grid item xs={4}>
+                    <label
+                      class="input_label"
+                      for="__w2_wUZE3W2P32_position"
+                      id="__w2_wUZE3W2P32_label"
+                      // style={{ fontWeight: "bold" }}
+                    >
+                      Concentration
+                    </label>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <input
+                      class="text input_field"
+                      type="text"
+                      placeholder="Major"
+                      value={this.state.Concentration}
+                      onChange={this.onChange}
+                      name="Concentration"
+                      required="False"
+                      maxlength="50"
+                      data-group="js-editable"
+                      w2cid="wUZE3W2P32"
+                      id="__w2_wUZE3W2P32_position"
+                      style={{ width: "100%" }}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                  //className="m-margin-up-down"
+                >
+                  <Grid item xs={1} />
+                  <Grid item xs={4}>
+                    <label
+                      class="input_label"
+                      for="__w2_wUZE3W2P32_position"
+                      id="__w2_wUZE3W2P32_label"
+                      // style={{ fontWeight: "bold" }}
+                    >
+                      Concentration II
+                    </label>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <input
+                      class="text input_field"
+                      type="text"
+                      placeholder="Minor"
+                      required="False"
+                      value={this.state.secondaryConcentration}
+                      onChange={this.onChange}
+                      name="secondaryConcentration"
+                      maxlength="50"
+                      data-group="js-editable"
+                      w2cid="wUZE3W2P32"
+                      id="__w2_wUZE3W2P32_position"
+                      style={{ width: "100%" }}
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                  //className="m-margin-up-down"
+                >
+                  <Grid item xs={1} />
+                  <Grid item xs={4}>
+                    <label
+                      class="input_label"
+                      for="__w2_wUZE3W2P32_position"
+                      id="__w2_wUZE3W2P32_label"
+                      // style={{ fontWeight: "bold" }}
+                    >
+                      Degree type
+                    </label>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <input
+                      class="date input_field"
+                      type="text"
+                      placeholder="MS"
+                      required="False"
+                      value={this.state.degreeType}
+                      onChange={this.onChange}
+                      name="degreeType"
+                      maxlength="50"
+                      data-group="js-editable"
+                      w2cid="wUZE3W2P32"
+                      id="__w2_wUZE3W2P32_position"
+                      style={{ width: "100%" }}
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                    //className="m-margin-up-down"
+                  >
+                    <Grid item xs={1} />
+                    <Grid item xs={4}>
+                      <label
+                        class="input_label"
+                        for="__w2_wUZE3W2P32_position"
+                        id="__w2_wUZE3W2P32_label"
+                        // style={{ fontWeight: "bold" }}
+                      >
+                        Graduation year
+                      </label>
+                    </Grid>
+                    <Grid item xs={7}>
+                      <input
+                        class="date input_field"
+                        type="date"
+                        placeholder="123456789"
+                        required="False"
+                        value={this.state.graduationYear}
+                        onChange={this.onChange}
+                        name="graduationYear"
+                        maxlength="50"
+                        data-group="js-editable"
+                        w2cid="wUZE3W2P32"
+                        id="__w2_wUZE3W2P32_position"
+                        style={{ width: "100%" }}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                    //className="m-margin-up-down"
+                  >
+                    <Grid item xs={1} />
+                    <Grid item xs={4}>
+                      <label
+                        class="input_label"
+                        for="__w2_wUZE3W2P32_position"
+                        id="__w2_wUZE3W2P32_label"
+                        // style={{ fontWeight: "bold" }}
+                      >
+                        Current
+                      </label>
+                    </Grid>
+                    <Grid item xs={7}>
+                      <input
+                        class="checkbox input_field"
+                        type="checkbox"
+                        placeholder="123456789"
+                        required="False"
+                        maxlength="50"
+                        data-group="js-editable"
+                        value={this.state.current}
+                        onChange={this.onChange}
+                        name="current"
+                        w2cid="wUZE3W2P32"
+                        id="__w2_wUZE3W2P32_position"
+                        style={{ width: "100%" }}
+                      />
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
