@@ -12,7 +12,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import NavHeader from "./header/navHeader";
 import AppBar from "@material-ui/core/AppBar";
 import Home from "./homeComponents/Home";
-import QuestionAnswer from "./AnswerComponent/QuestionAnswer";
+
 const styles = theme => ({});
 
 //Create a Main Component
@@ -32,9 +32,9 @@ class Quora extends Component {
         </AppBar>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/answer" component={QuestionAnswer} />
-          <Route exact path="/profile" component={Home} />
-          <Route exact path="/notifications" component={Home} />
+          <Route path="/answer" component={Home} />
+          <Route path="/profile" component={Home} />
+          <Route path="/notifications" component={Home} />
           <Route render={() => <h3>Page not Found</h3>} />
         </Switch>
       </div>

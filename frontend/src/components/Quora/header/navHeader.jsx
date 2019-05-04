@@ -140,7 +140,8 @@ class NavHeader extends Component {
     this.setState({
       navSelectedItem: selectedItem
     });
-    this.props.history.push(`/answer`);
+    if (selectedItem === "home") this.props.history.push(`/`);
+    else this.props.history.push(`/${selectedItem}`);
   };
 
   handleNotificationClose = () => {
@@ -386,7 +387,12 @@ class NavHeader extends Component {
               justify="space-between"
               alignItems="center"
             >
-              <div className="logo-img" />
+              <div
+                className="logo-img"
+                onClick={() => {
+                  this.navigationClick("home");
+                }}
+              />
               <div
                 className={
                   this.state.navSelectedItem === "home"

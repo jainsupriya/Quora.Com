@@ -54,10 +54,10 @@ class QuestionCard extends React.Component {
         }
       }
     }
-    this.state = {
+    this.setState({
       isUpvoted: isUpvoted,
       upvoteCount: upvoteCount
-    };
+    });
   }
 
   handleUpvote = (isUpvoted, upvoteCount, answerOwnerId) => {
@@ -202,8 +202,16 @@ class QuestionCard extends React.Component {
                 >
                   <Grid item>
                     <Avatar
-                      alt={answer.answerOwner.fname}
-                      src={answer.answerOwner.profileImg}
+                      alt={
+                        answer.answerOwner !== undefined
+                          ? answer.answerOwner.fname + answer.answerOwner.lname
+                          : "Anonymous User"
+                      }
+                      src={
+                        answer.answerOwner !== undefined
+                          ? answer.answerOwner.profileImg
+                          : ""
+                      }
                       className="avatar"
                     />
                   </Grid>
@@ -216,7 +224,9 @@ class QuestionCard extends React.Component {
                       className="m-margin-up-down"
                     >
                       <Grid item className="black-clr">
-                        {answer.answerOwner.fname} {answer.answerOwner.lname}
+                        {answer.answerOwner !== undefined
+                          ? answer.answerOwner.fname + answer.answerOwner.lname
+                          : "Anonymous User"}
                       </Grid>
                       <Grid item className="fnt-13">
                         {"Answered"}{" "}
@@ -231,7 +241,7 @@ class QuestionCard extends React.Component {
 
                 <Grid item className="ans-main-content">
                   <ReadMoreReact
-                    text={answer.answer}
+                    text={answer.answer === undefined ? "" : answer.answer}
                     min={80}
                     ideal={100}
                     max={200}
