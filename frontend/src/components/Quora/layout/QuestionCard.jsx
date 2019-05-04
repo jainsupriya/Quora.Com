@@ -18,151 +18,97 @@ import ReadMoreReact from "read-more-react";
 import isEmpty from "../../../validator/is-empty";
 import moment from "moment";
 import axios from "axios";
+
+import { Link } from "react-router-dom";
+import AnswerCard from "../AnswerComponent/AnswerCard";
 const styles = theme => ({});
 
 class QuestionCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      answer: {},
-      showComments: false
+      answer: "No answer",
+      isUpvoted: false,
+      upvoteCount: 0,
+      comment: "New Comment added",
+      showComment: false
     };
   }
 
-  showComments = () => {
-    this.setState({ showComments: !this.state.showComments });
+  componentDidMount() {
+    var upvoteCount = 0;
+    var isUpvoted = false;
+    if (
+      this.props.question.answerList !== undefined &&
+      this.props.question.answerList.length
+    ) {
+      if (
+        this.props.question.answerList[0].upVotes !== undefined &&
+        this.props.question.answerList[0].upVotes.length
+      ) {
+        upvoteCount = this.props.question.answerList[0].upVotes.length;
+        if (
+          this.props.question.answerList[0].upVotes.includes(
+            this.props.user._id
+          )
+        ) {
+          isUpvoted = true;
+        }
+      }
+    }
+    this.setState({
+      isUpvoted: isUpvoted,
+      upvoteCount: upvoteCount
+    });
+  }
+
+  handleUpvote = (isUpvoted, upvoteCount, answerOwnerId) => {
+    if (!isUpvoted) {
+      upvoteCount = upvoteCount + 1;
+      axios
+        .put(`/answer/upvoteInc/${this.props.user._id}/${answerOwnerId}`)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err.data));
+    } else {
+      upvoteCount = upvoteCount > 0 ? upvoteCount - 1 : 0;
+      axios
+        .put(`/answer/upvoteDec/${this.props.user._id}/${answerOwnerId}`)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err.data));
+    }
+
+    this.setState({
+      isUpvoted: !isUpvoted,
+      upvoteCount: upvoteCount
+    });
+  };
+
+  handleAddComment = () => {
+    this.setState({
+      showComment: true
+    });
   };
 
   render() {
-    const { question } = this.props;
+    const { question, user } = this.props;
 
-    const { answer } = this.state;
-    var answerComp;
+    var comp = "";
+    var upvotecomp = "";
+    var upvoteCount = 0;
+    var isUpvoted = false;
 
-    if (!isEmpty(answer)) {
-      var username = "";
-      if (answer.isAnonymous) {
-        username = "Anonymous user";
-      } else {
-        username = "Parth Modi";
-      }
+    if (question.answerList !== undefined && question.answerList.length) {
+      var answer = question.answerList[0];
+      if (
+        question.answerList[0].upVotes !== undefined &&
+        question.answerList[0].upVotes.length
+      ) {
+        upvoteCount = question.answerList[0].upVotes.length;
 
-      var upvotecomp = "";
-
-      if (answer.upVotes.includes(this.props.auth.user._id)) {
-        upvotecomp = (
-          <span>
+        if (question.answerList[0].upVotes.includes(user._id)) {
+          isUpvoted = true;
+          upvotecomp = (
             <span>
-              <svg
-                width="24px"
-                height="24px"
-                viewBox="0 0 24 24"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g
-                  id="upvote"
-                  className="icon_svg-stroke icon_svg-fill"
-                  stroke-width="1.5"
-                  stroke="#666"
-                  fill="none"
-                  fill-rule="evenodd"
-                  stroke-linejoin="round"
-                >
-                  <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15" />
-                </g>
-              </svg>
-            </span>
-            <span className="m-padding-left-right-15 upvote-pressed">{`Upvote`}</span>
-          </span>
-        );
-      } else {
-        upvotecomp = (
-          <span>
-            <span>
-              <svg
-                width="24px"
-                height="24px"
-                viewBox="0 0 24 24"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g
-                  id="upvote"
-                  stroke-width="1.5"
-                  stroke="#666"
-                  fill="none"
-                  fill-rule="evenodd"
-                  stroke-linejoin="round"
-                >
-                  <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15" />
-                </g>
-              </svg>
-            </span>
-            <span className="m-padding-left-right-15 ">{`Upvote`}</span>
-          </span>
-        );
-      }
-
-      answerComp = (
-        <React.Fragment>
-          <Grid
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-          >
-            <Grid item>
-              <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
-            </Grid>
-            <Grid item>
-              <Grid
-                container
-                direction="column"
-                justify="flex-start"
-                alignItems="flex-start"
-                className="m-margin-up-down"
-              >
-                <Grid item className="black-clr">
-                  {username}
-                </Grid>
-                <Grid item className="fnt-13">
-                  {"Answered"}{" "}
-                  {moment(
-                    new Date(answer.postedTime),
-                    "MMMM Do YYYY, h:mm:ss a"
-                  ).fromNow()}
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item className="ans-main-content">
-            <ReadMoreReact
-              text={answer.answer}
-              min={80}
-              ideal={100}
-              max={200}
-              readMoreText="...(more)"
-              showLessButton={true}
-            />
-          </Grid>
-          <Grid item className="votes">
-            {answer.views} {`views · View Upvoters`}
-          </Grid>
-          <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="flex-start"
-            className="answer-actions"
-          >
-            <Grid item>
-              {upvotecomp}
-              <span className="m-padding-left-right-15">
-                {" "}
-                {answer.upVotesCount}
-              </span>
               <span>
                 <svg
                   width="24px"
@@ -172,379 +118,114 @@ class QuestionCard extends React.Component {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <g
-                    id="sync"
-                    class="icon_svg-stroke"
-                    stroke="#666"
+                    id="upvote"
+                    className="icon_svg-stroke icon_svg-fill"
                     stroke-width="1.5"
-                    fill="none"
-                    fill-rule="evenodd"
-                    stroke-linecap="round"
-                  >
-                    <path
-                      d="M19.7477789,9.99927692 C18.8594418,6.54918939 15.7274185,4 12,4 C8.27166139,4 5.13901185,6.55044813 4.25156364,10.0018321 M4.25328626,14.0048552 C5.14305933,17.4528459 8.2740698,20 12,20 C15.7261126,20 18.8572473,17.4525964 19.7468444,14.0043488"
-                      id="circle"
-                    />
-                    <polyline
-                      id="arrow"
-                      transform="translate(4.742997, 8.742997) rotate(-20.000000) translate(-4.742997, -8.742997) "
-                      points="2.99299734 6.99299734 2.99299734 10.4929973 6.49299734 10.4929973"
-                    />
-                    <polyline
-                      id="arrow"
-                      transform="translate(19.242997, 15.242997) scale(-1, -1) rotate(-20.000000) translate(-19.242997, -15.242997) "
-                      points="17.4929973 13.4929973 17.4929973 16.9929973 20.9929973 16.9929973"
-                    />
-                  </g>
-                </svg>
-              </span>
-              <span className="m-padding-left-right-15">{`Share`}</span>
-              <span className="m-padding-left-right-15">{`2`}</span>
-            </Grid>
-            <Grid item>
-              <span className="m-padding-left-right-15">
-                <svg
-                  width="24px"
-                  height="24px"
-                  viewBox="0 0 24 24"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g
-                    id="downvote"
-                    class=""
                     stroke="#666"
                     fill="none"
-                    stroke-width="1.5"
                     fill-rule="evenodd"
                     stroke-linejoin="round"
                   >
-                    <polygon
-                      transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) "
-                      points="12 4 3 15 9 15 9 20 15 20 15 15 21 15"
-                    />
+                    <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15" />
                   </g>
                 </svg>
               </span>
-              <span className="m-padding-left-right-15">
-                <svg
-                  width="24px"
-                  height="24px"
-                  viewBox="0 0 24 24"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
+              <span className="m-padding-left-right-15 upvote-pressed">
+                {" "}
+                <Link
+                  to=""
+                  onClick={() =>
+                    this.handleUpvote(
+                      isUpvoted,
+                      upvoteCount,
+                      question.answerList[0]._id
+                    )
+                  }
+                >{`Upvote`}</Link>
+              </span>
+            </span>
+          );
+        }
+      } else {
+        isUpvoted = false;
+        upvotecomp = (
+          <span>
+            <span>
+              <svg
+                width="24px"
+                height="24px"
+                viewBox="0 0 24 24"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  id="upvote"
+                  stroke-width="1.5"
+                  stroke="#666"
+                  fill="none"
+                  fill-rule="evenodd"
+                  stroke-linejoin="round"
                 >
-                  <g
-                    id="share"
-                    class="icon_svg-stroke"
-                    stroke="#666"
-                    fill="none"
-                    stroke-width="1.5"
-                    fill-rule="evenodd"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      d="M12.0001053,2.99989467 L4.00010533,12.7776724 L9.33343867,12.7776724 C9.78266695,14.7041066 10.5048892,16.2782509 11.5001053,17.5001053 C12.4953215,18.7219597 13.9953215,19.8886264 16.0001053,21.0001053 C15.3415908,19.6668553 14.8428108,18.1668553 14.5037654,16.5001053 C14.16472,14.8333553 14.2190556,13.5925444 14.666772,12.7776724 L20.0001053,12.7776724 L12.0001053,2.99989467 Z"
-                      transform="translate(12.000105, 12.000000) rotate(90.000000) translate(-12.000105, -12.000000) "
-                    />
-                  </g>
-                </svg>
-              </span>
-              <span className="m-padding-left-right-15">
-                <svg
-                  width="24px"
-                  height="24px"
-                  viewBox="0 0 24 24"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g
-                    id="overflow"
-                    class="icon_svg-stroke"
-                    stroke-width="1.5"
-                    stroke="#666"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <path d="M5,14 C3.8954305,14 3,13.1045695 3,12 C3,10.8954305 3.8954305,10 5,10 C6.1045695,10 7,10.8954305 7,12 C7,13.1045695 6.1045695,14 5,14 Z M12,14 C10.8954305,14 10,13.1045695 10,12 C10,10.8954305 10.8954305,10 12,10 C13.1045695,10 14,10.8954305 14,12 C14,13.1045695 13.1045695,14 12,14 Z M19,14 C17.8954305,14 17,13.1045695 17,12 C17,10.8954305 17.8954305,10 19,10 C20.1045695,10 21,10.8954305 21,12 C21,13.1045695 20.1045695,14 19,14 Z" />
-                  </g>
-                </svg>
-              </span>
-            </Grid>
-          </Grid>
-          <Divider className="m-divider" />
-          <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="center"
-            // className="m-margin-up-down"
-          >
-            <Grid item>
-              <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
-            </Grid>
-            <Grid item xs={9}>
-              <input
-                type="text"
-                class="form-control corner-rounded"
-                placeholder="Add a Comment"
-              />
-            </Grid>
-            <Grid item>
-              <Button variant="contained" className="btn-margin">
-                Add Comment
-              </Button>
-            </Grid>
-          </Grid>
-        </React.Fragment>
-      );
-    } else {
-      answerComp = (
-        <React.Fragment>
-          <Grid
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-            // className="m-margin-up-down"
-          >
+                  <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15" />
+                </g>
+              </svg>
+            </span>
+            <span className="m-padding-left-right-15">
+              <Link
+                to=""
+                onClick={() =>
+                  this.handleUpvote(
+                    isUpvoted,
+                    upvoteCount,
+                    question.answerList[0]._id
+                  )
+                }
+              >{`Upvote`}</Link>
+            </span>
+          </span>
+        );
+      }
+
+      comp = (
+        <div>
+          <Paper elevation={1} className="m-padding-10">
             <Grid
               container
-              direction="row"
+              direction="column"
               justify="flex-start"
               alignItems="flex-start"
               // className="m-margin-up-down"
             >
               <Grid item>
-                <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+                <span className="reason-txt">Answer · Recommended for you</span>
               </Grid>
               <Grid item>
-                <Grid
-                  container
-                  direction="column"
-                  justify="flex-start"
-                  alignItems="flex-start"
-                  className="m-margin-up-down"
-                >
-                  <Grid item className="black-clr">
-                    {"Anonymous"}
-                  </Grid>
-                  <Grid item className="fnt-13">
-                    {"Answered 7H ago"}
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-
-            <Grid item className="ans-main-content">
-              <ReadMoreReact
-                text={`Too hard to get promoted. The process was slow and I got denied promo 
-            by the anonymous committee despite my manager and others on my team being 
-            re I was going to get it.The only metric that matters is “launch”. 
-            I worked on almost exclusively `}
-                min={80}
-                ideal={100}
-                max={200}
-                readMoreText="...(more)"
-                showLessButton={true}
-              />
-            </Grid>
-            <Grid item className="votes">
-              {`334 views · View Upvoters`}
-            </Grid>
-            <Grid
-              container
-              direction="row"
-              justify="space-between"
-              alignItems="flex-start"
-              className="answer-actions"
-            >
-              <Grid item>
-                <span>
-                  <svg
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g
-                      id="upvote"
-                      class=""
-                      stroke-width="1.5"
-                      stroke="#666"
-                      fill="none"
-                      fill-rule="evenodd"
-                      stroke-linejoin="round"
-                    >
-                      <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15" />
-                    </g>
-                  </svg>
-                </span>
-                <span className="m-padding-left-right-15">{`Upvotes`}</span>
-                <span className="m-padding-left-right-15">{`2`}</span>
-                <span>
-                  <svg
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g
-                      id="sync"
-                      class="icon_svg-stroke"
-                      stroke="#666"
-                      stroke-width="1.5"
-                      fill="none"
-                      fill-rule="evenodd"
-                      stroke-linecap="round"
-                    >
-                      <path
-                        d="M19.7477789,9.99927692 C18.8594418,6.54918939 15.7274185,4 12,4 C8.27166139,4 5.13901185,6.55044813 4.25156364,10.0018321 M4.25328626,14.0048552 C5.14305933,17.4528459 8.2740698,20 12,20 C15.7261126,20 18.8572473,17.4525964 19.7468444,14.0043488"
-                        id="circle"
-                      />
-                      <polyline
-                        id="arrow"
-                        transform="translate(4.742997, 8.742997) rotate(-20.000000) translate(-4.742997, -8.742997) "
-                        points="2.99299734 6.99299734 2.99299734 10.4929973 6.49299734 10.4929973"
-                      />
-                      <polyline
-                        id="arrow"
-                        transform="translate(19.242997, 15.242997) scale(-1, -1) rotate(-20.000000) translate(-19.242997, -15.242997) "
-                        points="17.4929973 13.4929973 17.4929973 16.9929973 20.9929973 16.9929973"
-                      />
-                    </g>
-                  </svg>
-                </span>
-                <span className="m-padding-left-right-15">{`Share`}</span>
-                <span className="m-padding-left-right-15">{`2`}</span>
-              </Grid>
-              <Grid item>
-                <span className="m-padding-left-right-15">
-                  <svg
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g
-                      id="downvote"
-                      class=""
-                      stroke="#666"
-                      fill="none"
-                      stroke-width="1.5"
-                      fill-rule="evenodd"
-                      stroke-linejoin="round"
-                    >
-                      <polygon
-                        transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) "
-                        points="12 4 3 15 9 15 9 20 15 20 15 15 21 15"
-                      />
-                    </g>
-                  </svg>
-                </span>
-                <span className="m-padding-left-right-15">
-                  <svg
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g
-                      id="share"
-                      class="icon_svg-stroke"
-                      stroke="#666"
-                      fill="none"
-                      stroke-width="1.5"
-                      fill-rule="evenodd"
-                      stroke-linejoin="round"
-                    >
-                      <path
-                        d="M12.0001053,2.99989467 L4.00010533,12.7776724 L9.33343867,12.7776724 C9.78266695,14.7041066 10.5048892,16.2782509 11.5001053,17.5001053 C12.4953215,18.7219597 13.9953215,19.8886264 16.0001053,21.0001053 C15.3415908,19.6668553 14.8428108,18.1668553 14.5037654,16.5001053 C14.16472,14.8333553 14.2190556,13.5925444 14.666772,12.7776724 L20.0001053,12.7776724 L12.0001053,2.99989467 Z"
-                        transform="translate(12.000105, 12.000000) rotate(90.000000) translate(-12.000105, -12.000000) "
-                      />
-                    </g>
-                  </svg>
-                </span>
-                <span className="m-padding-left-right-15">
-                  <svg
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g
-                      id="overflow"
-                      class="icon_svg-stroke"
-                      stroke-width="1.5"
-                      stroke="#666"
-                      fill="none"
-                      fill-rule="evenodd"
-                    >
-                      <path d="M5,14 C3.8954305,14 3,13.1045695 3,12 C3,10.8954305 3.8954305,10 5,10 C6.1045695,10 7,10.8954305 7,12 C7,13.1045695 6.1045695,14 5,14 Z M12,14 C10.8954305,14 10,13.1045695 10,12 C10,10.8954305 10.8954305,10 12,10 C13.1045695,10 14,10.8954305 14,12 C14,13.1045695 13.1045695,14 12,14 Z M19,14 C17.8954305,14 17,13.1045695 17,12 C17,10.8954305 17.8954305,10 19,10 C20.1045695,10 21,10.8954305 21,12 C21,13.1045695 20.1045695,14 19,14 Z" />
-                    </g>
-                  </svg>
-                </span>
+                <span className="question-txt">{question.question}</span>
               </Grid>
 
-              <Grid item>
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    this.showComments();
-                  }}
-                >
-                  All
-                </div>
-              </Grid>
-            </Grid>
-            <Divider className="m-divider" />
-            <Grid
-              container
-              direction="row"
-              justify="space-between"
-              alignItems="center"
-              // className="m-margin-up-down"
-            >
-              <Grid item xs={1}>
-                <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
-              </Grid>
-              <Grid item xs={7}>
-                <input
-                  type="text"
-                  class="form-control corner-rounded"
-                  placeholder="Add a Comment"
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <Button variant="contained" className="btn-margin">
-                  Add Comment
-                </Button>
-              </Grid>
-            </Grid>
-            <Divider className="m-divider" />
-
-            {this.state.showComments ? (
-              <Grid
-                container
-                direction="column"
-                justify="space-between"
-                alignItems="center"
-                // className="m-margin-up-down"
-              >
-                <Divider/>
+              <React.Fragment>
                 <Grid
                   container
                   direction="row"
                   justify="flex-start"
                   alignItems="flex-start"
-                  // className="m-margin-up-down"
                 >
                   <Grid item>
-                    <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+                    <Avatar
+                      alt={
+                        answer.answerOwner !== undefined
+                          ? answer.answerOwner.fname +
+                            " " +
+                            answer.answerOwner.lname
+                          : "Anonymous User"
+                      }
+                      src={
+                        answer.answerOwner !== undefined
+                          ? answer.answerOwner.profileImg
+                          : ""
+                      }
+                      className="avatar"
+                    />
                   </Grid>
                   <Grid item>
                     <Grid
@@ -555,10 +236,18 @@ class QuestionCard extends React.Component {
                       className="m-margin-up-down"
                     >
                       <Grid item className="black-clr">
-                        {"Anonymous"}
+                        {answer.answerOwner !== undefined
+                          ? answer.answerOwner.fname +
+                            " " +
+                            answer.answerOwner.lname
+                          : "Anonymous User"}
                       </Grid>
                       <Grid item className="fnt-13">
-                        {"Commented 7H ago"}
+                        {"Answered"}{" "}
+                        {moment(
+                          new Date(answer.postedTime),
+                          "MMMM Do YYYY, h:mm:ss a"
+                        ).fromNow()}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -566,10 +255,7 @@ class QuestionCard extends React.Component {
 
                 <Grid item className="ans-main-content">
                   <ReadMoreReact
-                    text={`Too hard to get promoted. The process was slow and I got denied promo 
-            by the anonymous committee despite my manager and others on my team being 
-            re I was going to get it.The only metric that matters is “launch”. 
-            I worked on almost exclusively `}
+                    text={answer.answer === undefined ? "" : answer.answer}
                     min={80}
                     ideal={100}
                     max={200}
@@ -577,37 +263,201 @@ class QuestionCard extends React.Component {
                     showLessButton={true}
                   />
                 </Grid>
-                
-                
-              </Grid>
-            ) : (
-              <Grid />
-            )}
-          </Grid>
-        </React.Fragment>
+                <Grid item className="votes">
+                  {answer.viewCount} {`views · View Upvoters`}
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="flex-start"
+                  className="answer-actions"
+                >
+                  <Grid item>
+                    {upvotecomp}
+                    <span className="m-padding-left-right-15">
+                      {" "}
+                      {upvoteCount}
+                    </span>
+                    <span>
+                      <svg
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g
+                          id="sync"
+                          class="icon_svg-stroke"
+                          stroke="#666"
+                          stroke-width="1.5"
+                          fill="none"
+                          fill-rule="evenodd"
+                          stroke-linecap="round"
+                        >
+                          <path
+                            d="M19.7477789,9.99927692 C18.8594418,6.54918939 15.7274185,4 12,4 C8.27166139,4 5.13901185,6.55044813 4.25156364,10.0018321 M4.25328626,14.0048552 C5.14305933,17.4528459 8.2740698,20 12,20 C15.7261126,20 18.8572473,17.4525964 19.7468444,14.0043488"
+                            id="circle"
+                          />
+                          <polyline
+                            id="arrow"
+                            transform="translate(4.742997, 8.742997) rotate(-20.000000) translate(-4.742997, -8.742997) "
+                            points="2.99299734 6.99299734 2.99299734 10.4929973 6.49299734 10.4929973"
+                          />
+                          <polyline
+                            id="arrow"
+                            transform="translate(19.242997, 15.242997) scale(-1, -1) rotate(-20.000000) translate(-19.242997, -15.242997) "
+                            points="17.4929973 13.4929973 17.4929973 16.9929973 20.9929973 16.9929973"
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                    <span className="m-padding-left-right-15">{`Share`}</span>
+                    <span className="m-padding-left-right-15">{`2`}</span>
+                  </Grid>
+                  <Grid item>
+                    <span className="m-padding-left-right-15">
+                      <svg
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g
+                          id="downvote"
+                          class=""
+                          stroke="#666"
+                          fill="none"
+                          stroke-width="1.5"
+                          fill-rule="evenodd"
+                          stroke-linejoin="round"
+                        >
+                          <polygon
+                            transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) "
+                            points="12 4 3 15 9 15 9 20 15 20 15 15 21 15"
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                    <span className="m-padding-left-right-15">
+                      <svg
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g
+                          id="share"
+                          class="icon_svg-stroke"
+                          stroke="#666"
+                          fill="none"
+                          stroke-width="1.5"
+                          fill-rule="evenodd"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M12.0001053,2.99989467 L4.00010533,12.7776724 L9.33343867,12.7776724 C9.78266695,14.7041066 10.5048892,16.2782509 11.5001053,17.5001053 C12.4953215,18.7219597 13.9953215,19.8886264 16.0001053,21.0001053 C15.3415908,19.6668553 14.8428108,18.1668553 14.5037654,16.5001053 C14.16472,14.8333553 14.2190556,13.5925444 14.666772,12.7776724 L20.0001053,12.7776724 L12.0001053,2.99989467 Z"
+                            transform="translate(12.000105, 12.000000) rotate(90.000000) translate(-12.000105, -12.000000) "
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                    <span className="m-padding-left-right-15">
+                      <svg
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g
+                          id="overflow"
+                          class="icon_svg-stroke"
+                          stroke-width="1.5"
+                          stroke="#666"
+                          fill="none"
+                          fill-rule="evenodd"
+                        >
+                          <path d="M5,14 C3.8954305,14 3,13.1045695 3,12 C3,10.8954305 3.8954305,10 5,10 C6.1045695,10 7,10.8954305 7,12 C7,13.1045695 6.1045695,14 5,14 Z M12,14 C10.8954305,14 10,13.1045695 10,12 C10,10.8954305 10.8954305,10 12,10 C13.1045695,10 14,10.8954305 14,12 C14,13.1045695 13.1045695,14 12,14 Z M19,14 C17.8954305,14 17,13.1045695 17,12 C17,10.8954305 17.8954305,10 19,10 C20.1045695,10 21,10.8954305 21,12 C21,13.1045695 20.1045695,14 19,14 Z" />
+                        </g>
+                      </svg>
+                    </span>
+                  </Grid>
+                </Grid>
+                <Divider className="m-divider" />
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                  // className="m-margin-up-down"
+                >
+                  <Grid item>
+                    <Avatar
+                      alt={user.firstname}
+                      src={user.profileImg}
+                      className="avatar"
+                    />
+                  </Grid>
+                  <Grid item xs={9}>
+                    <input
+                      type="text"
+                      class="form-control corner-rounded"
+                      placeholder="Add a Comment"
+                      onChange={e => {
+                        this.setState({
+                          comment: e.target.value
+                        });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      className="btn-margin"
+                      onClick={() => {
+                        this.handleAddComment();
+                      }}
+                    >
+                      Add Comment
+                    </Button>
+                  </Grid>
+                  {this.state.showComment ? (
+                    <div className="comment_wrapper">
+                      <Avatar
+                        alt={user.fname}
+                        src={user.profileImg}
+                        className="avatar"
+                      />
+                      <div className="ui_layout_text">
+                        <span style={{ fontWeight: "bold", color: "black" }}>
+                          {" "}
+                          {user.fname + " " + user.lname}
+                        </span>
+                        <Grid item className="fnt-13">
+                          {"Just now"}
+                        </Grid>
+                        {this.state.comment}
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+              </React.Fragment>
+            </Grid>
+          </Paper>
+        </div>
       );
+    } else {
+      answer = "No Answer";
+      comp = <AnswerCard question={question} />;
     }
-    return (
-      <div>
-        <Paper elevation={1} className="m-padding-10">
-          <Grid
-            container
-            direction="column"
-            justify="flex-start"
-            alignItems="flex-start"
-            // className="m-margin-up-down"
-          >
-            <Grid item>
-              <span className="reason-txt">Answer · Recommended for you</span>
-            </Grid>
-            <Grid item>
-              <span className="question-txt">{question.question}</span>
-            </Grid>
-            {answerComp}
-          </Grid>
-        </Paper>
-      </div>
-    );
+
+    return <React.Fragment>{comp}</React.Fragment>;
   }
 }
 const mapStateToProps = state => ({
