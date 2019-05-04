@@ -353,7 +353,7 @@ class NavHeader extends Component {
                   <a
                     className={classes.profileMenu}
                     style={{ borderTop: "none" }}
-                    href="/profile"
+                    href="/myprofile"
                   >
                     Profile
                   </a>
