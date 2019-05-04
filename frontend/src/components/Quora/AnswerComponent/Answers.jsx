@@ -16,7 +16,6 @@ import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 
 import {
-  addQuestion,
   getUserDetails,
   getTopicQuestions,
   getQuestions
@@ -25,10 +24,10 @@ import {
 import Feed from "../layout/feed";
 import QuestionCard from "../layout/QuestionCard";
 import { AskQuestionCard } from "../layout/AskQuestionCard";
-import AddQuestion from "./AddQuestion";
+import { AddQuestion } from "../homeComponents/AddQuestion";
 const styles = theme => ({});
 
-class Home extends React.Component {
+class Answers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,19 +35,7 @@ class Home extends React.Component {
       userDetails: {},
       openAddQuestion: false
     };
-    this.handleAddQuestion = this.handleAddQuestion.bind(this);
   }
-
-  handleAddQuestion = (question, topic) => {
-    var questionData = {
-      question: question,
-      questionOwner: this.props.auth.user._id,
-      topicList: topic
-    };
-
-    this.props.addQuestion(questionData);
-    this.setState({ openAddQuestion: false });
-  };
 
   handleClickOpen = () => {
     this.setState({
@@ -81,7 +68,6 @@ class Home extends React.Component {
 
   render() {
     var userTopicList = this.props.userDetails.interestedTopicList;
-    //var userTopicList = ['test1', 'test2'];
     var QuestionComp;
 
     if (this.props.questions && this.props.questions.length > 0) {
@@ -94,7 +80,7 @@ class Home extends React.Component {
           return (
             <QuestionCard
               question={question}
-              answerList={question.answerList}
+              notificationsList={question.answerList}
             />
           );
         });
@@ -109,12 +95,12 @@ class Home extends React.Component {
         <AddQuestion
           openAddQuestion={this.state.openAddQuestion}
           handleClose={() => this.handleClose()}
-          handleAddQuestion={this.handleAddQuestion}
         />
       );
 
     return (
       <div>
+          <h1>hello</h1>
         {addQuestion}
         <Grid
           container
@@ -207,5 +193,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addQuestion, getUserDetails, getTopicQuestions, getQuestions }
-)(withStyles(styles)(Home));
+  { getUserDetails, getTopicQuestions, getQuestions }
+)(withStyles(styles)(Answers));

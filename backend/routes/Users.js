@@ -6,7 +6,10 @@ const redis = require('redis');
 const EXP_TIME = 40;
 
 // Create Redis Client
-let client = redis.createClient();
+// let client = redis.createClient();
+var client = redis.createClient(6379, 'redisforquora.gtvq8d.0001.usw1.cache.amazonaws.com', {
+    no_ready_check: true
+ });
 
 client.on('connect', function(){
   console.log('Connected to Redis...');
@@ -81,22 +84,26 @@ UserRoutes.get("/user/:userId", (req, res, next) => {
         "===================================================================================================================================================="
     );
     console.log("/get/user/:userId");
-    client.get("get/user/"+req.params.userId, function (err, reply) {
+    client.hget("get/user/",req.params.userId, function (err, reply) {
         if (err) {
             console.log(err);
             res.status(422).send(err);
         }else{
             if (reply) {
+                console.log(client.hlen("get/user/"));
                 res.status(200).send(JSON.parse(reply));
+                
             }
             else{
+                console.log(client.hlen("get/user/"));
                 var reqMsg = {
                     api: "get/user/:userId",
                     reqBody: { userId: req.params.userId }
                 };
                 kafka.make_request(TOPIC, reqMsg, function(err, results) {
                     res.status(results.status).send(results.data);
-                    client.setex("get/user/"+req.params.userId,EXP_TIME ,JSON.stringify(results.data))
+                    // client.setex("get/user/"+req.params.userId, EXP_TIME ,JSON.stringify(results.data));
+                    client.hset("get/user/", req.params.userId ,JSON.stringify(results.data))
                     // client.expire("get/user/"+req.params.userId ,EXP_TIME)
                 });
             }
@@ -112,6 +119,8 @@ UserRoutes.get("/users/searchByUsername/:usernameQuery", (req, res, next) => {
         "===================================================================================================================================================="
     );
     console.log("/get/users/searchByUsername/:usernameQuery");
+        
+
     var reqMsg = {
         api: "get/users/searchByUsername/:usernameQuery",
         reqBody: { usernameQuery: req.params.usernameQuery }

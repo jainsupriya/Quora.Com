@@ -96,6 +96,21 @@ QuestionRoutes.get("/questions/searchByTopic/:searchQuery", (req, res, next) => 
     });
 });
 
+// search question by topic
+QuestionRoutes.get("/questions/searchTopic/:searchQuery", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/questions/searchTopic/:searchQuery");
+    var reqMsg = {
+        api: "get/questions/searchTopic/:searchQuery",
+        reqBody: {searchQuery: req.params.searchQuery}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
 QuestionRoutes.put("/question/:questionId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
