@@ -16,15 +16,20 @@ import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 
 import {
+  addQuestion,
   getUserDetails,
   getTopicQuestions,
-  getQuestions
+  getQuestions,
+  getAnswersForQuestion,
 } from "../../../redux/actions/homeAction";
 
 import Feed from "../layout/feed";
 import QuestionCard from "../layout/QuestionCard";
 import { AskQuestionCard } from "../layout/AskQuestionCard";
-import { AddQuestion } from "../homeComponents/AddQuestion";
+import AddQuestion from "../homeComponents/AddQuestion";
+import NavHeader from "../header/navHeader";
+import AnswerCardForAnswerPage from "./AnswerCardForAnswerPage";
+import QuestionCardForAnswerPage from "./QuestionCardForAnswerPage";
 const styles = theme => ({});
 
 class Answers extends React.Component {
@@ -35,7 +40,19 @@ class Answers extends React.Component {
       userDetails: {},
       openAddQuestion: false
     };
+    this.handleAddQuestion = this.handleAddQuestion.bind(this);
   }
+
+  handleAddQuestion = (question, topic) => {
+    var questionData = {
+      question: question,
+      questionOwner: this.props.auth.user._id,
+      topicList: topic
+    };
+
+    this.props.addQuestion(questionData);
+    this.setState({ openAddQuestion: false });
+  };
 
   handleClickOpen = () => {
     this.setState({
@@ -47,7 +64,7 @@ class Answers extends React.Component {
     this.setState({ openAddQuestion: false });
   };
 
-  async componentDidMount() {
+  /*async componentDidMount() {
     await this.props.getUserDetails(this.props.auth.user._id);
 
     if (
@@ -60,6 +77,11 @@ class Answers extends React.Component {
     } else {
       this.props.getQuestions();
     }
+  }*/
+
+  componentDidMount()
+  { 
+    this.props.getAnswersForQuestion(this.props.match.params.id);
   }
 
   handleTopicClick = newTopic => {
@@ -69,23 +91,41 @@ class Answers extends React.Component {
   render() {
     var userTopicList = this.props.userDetails.interestedTopicList;
     var QuestionComp;
-
-    if (this.props.questions && this.props.questions.length > 0) {
-      QuestionComp = this.props.questions
+    console.log(this.props.answerforquestions[0].answerList)
+    if (this.props.answerforquestions && this.props.answerforquestions.length > 0) {
+      QuestionComp = this.props.answerforquestions
         .sort(
           (ques1, ques2) =>
             new Date(ques2.postedTime) - new Date(ques1.postedTime)
         )
         .map(question => {
           return (
-            <QuestionCard
-              question={question}
-              notificationsList={question.answerList}
-            />
+
+            <AnswerCardForAnswerPage question={this.props.answerforquestions[0].question}  answerList = {this.props.answerforquestions[0].answerList}/>
           );
         });
     } else {
       QuestionComp = <React.Fragment>No Data Found</React.Fragment>;
+    }
+    var AnswerComp;
+    console.log(this.props.answerforquestions[0].answerList)
+    if (this.props.answerforquestions && this.props.answerforquestions.length > 0) {
+      AnswerComp = this.props.answerforquestions
+        .sort(
+          (ques1, ques2) =>
+            new Date(ques2.postedTime) - new Date(ques1.postedTime)
+        )
+        .map(question => {
+          return (
+
+            <QuestionCardForAnswerPage
+            answerList={this.props.answerforquestions[0].answerList}
+            user={this.props.auth.user}
+          />
+          );
+        });
+    } else {
+      AnswerComp = <React.Fragment>No Data Found</React.Fragment>;
     }
 
     var addQuestion = "";
@@ -95,12 +135,15 @@ class Answers extends React.Component {
         <AddQuestion
           openAddQuestion={this.state.openAddQuestion}
           handleClose={() => this.handleClose()}
+          handleAddQuestion={this.handleAddQuestion}
         />
       );
 
     return (
       <div>
-          <h1>hello</h1>
+        <AppBar className="m-bg-color" position="sticky">
+          <NavHeader/>
+        </AppBar>
         {addQuestion}
         <Grid
           container
@@ -116,28 +159,10 @@ class Answers extends React.Component {
               justify="space-between"
               alignItems="flex-start"
             >
-              <Grid item xs={2} className="fix-pos">
-                <div style={{ position: "fixed", width: "11%" }}>
-                  {userTopicList !== undefined
-                    ? userTopicList.map(topic => {
-                        return (
-                          <Feed
-                            topic={topic}
-                            handleTopicClick={() =>
-                              this.handleTopicClick(topic)
-                            }
-                          />
-                        );
-                      })
-                    : ""}
-                </div>
-              </Grid>
+
               <Grid item xs={8} className="m-padding-left-right-15">
-                <AskQuestionCard
-                  user={this.props.auth.user}
-                  handleClickOpen={() => this.handleClickOpen()}
-                />
                 {QuestionComp}
+                {AnswerComp}
               </Grid>
 
               <Grid item xs={2} className="fix-pos">
@@ -188,10 +213,12 @@ const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
   userDetails: state.homeState.userDetails,
-  questions: state.homeState.questions
+  questions: state.homeState.questions,
+  answerforquestions: state.homeState.answerforquestions,
+
 });
 
 export default connect(
   mapStateToProps,
-  { getUserDetails, getTopicQuestions, getQuestions }
+  { addQuestion, getUserDetails, getTopicQuestions, getQuestions, getAnswersForQuestion }
 )(withStyles(styles)(Answers));
