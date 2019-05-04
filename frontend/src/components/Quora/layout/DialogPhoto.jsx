@@ -23,6 +23,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Dropzone from "react-dropzone";
 
+import { updateImage } from "../../../redux/actions/profileActions";
+
 const styles = theme => ({
   selector_input: {
     position: "relative",
@@ -80,9 +82,11 @@ const DialogActions = withStyles(theme => ({
 
 //Create a Main Component
 class DialogPhoto extends Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      file:""
+    };
   }
 
   onDrop = () => {
@@ -92,16 +96,26 @@ class DialogPhoto extends Component {
     //   req.attach(file.name, file);
   };
 
-  updateImage = event => {
-    const file = event.target.files[0];
-    console.log(file);
+  updateUserImage = event => {
+   // console.log(this.props.state.userDetails._id);
+   this.setState({
+     file:"yes"
+   })
+    if (event.target.files.length === 1) {
+      console.log(event.target.files);
+      let img = event.target.files[0];
+      var ext = img.name.substr(img.name.lastIndexOf("."));
+      let filename = "profileImageOf_" + this.props.state.userDetails._id + ext;
 
-    const fd = new FormData();
-    // fd.append("profileImg", this.state.selectedFile, this.state.selectedFile.name);
+      console.log(filename);
 
-    fd.append("profileImg", file, file.name);
+      const fd = new FormData();
+      fd.append("userId", this.props.state.userDetails._id);
+      fd.append("filename", filename);
+      fd.append("file", event.target.files[0]);
 
-    this.props.updateImage(fd);
+      this.props.updateImage(fd,this.props.history);
+    }
   };
 
   render() {
@@ -180,7 +194,7 @@ class DialogPhoto extends Component {
                           <input
                             {...getInputProps()}
                             style={{ width: "100%" }}
-                            onChange={this.updateImage}
+                            onChange={this.updateUserImage}
                             ref={fileInput => (this.fileInput = fileInput)}
                           />
                           <p>
@@ -204,7 +218,7 @@ class DialogPhoto extends Component {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.props.onClose} color="primary">
               Cancel
             </Button>
             <Button onClick={this.updateImage} color="primary">
@@ -218,12 +232,18 @@ class DialogPhoto extends Component {
 }
 
 DialogPhoto.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
+  updateImage: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth,
+  state: state.homeState,
+  userDetails: state.userDetails
+});
 
 export default connect(
   mapStateToProps,
-  {}
+  { updateImage }
 )(withStyles(styles)(withRouter(DialogPhoto)));

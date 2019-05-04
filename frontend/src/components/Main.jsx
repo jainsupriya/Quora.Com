@@ -7,10 +7,12 @@ import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import Quora from "./Quora/Quora";
 import Content from "./Quora/Content";
+import MyProfile from "./Quora/profile/MyProfile";
 import Profile from "./Quora/profile/Profile";
 import QuestionAnswer from "./Quora/AnswerComponent/QuestionAnswer";
 import Dashboard from "./Quora/Dashboard";
 import PrivateRoute from "./auth/PrivateRoute";
+import Message from "./Quora/Message/Message";
 
 // Check for token
 // if (localStorage.jwtToken) {
@@ -45,7 +47,9 @@ class Main extends Component {
               <Route path="/login" component={Login} />
               <PrivateRoute path="/content" component={Content} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/profile" component={Profile} />
+              <PrivateRoute path="/myprofile" component={MyProfile} />
+              <PrivateRoute path="/profile:id" component={Profile} />
+              <PrivateRoute path="/message" component={Message} />
               <PrivateRoute path="/answer" component={QuestionAnswer} />
               <Route render={() => <h3>Page not Found</h3>} />
             </Switch>

@@ -7,7 +7,8 @@ import {
 const initialState = {
   questions: [],
   question: {},
-  userDetails: {}
+  userDetails: {},
+  isChanged: false
 };
 
 export default function(state = initialState, action) {
@@ -18,6 +19,13 @@ export default function(state = initialState, action) {
         userDetails: action.payload
       };
 
+      case SET_USER_DETAILS:
+      return {
+        ...state,
+        isChanged: !state.isChanged,
+        userDetails: action.payload
+      };
+      
     case GET_QUESTIONS:
       return {
         ...state,

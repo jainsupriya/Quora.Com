@@ -5,16 +5,20 @@ import {
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
-  SET_CURRENT_USER
+  SET_CURRENT_USER,
+  SET_USER_DETAILS,
+  GET_USER_DETAILS
 } from "./types";
 
-// Get current profile
-export const setProfileCredential = (id, profileData) => dispatch => {
+// set profile name
+export const setProfileName = (id, profileData) => dispatch => {
+  console.log(id);
+  console.log(profileData);
   axios
     .put(`/user/${id}`, profileData)
     .then(res =>
       dispatch({
-        type: GET_PROFILE,
+        type: GET_USER_DETAILS,
         payload: res.data
       })
     )
@@ -27,28 +31,51 @@ export const setProfileCredential = (id, profileData) => dispatch => {
 };
 
 // set profile name
-export const setProfileName = (id, profileData) => dispatch => {
-  console.log(id);
-  console.log(profileData);
+export const setProfileCredential = (userId, profiledata) => dispatch => {
   axios
-    .put(`/user/${id}`, profileData)
-    .then(res =>
+    .put(`/user/${userId}`, profiledata)
+    .then(res => {
       dispatch({
-        type: SET_CURRENT_USER,
+        type: GET_USER_DETAILS,
         payload: res.data
-      })
-    )
-    .catch(err =>
-      dispatch({
-        type: GET_PROFILE,
-        payload: {}
-      })
-    );
+      });
+    })
+    .catch(err => console.log(err));
 };
 
-export const updateImage = fd => dispatch => {
-  axios.post("/file/uploadProfileImage", fd).then(res => {
-    console.log(res.data);
+// set profile name
+export const setProfileEducation = (userId, profiledata) => dispatch => {
+  axios
+    .put(`/user/${userId}`, profiledata)
+    .then(res => {
+      dispatch({
+        type: GET_USER_DETAILS,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// set profile name
+export const getProfileByUserId = (userId) => dispatch => {
+  axios
+    .get(`/user/${userId}`)
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+export const updateImage = (fd, history) => dispatch => {
+  axios.put("/file/updateProfileImg", fd).then(res => {
+    dispatch({
+      type: SET_USER_DETAILS,
+      payload: res.data
+    });
+    //history.push("/profile");
   });
 };
 
@@ -59,7 +86,7 @@ export const getCurrentProfile = id => dispatch => {
     .get(`/user/${id}`)
     .then(res =>
       dispatch({
-        type: GET_PROFILE,
+        type: GET_USER_DETAILS,
         payload: res.data
       })
     )
