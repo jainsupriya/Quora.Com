@@ -9,10 +9,11 @@ import Quora from "./Quora/Quora";
 import Content from "./Quora/Content";
 import MyProfile from "./Quora/profile/MyProfile";
 import Profile from "./Quora/profile/Profile";
-import QuestionAnswer from "./Quora/AnswerComponent/QuestionAnswer";
 import Dashboard from "./Quora/Dashboard";
 import PrivateRoute from "./auth/PrivateRoute";
 import Message from "./Quora/Message/Message";
+
+import QuestionAnswer from "./Quora/AnswerComponent/QuestionAnswer";
 
 // Check for token
 // if (localStorage.jwtToken) {

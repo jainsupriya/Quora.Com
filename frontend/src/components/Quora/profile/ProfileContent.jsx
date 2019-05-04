@@ -22,8 +22,8 @@ const styles = theme => ({});
 
 //Create a Main Component
 class ProfileContent extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       type: "ALL_TYPES",
       header: "Your Content",
@@ -37,7 +37,7 @@ class ProfileContent extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getContentDetails("5cbe44ad5445656fa98b6f7d");
+    this.props.getContentDetails(this.props.user);
     this.setState({
       contentDetails: this.props.contentDetails.contents
     });
@@ -398,7 +398,8 @@ class ProfileContent extends Component {
 }
 
 ProfileContent.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  profile: PropTypes.object
 };
 
 const mapStateToProps = state => ({
@@ -406,6 +407,7 @@ const mapStateToProps = state => ({
   // userState: state.userState,
   // errors: state.errors,
   // userDetails: state.homeState.userDetails,
+  profile: state.profile,
   contentDetails: state.contents
 });
 

@@ -36,6 +36,12 @@ class QuestionCard extends React.Component {
   }
 
   componentDidMount() {
+    console.log(
+      "question card mount" +
+        JSON.stringify(this.props.question.question) +
+        ":::Answer::" +
+        JSON.stringify(this.props.question.answerList)
+    );
     var upvoteCount = 0;
     var isUpvoted = false;
     if (
@@ -62,15 +68,16 @@ class QuestionCard extends React.Component {
     });
   }
 
-  handleUpvote = (isUpvoted, upvoteCount, answerOwnerId) => {
-    if (!isUpvoted) {
-      upvoteCount = upvoteCount + 1;
+  handleUpvote = answerOwnerId => {
+    var upvoteCount = 0;
+    if (!this.state.isUpvoted) {
+      upvoteCount = this.state.upvoteCount + 1;
       axios
         .put(`/answer/upvoteInc/${this.props.user._id}/${answerOwnerId}`)
         .then(res => console.log(res.data))
         .catch(err => console.log(err.data));
     } else {
-      upvoteCount = upvoteCount > 0 ? upvoteCount - 1 : 0;
+      upvoteCount = this.state.upvoteCount > 0 ? this.state.upvoteCount - 1 : 0;
       axios
         .put(`/answer/upvoteDec/${this.props.user._id}/${answerOwnerId}`)
         .then(res => console.log(res.data))
@@ -78,7 +85,7 @@ class QuestionCard extends React.Component {
     }
 
     this.setState({
-      isUpvoted: !isUpvoted,
+      isUpvoted: !this.state.isUpvoted,
       upvoteCount: upvoteCount
     });
   };
@@ -91,63 +98,48 @@ class QuestionCard extends React.Component {
 
   render() {
     const { question, user } = this.props;
+    const { isUpvoted, upvoteCount } = this.state;
 
     var comp = "";
     var upvotecomp = "";
-    var upvoteCount = 0;
-    var isUpvoted = false;
 
     if (question.answerList !== undefined && question.answerList.length) {
       var answer = question.answerList[0];
-      if (
-        question.answerList[0].upVotes !== undefined &&
-        question.answerList[0].upVotes.length
-      ) {
-        upvoteCount = question.answerList[0].upVotes.length;
 
-        if (question.answerList[0].upVotes.includes(user._id)) {
-          isUpvoted = true;
-          upvotecomp = (
+      if (isUpvoted) {
+        upvotecomp = (
+          <span>
             <span>
-              <span>
-                <svg
-                  width="24px"
-                  height="24px"
-                  viewBox="0 0 24 24"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
+              <svg
+                width="24px"
+                height="24px"
+                viewBox="0 0 24 24"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  id="upvote"
+                  className="icon_svg-stroke icon_svg-fill"
+                  stroke-width="1.5"
+                  stroke="#666"
+                  fill="none"
+                  fill-rule="evenodd"
+                  stroke-linejoin="round"
                 >
-                  <g
-                    id="upvote"
-                    className="icon_svg-stroke icon_svg-fill"
-                    stroke-width="1.5"
-                    stroke="#666"
-                    fill="none"
-                    fill-rule="evenodd"
-                    stroke-linejoin="round"
-                  >
-                    <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15" />
-                  </g>
-                </svg>
-              </span>
-              <span className="m-padding-left-right-15 upvote-pressed">
-                {" "}
-                <Link
-                  to=""
-                  onClick={() =>
-                    this.handleUpvote(
-                      isUpvoted,
-                      upvoteCount,
-                      question.answerList[0]._id
-                    )
-                  }
-                >{`Upvote`}</Link>
-              </span>
+                  <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15" />
+                </g>
+              </svg>
             </span>
-          );
-        }
+            <span className="m-padding-left-right-15 upvote-pressed">
+              {" "}
+              <Link
+                to=""
+                onClick={() => this.handleUpvote(question.answerList[0]._id)}
+              >{`Upvote`}</Link>
+            </span>
+          </span>
+        );
       } else {
-        isUpvoted = false;
         upvotecomp = (
           <span>
             <span>
@@ -173,13 +165,7 @@ class QuestionCard extends React.Component {
             <span className="m-padding-left-right-15">
               <Link
                 to=""
-                onClick={() =>
-                  this.handleUpvote(
-                    isUpvoted,
-                    upvoteCount,
-                    question.answerList[0]._id
-                  )
-                }
+                onClick={() => this.handleUpvote(question.answerList[0]._id)}
               >{`Upvote`}</Link>
             </span>
           </span>

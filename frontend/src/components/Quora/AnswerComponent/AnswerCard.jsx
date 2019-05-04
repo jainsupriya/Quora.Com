@@ -65,9 +65,15 @@ class AnswerCard extends React.Component {
     const { answer } = this.state;
     var answerComp;
     var totalAnswerCount;
-    if (question.answerList.length)
-      totalAnswerCount = question.answerList.length;
+    if (question.answerList.length> 0)
+      {
+        totalAnswerCount = question.answerList.length;
+        totalAnswerCount= totalAnswerCount + " Answers";
+      }
+
     else totalAnswerCount = "No Answer yet";
+
+
     console.log(totalAnswerCount);
     if (!isEmpty(answer)) {
       var username = "";
@@ -127,7 +133,7 @@ class AnswerCard extends React.Component {
         <React.Fragment>
           <Grid item className="ans-main-content">
             <ReadMoreReact
-              text="10 Answer"
+              text= {totalAnswerCount}
               min={80}
               ideal={100}
               max={200}
