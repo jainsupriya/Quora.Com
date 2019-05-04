@@ -2,7 +2,8 @@ import {
   GET_QUESTIONS,
   GET_QUESTION,
   GET_USER_DETAILS,
-  CLEAR_HOMESTATE
+  CLEAR_HOMESTATE,
+  SET_USER_DETAILS
 } from "../actions/types";
 const initialState = {
   questions: [],
@@ -25,7 +26,7 @@ export default function(state = initialState, action) {
         isChanged: !state.isChanged,
         userDetails: action.payload
       };
-      
+
     case GET_QUESTIONS:
       return {
         ...state,
