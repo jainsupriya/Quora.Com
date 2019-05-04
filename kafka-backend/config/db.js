@@ -9,7 +9,19 @@ mongoose.connect(dbUrl, (err) => {
     if (err) {
         console.log(err)
     } else {
+        console.log("mongo db connected")
     }
 })
 
+// const dbUrl1 = "mongodb://@ec2-54-183-41-195.us-west-1.compute.amazonaws.com:27017/quora"
+// mongoose.set('useNewUrlParser', true);
+// mongoose.set('useFindAndModify', false);
+// mongoose.set('useCreateIndex', true);
+// mongoose.connect(dbUrl1, { mongos: true }, (err) => {
+//     if (err) {
+//         console.log(err)
+//     } else {
+//         console.log("mongo db connected")
+//     }
+// })
 mongoose.Promise = global.Promise
