@@ -1,6 +1,5 @@
 import React from'react';
 import * as d3 from 'd3';
-import {Pie} from 'react-chartjs-2';
 
 const data = [1, 2, 4, 6];
 
