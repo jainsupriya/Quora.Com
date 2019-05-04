@@ -140,6 +140,7 @@ class NavHeader extends Component {
     this.setState({
       navSelectedItem: selectedItem
     });
+    this.props.history.push(`/answer`);
   };
 
   handleNotificationClose = () => {

@@ -36,17 +36,16 @@ class Editor extends React.Component {
       this.handleChange = this.handleChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
     }
-    
+
     handleChange (html) {
         this.setState({ editorHtml: html });
         console.log(html)
     }
-    
+
     handleThemeChange (newTheme) {
       if (newTheme === "core") newTheme = null;
       this.setState({ theme: newTheme })
     }
-    
     handleSubmit(event)
     {
 
@@ -75,7 +74,6 @@ class Editor extends React.Component {
             console.log(err);
           });
     }
-  
     render () {
       return (
         <div>
@@ -99,7 +97,7 @@ class Editor extends React.Component {
        )
     }
   }
-  
+
   /* 
    * Quill modules to attach to editor
    * See https://quilljs.com/docs/modules/ for complete options
@@ -129,13 +127,12 @@ class Editor extends React.Component {
     'list', 'bullet', 'indent',
     'link', 'image', 'video'
   ]
-  
+
   /* 
    * PropType validation
    */
   Editor.propTypes = {
     placeholder: PropTypes.string,
   }
-  
 
-export default withStyles(styles)(Editor);
+  export default withStyles(styles)(Editor); 
