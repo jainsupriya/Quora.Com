@@ -387,7 +387,7 @@ class AnswerCard extends React.Component {
             {answerComp}
           </Grid>
 
-          {this.state.openQuill && <Editor />}
+          {this.state.openQuill && <Editor qid= {question._id} />}
         </Paper>
       </div>
     );
