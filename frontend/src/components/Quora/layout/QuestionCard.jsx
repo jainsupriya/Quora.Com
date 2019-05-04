@@ -1,7 +1,10 @@
 import React from "react";
 // import "../styles/home.css";
 import "../../../styles/questionCard.css";
+import Parser from 'html-react-parser';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { withStyles } from "@material-ui/core/styles";
+import Typography from '@material-ui/core/Typography';
 // import PropTypes from 'prop-types';
 import AppBar from "@material-ui/core/AppBar";
 // import Toolbar from "@material-ui/core/Toolbar";
@@ -14,7 +17,7 @@ import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
-import ReadMoreReact from "read-more-react";
+import iReact from "read-more-react";
 import isEmpty from "../../../validator/is-empty";
 import moment from "moment";
 import axios from "axios";
@@ -31,10 +34,16 @@ class QuestionCard extends React.Component {
       isUpvoted: false,
       upvoteCount: 0,
       comment: "New Comment added",
-      showComment: false
+      showComment: false,
+      readMore:false
     };
   }
-
+  readMoreText = () => {
+    this.setState({ readMore: true});  
+  };
+  readMoreTextClose = () => {
+    this.setState({ readMore: false});  
+  };
   componentDidMount() {
     console.log(
       "question card mount" +
@@ -140,6 +149,8 @@ class QuestionCard extends React.Component {
           </span>
         );
       } else {
+     
+        isUpvoted = false;
         upvotecomp = (
           <span>
             <span>
@@ -173,6 +184,7 @@ class QuestionCard extends React.Component {
       }
 
       comp = (
+       
         <div>
           <Paper elevation={1} className="m-padding-10">
             <Grid
@@ -240,14 +252,9 @@ class QuestionCard extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                  <ReadMoreReact
-                    text={answer.answer === undefined ? "" : answer.answer}
-                    min={80}
-                    ideal={100}
-                    max={200}
-                    readMoreText="...(more)"
-                    showLessButton={true}
-                  />
+                { !this.state.readMore &&  <Typography variant="h6"
+               style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(answer.answer)}</Typography>}
+                { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(answer.answer)}</Typography>}
                 </Grid>
                 <Grid item className="votes">
                   {answer.viewCount} {`views · View Upvoters`}

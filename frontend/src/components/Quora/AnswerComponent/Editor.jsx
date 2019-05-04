@@ -78,6 +78,7 @@ class Editor extends React.Component {
                 {  
                   editorHtml: ''
                 });
+              this.props.toggle();
             }
           })
           .catch(err =>{
