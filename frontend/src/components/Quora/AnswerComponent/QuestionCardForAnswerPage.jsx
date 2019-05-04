@@ -7,6 +7,8 @@ import AppBar from "@material-ui/core/AppBar";
 // import Toolbar from "@material-ui/core/Toolbar";
 // import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Typography from '@material-ui/core/Typography';
+import Parser from 'html-react-parser';
 // import IconButton from "@material-ui/core/IconButton";
 // import MenuIcon from "@material-ui/icons/Menu";
 import Divider from "@material-ui/core/Divider";
@@ -107,7 +109,7 @@ class QuestionCardForAnswerPage extends React.Component {
       ) {
         upvoteCount = question.answerList[0].upVotes.length;
 
-        if (question.answerList[0].upVotes.includes(user._id)) {
+        if (this.props.answerList[0].upVotes.includes(user._id)) {
           isUpvoted = true;
           upvotecomp = (
             <span>
@@ -190,7 +192,7 @@ class QuestionCardForAnswerPage extends React.Component {
 
       comp = (
         <div>
-          <Paper elevation={1} className="m-padding-10">
+          <Paper elevation={2} className="m-padding-10">
             <Grid
               container
               direction="column"
@@ -252,15 +254,11 @@ class QuestionCardForAnswerPage extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                  <ReadMoreReact
-                    text={answer.answer === undefined ? "" : answer.answer}
-                    min={80}
-                    ideal={100}
-                    max={200}
-                    readMoreText="...(more)"
-                    showLessButton={true}
-                  />
+                { !this.state.readMore &&  <Typography variant="h6"
+               style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(this.props.answerList[0].answer)}</Typography>}
+                { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(this.props.answerList[0].answer)}</Typography>}
                 </Grid>
+
                 <Grid item className="votes">
                   {answer.viewCount} {`views · View Upvoters`}
                 </Grid>

@@ -100,6 +100,7 @@ export const addQuestion = questionData => dispatch => {
 };
 
 export const getAnswersForQuestion = questionId => dispatch => {
+  console.log(questionId)
   axios
     .get(`/question/${questionId}`)
     .then(res =>

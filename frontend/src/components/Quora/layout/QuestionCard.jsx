@@ -150,7 +150,7 @@ class QuestionCard extends React.Component {
         );
       } else {
      
-        isUpvoted = false;
+
         upvotecomp = (
           <span>
             <span>
