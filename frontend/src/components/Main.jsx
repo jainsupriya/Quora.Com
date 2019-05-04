@@ -45,7 +45,7 @@ class Main extends Component {
               <Route path="/login" component={Login} />
               <Route path="/content" component={Content} />
               <Route path="/myprofile" component={MyProfile} />
-              <Route path="/profile/:id" component={MyProfile} />
+              <Route path="/profile/:id" component={Profile} />
               <Route path="/message" component={Message} />
               <PrivateRoute path="/home" component={Quora} />
               <Route render={() => <h3>Page not Found</h3>} />

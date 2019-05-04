@@ -44,7 +44,7 @@ class ProfileContent extends Component {
   };
 
   handleTypeChange = type => {
-    console.log("Hello", type);
+   // console.log("Hello", type);
     var header = "";
     var typeInRes = "";
     var bgColorType = "";
@@ -72,6 +72,18 @@ class ProfileContent extends Component {
         header = "Your Answers";
         typeInRes = "CREATE_ANSWER";
         bgColorType = "Answers";
+        break;
+
+        case "Followers":
+        header = "Followers";
+        typeInRes = "CREATE_ANSWER";
+        bgColorType = "Followers";
+        break;
+
+        case "Following":
+        header = "Following";
+        typeInRes = "CREATE_ANSWER";
+        bgColorType = "Following";
         break;
     }
 
@@ -103,7 +115,7 @@ class ProfileContent extends Component {
     );
   };
   handleTopic = e => {
-    console.log("In");
+   // console.log("In");
     this.setState(
       {
         topic: e.target.value
@@ -113,20 +125,20 @@ class ProfileContent extends Component {
   };
 
   updateContent = () => {
-    console.log("In2", this);
+   // console.log("In2", this);
     let contentDetails = this.props.contentDetails.contents;
     const type = this.state.type;
     const year = this.state.selectedYear;
     const topic = this.state.topic;
     var tempDetails = _.filter(contentDetails, function(item) {
-      console.log(type);
-      console.log(year);
-      console.log(topic);
+      // console.log(type);
+      // console.log(year);
+      // console.log(topic);
       if (type == "ALL_TYPES") {
         if (year == "All Time") {
           if (topic == "") {
-            console.log("item");
-            console.log(item);
+            // console.log("item");
+            // console.log(item);
             return item;
           } else {
             if (
@@ -175,7 +187,7 @@ class ProfileContent extends Component {
         type == "CREATE_QUESTION" &&
         item.activityType == "CREATE_QUESTION"
       ) {
-        console.log(item);
+        // console.log(item);
         if (
           year == "All Time" &&
           item.createdQuestion.topicList.includes(topic)
@@ -230,14 +242,14 @@ class ProfileContent extends Component {
         a.timeStamp > b.timeStamp ? -1 : b.timeStamp > a.timeStamp ? 1 : 0
       );
     }
-    console.log(tempDetails);
+    // console.log(tempDetails);
     this.setState({
       contentDetails: tempDetails
     });
   };
 
   showInfo = type => {
-    console.log(type);
+    // console.log(type);
     let resultValue = "";
     switch (type) {
       case "CREATE_ANSWER":

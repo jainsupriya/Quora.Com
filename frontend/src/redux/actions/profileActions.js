@@ -56,6 +56,19 @@ export const setProfileEducation = (userId, profiledata) => dispatch => {
     .catch(err => console.log(err));
 };
 
+// set profile name
+export const getProfileByUserId = (userId) => dispatch => {
+  axios
+    .get(`/user/${userId}`)
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
 export const updateImage = (fd, history) => dispatch => {
   axios.put("/file/updateProfileImg", fd).then(res => {
     dispatch({
