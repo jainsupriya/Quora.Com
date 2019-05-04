@@ -198,7 +198,7 @@ class NavHeader extends Component {
             horizontal: "left"
           }}
           anchorPosition={{
-            left: 500,
+            left: 700,
             top: 68
           }}
         >
@@ -318,7 +318,7 @@ class NavHeader extends Component {
             horizontal: "left"
           }}
           anchorPosition={{
-            left: 1070,
+            left: 1315,
             top: 68
           }}
         >
