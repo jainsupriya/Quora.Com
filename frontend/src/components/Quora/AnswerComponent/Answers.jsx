@@ -28,7 +28,6 @@ import QuestionCard from "../layout/QuestionCard";
 import { AskQuestionCard } from "../layout/AskQuestionCard";
 import AddQuestion from "../homeComponents/AddQuestion";
 import NavHeader from "../header/navHeader";
-import AnswerCard from "./AnswerCard";
 import AnswerCardForAnswerPage from "./AnswerCardForAnswerPage";
 import QuestionCardForAnswerPage from "./QuestionCardForAnswerPage";
 const styles = theme => ({});

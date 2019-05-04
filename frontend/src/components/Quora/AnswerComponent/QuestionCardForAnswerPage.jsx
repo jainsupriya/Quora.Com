@@ -21,6 +21,7 @@ import axios from "axios";
 
 import { Link } from "react-router-dom";
 import AnswerCard from "../AnswerComponent/AnswerCard";
+import AnswerCardForAnswerPage from "./AnswerCardForAnswerPage";
 const styles = theme => ({});
 
 class QuestionCardForAnswerPage extends React.Component {
@@ -451,7 +452,7 @@ class QuestionCardForAnswerPage extends React.Component {
       );
     } else {
       answer = "No Answer";
-      comp = <AnswerCard question={question} />;
+     
     }
 
     return <React.Fragment>{comp}</React.Fragment>;
@@ -467,3 +468,6 @@ export default connect(
   mapStateToProps,
   {}
 )(withStyles(styles)(QuestionCardForAnswerPage));
+
+
+// comp =  <AnswerCardForAnswerPage question={this.props.question}  answerList = {this.props.answerList[0]}/>
