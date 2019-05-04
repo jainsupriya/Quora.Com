@@ -3,7 +3,8 @@ import {
   GET_ERRORS,
   GET_QUESTIONS,
   GET_QUESTION,
-  GET_USER_DETAILS
+  GET_USER_DETAILS,
+  GET_ANSWERS_FOR_QUESTIONS,
 } from "./types";
 
 export const getUserDetails = userId => dispatch => {
@@ -96,4 +97,22 @@ export const addQuestion = questionData => dispatch => {
         payload: err.data
       })
     );
+};
+
+export const getAnswersForQuestion = questionId => dispatch => {
+  axios
+    .get(`/question/${questionId}`)
+    .then(res =>
+      dispatch({
+        type: GET_ANSWERS_FOR_QUESTIONS,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.data
+      })
+    );
+  
 };

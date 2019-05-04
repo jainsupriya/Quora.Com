@@ -30,7 +30,7 @@ const styles = theme => ({
   }
 });
 
-class AnswerCard extends React.Component {
+class AnswerCardForAnswerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,13 +61,12 @@ class AnswerCard extends React.Component {
   render() {
     const { classes } = this.props;
     const { question } = this.props;
-
     const { answer } = this.state;
     var answerComp;
     var totalAnswerCount;
-    if (question.answerList.length> 0)
+    if (this.props.answerList.length> 0)
       {
-        totalAnswerCount = question.answerList.length;
+        totalAnswerCount = this.props.answerList.length;
         totalAnswerCount= totalAnswerCount + " Answers";
       }
 
@@ -404,9 +403,9 @@ class AnswerCard extends React.Component {
 
             <Grid item>
               <span className="question-txt">
-                <Link to={"/" + question._id} style={{ color: "#000000" }}>
-                  {question.question}
-                </Link>
+               
+                 { this.props.question}
+               
               </span>
             </Grid>
             {answerComp}
@@ -430,4 +429,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {}
-)(withStyles(styles)(AnswerCard));
+)(withStyles(styles)(AnswerCardForAnswerPage));

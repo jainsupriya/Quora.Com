@@ -3,7 +3,8 @@ import {
   GET_QUESTION,
   GET_USER_DETAILS,
   CLEAR_HOMESTATE,
-  SET_USER_DETAILS
+  SET_USER_DETAILS,
+  GET_ANSWERS_FOR_QUESTIONS
 } from "../actions/types";
 const initialState = {
   questions: [],
@@ -38,6 +39,12 @@ export default function(state = initialState, action) {
         ...state,
         question: action.payload
       };
+      case GET_ANSWERS_FOR_QUESTIONS:
+      return {
+        ...state,
+        answerforquestions: action.payload
+      };
+      
     case CLEAR_HOMESTATE:
       return {};
     default:
