@@ -14,6 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
+import Typography from '@material-ui/core/Typography';
 
 import {
   addQuestion,
@@ -162,6 +163,7 @@ class Answers extends React.Component {
 
               <Grid item xs={8} className="m-padding-left-right-15">
                 {QuestionComp}
+                <Typography variant="title" component="p">{this.props.answerforquestions[0].answerList.length} Answer</Typography><br/>
                 {AnswerComp}
               </Grid>
 

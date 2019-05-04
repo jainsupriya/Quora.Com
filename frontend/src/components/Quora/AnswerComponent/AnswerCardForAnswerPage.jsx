@@ -128,15 +128,7 @@ class AnswerCardForAnswerPage extends React.Component {
     } else {
       answerComp = (
         <React.Fragment>
-          <Grid item className="ans-main-content">
-            <ReadMoreReact
-              text={totalAnswerCount}
-              min={80}
-              ideal={100}
-              max={200}
-              showLessButton={true}
-            />
-          </Grid>
+
           <Grid
             container
             direction="row"
@@ -408,6 +400,7 @@ class AnswerCardForAnswerPage extends React.Component {
                
               </span>
             </Grid>
+          
             {answerComp}
           </Grid>
 
