@@ -123,6 +123,10 @@ class DialogEducation extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
   handleSave = e => {
     e.preventDefault();
     // console.log(this.props.state.userDetails._id);
@@ -203,7 +207,7 @@ class DialogEducation extends Component {
                           class="icon_svg-stroke"
                           transform="translate(6.000000, 3.000000)"
                           stroke="#666666"
-                          stroke-width="1.5"
+                          strokeWidth="1.5"
                         >
                           <path d="M13,18 C13,14.6862915 10.0898509,12 6.5,12 C2.91014913,12 0,14.6862915 0,18" />
                           <circle cx="6.5" cy="5" r="4.5" />
@@ -435,7 +439,8 @@ class DialogEducation extends Component {
                         maxlength="50"
                         data-group="js-editable"
                         value={this.state.current}
-                        onChange={this.onChange}
+                        checked={this.state.current}
+                        onChange={this.handleChange("current")}
                         name="current"
                         w2cid="wUZE3W2P32"
                         id="__w2_wUZE3W2P32_position"
@@ -463,7 +468,7 @@ class DialogEducation extends Component {
 
 DialogEducation.propTypes = {
   classes: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
+  userDetails: PropTypes.object,
   setProfileEducation: PropTypes.func.isRequired
 };
 

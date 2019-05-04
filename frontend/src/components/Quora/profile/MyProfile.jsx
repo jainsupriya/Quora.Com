@@ -360,7 +360,7 @@ class MyProfile extends React.Component {
     ) : null;
 
     const addEditName = this.state.openEditName ? (
-      <div class="namedit" id="editor">
+      <div className="namedit" id="editor">
         <input
           type="text"
           name="fname"
@@ -464,18 +464,18 @@ class MyProfile extends React.Component {
                 <Grid
                   container
                   direction="row"
-                  justify="space-between"
-                  alignItems="left"
+                  justify="flex-start"
+                  alignItems="flex-start"
                 >
                   <Grid item xs={4}>
                     <div
-                      class="u-margin-right--sm"
+                      className="u-margin-right--sm"
                       onMouseEnter={this.displayEdit}
                       onMouseLeave={this.displayEditExit}
                     >
-                      <div class="profile_photo" id="__w2_w4a2NguV48_photo">
+                      <div className="profile_photo" id="__w2_w4a2NguV48_photo">
                         <div id="w4a2NguV56">
-                          <span class="photo_tooltip IdentityPhoto HoverMenu Photo">
+                          <span className="photo_tooltip IdentityPhoto HoverMenu Photo">
                             <Avatar
                               className={classes.bigAvatar}
                               src={this.state.profileImage}
@@ -491,20 +491,20 @@ class MyProfile extends React.Component {
                     </div>
                   </Grid>
                   <Grid item xs={8}>
-                    <div class="header_content">
+                    <div className="header_content">
                       <div id="w4a2NguV24">
-                        <div class="ProfileNameAndSig">
+                        <div className="ProfileNameAndSig">
                           <div id="w4a2NguV49">
                             <div
-                              class="NGProfileNameEditor"
+                              className="NGProfileNameEditor"
                               onMouseEnter={this.displayEditName}
                               onMouseLeave={this.displayEditNameExit}
                             >
-                              <div id="__w2_w4a2NguV50_initial" class="">
+                              <div id="__w2_w4a2NguV50_initial" className="">
                                 <h1>
                                   <span id="w4a2NguV53">
                                     <span id="__w2_w4a2NguV54_link">
-                                      <span class="user">
+                                      <span className="user">
                                         {this.state.fname +
                                           "    " +
                                           this.state.lname}
@@ -518,11 +518,11 @@ class MyProfile extends React.Component {
                             </div>
                           </div>
                           <div id="w4a2NguV51">
-                            <div class="FreeformCredentialEditor">
+                            <div className="FreeformCredentialEditor">
                               <span id="w4a2NguV63" />
                               <span id="w4a2NguV65">
                                 <a
-                                  class="CredentialModalLink EditCredentialModalLink"
+                                  className="CredentialModalLink EditCredentialModalLink"
                                   href="#"
                                   onClick={() => {
                                     this.setState({
@@ -563,9 +563,9 @@ class MyProfile extends React.Component {
                     alignItems="center"
                   >
                     <Grid item xs={1}>
-                      <div class="u-margin-right--sm">
+                      <div className="u-margin-right--sm">
                         <span
-                          class="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
+                          className="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
                           aria-hidden="true"
                         >
                           <svg
@@ -577,13 +577,13 @@ class MyProfile extends React.Component {
                             xlink="http://www.w3.org/1999/xlink"
                           >
                             <g
-                              class="icon_svg-stroke"
+                              className="icon_svg-stroke"
                               stroke="#666"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               fill="none"
-                              fill-rule="evenodd"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              fillRule="evenodd"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             >
                               <path d="M20.5,11 L20.5,18 C20.5,18.5522847 20.0522847,19 19.5,19 L4.5,19 C3.94771525,19 3.5,18.5522847 3.5,18 L3.5,11 M10.40625,15 L5.625,15 C4.45139491,15 3.5,13.9766509 3.5,12.7142857 L3.5,7 L3.5,7 L20.5,7 L20.5,12.7142857 C20.5,13.9766509 19.5486051,15 18.375,15 L13.59375,15 M9,7 L9,6 C9,4.8954305 9.8954305,4 11,4 L11,4 L13,4 C14.1045695,4 15,4.8954305 15,6 L15,7 M11,13.5 L13,13.5 C13.2761424,13.5 13.5,13.7238576 13.5,14 L13.5,16 C13.5,16.2761424 13.2761424,16.5 13,16.5 L11,16.5 C10.7238576,16.5 10.5,16.2761424 10.5,16 L10.5,14 C10.5,13.7238576 10.7238576,13.5 11,13.5 Z" />
                             </g>
@@ -593,13 +593,13 @@ class MyProfile extends React.Component {
                     </Grid>
                     <Grid item xs={11}>
                       <div id="wsV1hsO51">
-                        <div class="AddCredentialListItem AddWorkCredentialListItem AboutListItem">
-                          <span class="u-flex u-padding-bottom--sm">
-                            <span class="body_text">
-                              <span class="main_text">
+                        <div className="AddCredentialListItem AddWorkCredentialListItem AboutListItem">
+                          <span className="u-flex u-padding-bottom--sm">
+                            <span className="body_text">
+                              <span className="main_text">
                                 <span id="wsV1hsO510">
                                   <a
-                                    class="EditCredentialModalLink CredentialModalLink"
+                                    className="EditCredentialModalLink CredentialModalLink"
                                     href="#"
                                     onClick={() => {
                                       this.setState({
@@ -624,9 +624,9 @@ class MyProfile extends React.Component {
                     alignItems="center"
                   >
                     <Grid item xs={1}>
-                      <div class="u-margin-right--sm">
+                      <div className="u-margin-right--sm">
                         <span
-                          class="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
+                          className="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
                           aria-hidden="true"
                         >
                           <svg
@@ -638,13 +638,13 @@ class MyProfile extends React.Component {
                             xlink="http://www.w3.org/1999/xlink"
                           >
                             <g
-                              class="icon_svg-stroke"
+                              className="icon_svg-stroke"
                               stroke="#666"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               fill="none"
-                              fill-rule="evenodd"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              fillRule="evenodd"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             >
                               <path d="M2.5,9.5 L12,5 L21.5,9.5 L12,14 L2.5,9.5 Z M20,10.5 L20,16.5 M6.5,12 C6.5,14 6.5,15 6.5,15 C6.5,16.5048582 9.00219538,18 12,18 C14.9978046,18 17.5,16.4986226 17.5,15 C17.5,15 17.5,14 17.5,12 M20,16.5 L18,20 L22,20 L20,16.5 Z" />
                             </g>
@@ -654,13 +654,13 @@ class MyProfile extends React.Component {
                     </Grid>
                     <Grid item xs={11}>
                       <div id="wsV1hsO53">
-                        <div class="AddCredentialListItem AboutListItem AddSchoolCredentialListItem">
-                          <span class="u-flex u-padding-bottom--sm">
-                            <span class="body_text">
-                              <span class="main_text">
+                        <div className="AddCredentialListItem AboutListItem AddSchoolCredentialListItem">
+                          <span className="u-flex u-padding-bottom--sm">
+                            <span className="body_text">
+                              <span className="main_text">
                                 <span id="wsV1hsO513">
                                   <a
-                                    class="EditCredentialModalLink CredentialModalLink"
+                                    className="EditCredentialModalLink CredentialModalLink"
                                     href="#"
                                     onClick={() => {
                                       // console.log("openAddEducation")
@@ -686,9 +686,9 @@ class MyProfile extends React.Component {
                     alignItems="flex-start"
                   >
                     <Grid item xs={1}>
-                      <div class="u-margin-right--sm">
+                      <div className="u-margin-right--sm">
                         <span
-                          class="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
+                          className="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
                           aria-hidden="true"
                         >
                           <svg
@@ -700,13 +700,13 @@ class MyProfile extends React.Component {
                             xlink="http://www.w3.org/1999/xlink"
                           >
                             <g
-                              class="icon_svg-stroke"
+                              className="icon_svg-stroke"
                               stroke="#666"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               fill="none"
-                              fill-rule="evenodd"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              fillRule="evenodd"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             >
                               <path d="M2.5,9.5 L12,5 L21.5,9.5 L12,14 L2.5,9.5 Z M20,10.5 L20,16.5 M6.5,12 C6.5,14 6.5,15 6.5,15 C6.5,16.5048582 9.00219538,18 12,18 C14.9978046,18 17.5,16.4986226 17.5,15 C17.5,15 17.5,14 17.5,12 M20,16.5 L18,20 L22,20 L20,16.5 Z" />
                             </g>
@@ -716,13 +716,13 @@ class MyProfile extends React.Component {
                     </Grid>
                     <Grid item xs={11}>
                       <div id="wsV1hsO53">
-                        <div class="AddCredentialListItem AboutListItem AddSchoolCredentialListItem">
-                          <span class="u-flex u-padding-bottom--sm">
-                            <span class="body_text">
-                              <span class="main_text">
+                        <div className="AddCredentialListItem AboutListItem AddSchoolCredentialListItem">
+                          <span className="u-flex u-padding-bottom--sm">
+                            <span className="body_text">
+                              <span className="main_text">
                                 <span id="wsV1hsO513">
                                   <a
-                                    class="EditCredentialModalLink CredentialModalLink"
+                                    className="EditCredentialModalLink CredentialModalLink"
                                     href="#"
                                     id="__w2_wsV1hsO514_modal_link"
                                     onClick={() => {
@@ -748,9 +748,9 @@ class MyProfile extends React.Component {
                     alignItems="center"
                   >
                     <Grid item xs={1}>
-                      <div class="u-margin-right--sm">
+                      <div className="u-margin-right--sm">
                         <span
-                          class="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
+                          className="ui_icon ui_icon_color--blue_dark ui_icon_size--small_medium ui_icon_outline--default"
                           aria-hidden="true"
                         >
                           <svg
@@ -762,12 +762,12 @@ class MyProfile extends React.Component {
                             xlink="http://www.w3.org/1999/xlink"
                           >
                             <g
-                              class="icon_svg-stroke"
+                              className="icon_svg-stroke"
                               stroke="#666"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               fill="none"
-                              fill-rule="evenodd"
-                              stroke-linecap="round"
+                              fillRule="evenodd"
+                              strokeLinecap="round"
                             >
                               <path d="M12,13 C13.6568542,13 15,11.6568542 15,10 C15,8.34314575 13.6568542,7 12,7 C10.3431458,7 9,8.34314575 9,10 C9,11.6568542 10.3431458,13 12,13 Z M12,20.73 C16.6375,16.5 19,12.9 19,10.2 C19,6.2235498 15.8659932,3 12,3 C8.13400675,3 5,6.2235498 5,10.2 C5,12.9 7.3625,16.41 12,20.73 L12,20.73 Z" />
                             </g>
@@ -777,13 +777,13 @@ class MyProfile extends React.Component {
                     </Grid>
                     <Grid item xs={11}>
                       <div id="wsV1hsO55">
-                        <div class="AddCredentialListItem AboutListItem AddLocationCredentialListItem">
-                          <span class="u-flex u-padding-bottom--sm">
-                            <span class="body_text">
-                              <span class="main_text">
+                        <div className="AddCredentialListItem AboutListItem AddLocationCredentialListItem">
+                          <span className="u-flex u-padding-bottom--sm">
+                            <span className="body_text">
+                              <span className="main_text">
                                 <span id="wsV1hsO516">
                                   <a
-                                    class="EditCredentialModalLink CredentialModalLink"
+                                    className="EditCredentialModalLink CredentialModalLink"
                                     href="#"
                                     id="_modal_link"
                                   >
@@ -810,7 +810,7 @@ class MyProfile extends React.Component {
 
 MyProfile.propTypes = {
   classes: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
+  userDetails: PropTypes.object,
   setProfileName: PropTypes.func.isRequired
 };
 
