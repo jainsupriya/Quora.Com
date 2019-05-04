@@ -13,10 +13,7 @@ export default function(state = initialState, action) {
       };
 
     case CLEAR_PROFILE:
-      return {
-        ...state,
-        profile: {}
-      };
+      return {};
     default:
       return state;
   }

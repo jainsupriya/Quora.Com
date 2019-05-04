@@ -17,6 +17,7 @@ import Popover from "@material-ui/core/Popover";
 import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
+import { logoutUser } from "../../../redux/actions/authActions";
 
 const styles = theme => ({
   notificationDialog: {
@@ -160,6 +161,10 @@ class NavHeader extends Component {
     this.setState({
       openProfileMenu: null
     });
+  };
+
+  handleLogout = () => {
+    this.props.logoutUser();
   };
 
   render() {
@@ -348,18 +353,28 @@ class NavHeader extends Component {
                   <a
                     className={classes.profileMenu}
                     style={{ borderTop: "none" }}
+                    href="/profile"
                   >
                     Profile
                   </a>
                 </li>
                 <li className={classes.listStyle}>
-                  <a className={classes.profileMenu}>Your Content</a>
+                  <a className={classes.profileMenu} href="/">
+                    Your Content
+                  </a>
                 </li>
                 <li className={classes.listStyle}>
                   <a className={classes.profileMenu}>Settings</a>
                 </li>
                 <li className={classes.listStyle}>
-                  <a className={classes.profileMenu}>Logout</a>
+                  <a
+                    className={classes.profileMenu}
+                    onClick={() => {
+                      this.handleLogout();
+                    }}
+                  >
+                    Logout
+                  </a>
                 </li>
               </ul>
             </div>
@@ -524,12 +539,15 @@ class NavHeader extends Component {
                 autoFocus="True"
                 type="text"
               />
-              <div onClick={this.handleAvatarClick} className={classes.showCursor}>
-              <Avatar
-                alt={auth.user.fname + auth.user.lname}
-                src={auth.user.profileImg}
-                className="avatar"
-              />
+              <div
+                onClick={this.handleAvatarClick}
+                className={classes.showCursor}
+              >
+                <Avatar
+                  alt={auth.user.fname + auth.user.lname}
+                  src={auth.user.profileImg}
+                  className="avatar"
+                />
               </div>
               <button
                 className="askQuestionBtn"
@@ -558,5 +576,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addQuestion }
+  { addQuestion, logoutUser }
 )(withStyles(styles)(withRouter(NavHeader)));

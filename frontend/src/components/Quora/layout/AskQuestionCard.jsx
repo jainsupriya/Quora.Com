@@ -9,7 +9,7 @@ export function AskQuestionCard(props) {
     <div className="AskQuestionPromptBundle">
       <div class="AddQuestionPrompt">
         <div class="user_asks_header">
-          <Link to="/profile/Priyanka-Singhal">
+          <Link to="/profile">
             <Avatar
               alt={user.fname}
               src={user.profileImg}

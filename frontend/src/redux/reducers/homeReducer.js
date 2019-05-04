@@ -1,7 +1,8 @@
 import {
   GET_QUESTIONS,
   GET_QUESTION,
-  GET_USER_DETAILS
+  GET_USER_DETAILS,
+  CLEAR_HOMESTATE
 } from "../actions/types";
 const initialState = {
   questions: [],
@@ -28,6 +29,8 @@ export default function(state = initialState, action) {
         ...state,
         question: action.payload
       };
+    case CLEAR_HOMESTATE:
+      return {};
     default:
       return state;
   }
