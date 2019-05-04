@@ -43,6 +43,9 @@ class AnswerCard extends React.Component {
   GiveAnswer = () => {
     this.setState({ openQuill: true });
   };
+  handleClose = () => {
+    this.setState({ openQuill: false });
+  };
   handleEditorChange = html => {
     this.setState({
       editorHtml: html
@@ -387,7 +390,7 @@ class AnswerCard extends React.Component {
             {answerComp}
           </Grid>
 
-          {this.state.openQuill && <Editor qid= {question._id} />}
+          {this.state.openQuill && <Editor qid= {question._id}  toggle= {this.handleClose}/>}
         </Paper>
       </div>
     );
