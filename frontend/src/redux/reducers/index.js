@@ -5,6 +5,8 @@ import profileReducer from "./profileReducer";
 import errorReducer from "./errorReducer";
 import contentReducer from "./contentReducer";
 import messageReducer from "./messageReducer";
+import dashboardReducer from "./dashboardReducer";
+
 
 export default combineReducers({
   homeState: homeReducer,
@@ -12,5 +14,5 @@ export default combineReducers({
   profile: profileReducer,
   errors: errorReducer,
   contents: contentReducer,
-  message: messageReducer
+  dashboard: dashboardReducer
 });
