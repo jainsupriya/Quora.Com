@@ -134,13 +134,7 @@ class QuestionCard extends React.Component {
               {" "}
               <Link
                 to=""
-                onClick={() =>
-                  this.handleUpvote(
-                    isUpvoted,
-                    upvoteCount,
-                    question.answerList[0]._id
-                  )
-                }
+                onClick={() => this.handleUpvote(question.answerList[0]._id)}
               >{`Upvote`}</Link>
             </span>
           </span>
@@ -171,13 +165,7 @@ class QuestionCard extends React.Component {
             <span className="m-padding-left-right-15">
               <Link
                 to=""
-                onClick={() =>
-                  this.handleUpvote(
-                    isUpvoted,
-                    upvoteCount,
-                    question.answerList[0]._id
-                  )
-                }
+                onClick={() => this.handleUpvote(question.answerList[0]._id)}
               >{`Upvote`}</Link>
             </span>
           </span>
