@@ -36,7 +36,8 @@ class AnswerCard extends React.Component {
     this.state = {
       answer: {},
       openQuill: false,
-      editorHtml: ""
+      editorHtml: '',
+      totalAnswer:''
     };
     this.GiveAnswer = this.GiveAnswer.bind(this);
   }
@@ -63,7 +64,11 @@ class AnswerCard extends React.Component {
 
     const { answer } = this.state;
     var answerComp;
-
+    var totalAnswerCount;
+    if( question.answerList.length) 
+      totalAnswerCount= question.answerList.length;
+    else totalAnswerCount = "No Answer yet"
+    console.log(totalAnswerCount)
     if (!isEmpty(answer)) {
       var username = "";
       if (answer.isAnonymous) {
@@ -71,12 +76,12 @@ class AnswerCard extends React.Component {
       } else {
         username = "Parth Modi";
       }
-
+     
       answerComp = (
         <React.Fragment>
           <Grid item className="ans-main-content">
             <ReadMoreReact
-              text={answer.answer}
+              text={totalAnswerCount}
               min={80}
               ideal={100}
               max={200}
@@ -120,6 +125,15 @@ class AnswerCard extends React.Component {
     } else {
       answerComp = (
         <React.Fragment>
+          <Grid item className="ans-main-content">
+            <ReadMoreReact
+              text="10 Answer"
+              min={80}
+              ideal={100}
+              max={200}
+              showLessButton={true}
+            />
+          </Grid>
           <Grid
             container
             direction="row"
@@ -128,19 +142,7 @@ class AnswerCard extends React.Component {
             // className="m-margin-up-down"
           >
               
-              <div>
-                <ReadMoreReact
-                  text={`Too hard to get promoted. The process was slow and I got denied promo 
-              by the anonymous committee despite my manager and others on my team being 
-              re I was going to get it.The only metric that matters is “launch”. 
-              I worked on almost exclusively `}
-                  min={80}
-                  ideal={100}
-                  max={200}
-                  readMoreText="...(more)"
-                  showLessButton={true}
-                />
-              </div>
+
 
             <Grid
               container
