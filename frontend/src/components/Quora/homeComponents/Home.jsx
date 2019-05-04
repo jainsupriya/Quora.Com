@@ -81,7 +81,6 @@ class Home extends React.Component {
 
   render() {
     var userTopicList = this.props.userDetails.interestedTopicList;
-    //var userTopicList = ['test1', 'test2'];
     var QuestionComp;
 
     if (this.props.questions && this.props.questions.length > 0) {
@@ -95,6 +94,7 @@ class Home extends React.Component {
             <QuestionCard
               question={question}
               answerList={question.answerList}
+              user={this.props.auth.user}
             />
           );
         });

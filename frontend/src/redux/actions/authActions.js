@@ -2,7 +2,14 @@ import axios from "axios";
 import authToken from "./authToken";
 import jwt_decode from "jwt-decode";
 
-import { GET_ERRORS, SET_CURRENT_USER, CLEAR_PROFILE } from "./types";
+import {
+  GET_ERRORS,
+  SET_CURRENT_USER,
+  CLEAR_PROFILE,
+  CLEAR_HOMESTATE,
+  CLEAR_CONTENTS,
+  CLEAR_ERRORS
+} from "./types";
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
@@ -37,7 +44,7 @@ export const loginUser = userData => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.data
       })
     );
 };
@@ -60,11 +67,35 @@ export const logoutUser = () => dispatch => {
   // Set current user to {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
   dispatch(clearCurrentProfile());
+  dispatch(clearHomeState());
+  dispatch(clearErrors());
+  dispatch(clearContents());
 };
 
 // Clear profile
 export const clearCurrentProfile = () => {
   return {
     type: CLEAR_PROFILE
+  };
+};
+
+// Clear Home state
+export const clearHomeState = () => {
+  return {
+    type: CLEAR_HOMESTATE
+  };
+};
+
+// Clear Errors
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  };
+};
+
+// Clear Contents
+export const clearContents = () => {
+  return {
+    type: CLEAR_CONTENTS
   };
 };

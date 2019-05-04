@@ -1,4 +1,4 @@
-import { GET_CONTENTS } from "../actions/types";
+import { GET_CONTENTS, CLEAR_CONTENTS } from "../actions/types";
 const initialState = {
   contents: []
 };
@@ -10,7 +10,8 @@ export default function(state = initialState, action) {
         ...state,
         contents: action.payload
       };
-
+    case CLEAR_CONTENTS:
+      return {};
     default:
       return state;
   }

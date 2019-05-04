@@ -17,6 +17,7 @@ import Popover from "@material-ui/core/Popover";
 import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
+import { logoutUser } from "../../../redux/actions/authActions";
 
 const styles = theme => ({
   notificationDialog: {
@@ -29,7 +30,7 @@ const styles = theme => ({
     maxHeight: 300,
     fontSize: 14,
     // overflowY: 'scroll'
-    "&::before": {
+    "&:before": {
       content: "",
       display: "block",
       width: 0,
@@ -65,6 +66,32 @@ const styles = theme => ({
   },
   typography: {
     margin: theme.spacing.unit * 2
+  },
+  profileMenu: {
+    borderTop: "1px solid #e2e2e2",
+    padding: "8px 16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    color: "#2b6dad !important"
+  },
+  profileDialogWidth: {
+    borderRadius: 3,
+    background: "#f7f7f7",
+    border: "1px solid #ccc",
+    boxShadow: "0 1px 3px rgba(200,200,200,0.7)",
+    padding: 0,
+    minWidth: 190,
+    maxHeight: 300,
+    fontSize: 14
+  },
+  listStyle: {
+    "&:hover": {
+      background: "#eaf4ff"
+    }
+  },
+  showCursor: {
+    cursor: "pointer"
   }
 });
 
@@ -77,7 +104,8 @@ class NavHeader extends Component {
       navSelectedItem: "home",
       openNotification: false,
       topic: "",
-      question: ""
+      question: "",
+      openProfileMenu: false
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
   }
@@ -113,10 +141,8 @@ class NavHeader extends Component {
     this.setState({
       navSelectedItem: selectedItem
     });
-    if(selectedItem=="home")
-      this.props.history.push(`/`);
-    else 
-      this.props.history.push(selectedItem);
+    if (selectedItem === "home") this.props.history.push(`/`);
+    else this.props.history.push(`/${selectedItem}`);
   };
 
   handleNotificationClose = () => {
@@ -125,10 +151,28 @@ class NavHeader extends Component {
     });
   };
 
+  handleAvatarClick = event => {
+    this.setState({
+      openProfileMenu: event.currentTarget
+    });
+  };
+
+  handleProfileMenuClose = () => {
+    this.setState({
+      openProfileMenu: null
+    });
+  };
+
+  handleLogout = () => {
+    this.props.logoutUser();
+  };
+
   render() {
-    const { classes } = this.props;
-    const { openNotification } = this.state;
-    const open = Boolean(openNotification);
+    const { openNotification, openProfileMenu } = this.state;
+    const open1 = Boolean(openNotification);
+    const open2 = Boolean(openProfileMenu);
+    const { classes, auth } = this.props;
+
     const notificationList = {
       user: "Mayank Padshala",
       question:
@@ -148,7 +192,7 @@ class NavHeader extends Component {
       <div>
         <Popover
           id="simple-popper"
-          open={open}
+          open={open1}
           anchorEl={openNotification}
           onClose={this.handleNotificationClose}
           anchorReference="anchorPosition"
@@ -161,7 +205,7 @@ class NavHeader extends Component {
             horizontal: "left"
           }}
           anchorPosition={{
-            left: 420,
+            left: 700,
             top: 68
           }}
         >
@@ -193,7 +237,11 @@ class NavHeader extends Component {
                     // className="m-margin-up-down"
                   >
                     <Grid item>
-                      <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+                      <Avatar
+                        alt={auth.user.fname + auth.user.lname}
+                        src={auth.user.profileImg}
+                        className="avatar"
+                      />
                     </Grid>
                     <Grid item>
                       <Grid
@@ -233,7 +281,11 @@ class NavHeader extends Component {
                     // className="m-margin-up-down"
                   >
                     <Grid item>
-                      <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+                      <Avatar
+                        alt={auth.user.fname + auth.user.lname}
+                        src={auth.user.profileImg}
+                        className="avatar"
+                      />
                     </Grid>
                     <Grid item>
                       <Grid
@@ -264,11 +316,78 @@ class NavHeader extends Component {
       </div>
     );
 
+    const profilePopover = (
+      <div>
+        <Popover
+          id="simple-popper"
+          open={open2}
+          anchorEl={openProfileMenu}
+          onClose={this.handleProfileMenuClose}
+          anchorReference="anchorPosition"
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left"
+          }}
+          anchorPosition={{
+            left: 1315,
+            top: 68
+          }}
+        >
+          <div className={classes.profileDialogWidth}>
+            <div
+              className={classes.notificationContent}
+              style={{ overflow: "hidden" }}
+            >
+              <ul
+                style={{
+                  listStyle: "none",
+                  marginBottom: "0rem",
+                  paddingLeft: 0
+                }}
+              >
+                <li className={classes.listStyle}>
+                  <a
+                    className={classes.profileMenu}
+                    style={{ borderTop: "none" }}
+                    href="/myprofile"
+                  >
+                    Profile
+                  </a>
+                </li>
+                <li className={classes.listStyle}>
+                  <a className={classes.profileMenu} href="/">
+                    Your Content
+                  </a>
+                </li>
+                <li className={classes.listStyle}>
+                  <a className={classes.profileMenu}>Settings</a>
+                </li>
+                <li className={classes.listStyle}>
+                  <a
+                    className={classes.profileMenu}
+                    onClick={() => {
+                      this.handleLogout();
+                    }}
+                  >
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Popover>
+      </div>
+    );
+
     return (
       <div>
         {addQuestion}
         {notifications}
-
+        {profilePopover}
         <Grid
           container
           direction="row"
@@ -283,7 +402,12 @@ class NavHeader extends Component {
               justify="space-between"
               alignItems="center"
             >
-              <div className="logo-img" />
+              <div
+                className="logo-img"
+                onClick={() => {
+                  this.navigationClick("home");
+                }}
+              />
               <div
                 className={
                   this.state.navSelectedItem === "home"
@@ -415,7 +539,16 @@ class NavHeader extends Component {
                 autoFocus="True"
                 type="text"
               />
-              <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
+              <div
+                onClick={this.handleAvatarClick}
+                className={classes.showCursor}
+              >
+                <Avatar
+                  alt={auth.user.fname + auth.user.lname}
+                  src={auth.user.profileImg}
+                  className="avatar"
+                />
+              </div>
               <button
                 className="askQuestionBtn"
                 onClick={() => {
@@ -443,5 +576,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addQuestion }
+  { addQuestion, logoutUser }
 )(withStyles(styles)(withRouter(NavHeader)));

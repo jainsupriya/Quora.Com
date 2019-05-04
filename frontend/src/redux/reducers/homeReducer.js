@@ -1,12 +1,15 @@
 import {
   GET_QUESTIONS,
   GET_QUESTION,
-  GET_USER_DETAILS
+  GET_USER_DETAILS,
+  CLEAR_HOMESTATE,
+  SET_USER_DETAILS
 } from "../actions/types";
 const initialState = {
   questions: [],
   question: {},
-  userDetails: {}
+  userDetails: {},
+  isChanged: false
 };
 
 export default function(state = initialState, action) {
@@ -14,6 +17,13 @@ export default function(state = initialState, action) {
     case GET_USER_DETAILS:
       return {
         ...state,
+        userDetails: action.payload
+      };
+
+      case SET_USER_DETAILS:
+      return {
+        ...state,
+        isChanged: !state.isChanged,
         userDetails: action.payload
       };
 
@@ -28,6 +38,8 @@ export default function(state = initialState, action) {
         ...state,
         question: action.payload
       };
+    case CLEAR_HOMESTATE:
+      return {};
     default:
       return state;
   }

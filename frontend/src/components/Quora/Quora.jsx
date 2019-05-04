@@ -32,9 +32,9 @@ class Quora extends Component {
         </AppBar>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/answer" component={Home} />
-          <Route exact path="/profile" component={Home} />
-          <Route exact path="/notifications" component={Home} />
+          <Route path="/answer" component={Home} />
+          <Route path="/profile" component={Home} />
+          <Route path="/notifications" component={Home} />
           <Route render={() => <h3>Page not Found</h3>} />
         </Switch>
       </div>

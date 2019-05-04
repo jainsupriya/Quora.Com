@@ -56,7 +56,6 @@ class Editor extends React.Component {
       if (newTheme === "core") newTheme = null;
       this.setState({ theme: newTheme })
     }
-
     handleSubmit(event)
     {
 
@@ -85,7 +84,6 @@ class Editor extends React.Component {
             console.log(err);
           });
     }
-
     render () {
       return (
         <div>

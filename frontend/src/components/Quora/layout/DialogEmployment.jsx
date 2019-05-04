@@ -158,7 +158,7 @@ class DialogEmployment extends Component {
                 </Grid>
                 <Grid item xs={10}>
                   <textarea
-                    class="selector_input text"
+                    class="selector_input"
                     type="text"
                     rows="1"
                     title="Position"
@@ -177,7 +177,7 @@ class DialogEmployment extends Component {
                 </Grid>
                 <Grid item xs={10}>
                   <textarea
-                    class="selector_input text"
+                    class="selector_input"
                     type="text"
                     rows="1"
                     title="Position"
@@ -196,7 +196,7 @@ class DialogEmployment extends Component {
                 </Grid>
                 <Grid item xs={10}>
                   <textarea
-                    class="selector_input text"
+                    class="selector_input"
                     type="text"
                     rows="1"
                     title="Position"

@@ -24,7 +24,7 @@ export const getUserDetails = userId => dispatch => {
 };
 export const getTopicQuestions = topic => dispatch => {
   axios
-    .get(`/questions/searchByTopic/${topic}`)
+    .get(`/questions/searchTopic/${topic}`)
     .then(res =>
       dispatch({
         type: GET_QUESTIONS,
