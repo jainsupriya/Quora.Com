@@ -223,7 +223,9 @@ class QuestionCard extends React.Component {
                 <span className="reason-txt">Answer · Recommended for you</span>
               </Grid>
               <Grid item>
-              <Link to={"/" + question._id} style={{ color: "#000000" }}><span className="question-txt">{question.question}</span></Link>
+                <Link to={"/" + question._id} style={{ color: "#000000" }}>
+                  <span className="question-txt">{question.question}</span>
+                </Link>
               </Grid>
 
               <React.Fragment>
@@ -259,11 +261,13 @@ class QuestionCard extends React.Component {
                       className="m-margin-up-down"
                     >
                       <Grid item className="black-clr">
-                        {answer.answerOwner !== undefined
-                          ? answer.answerOwner.fname +
-                            " " +
-                            answer.answerOwner.lname
-                          : "Anonymous User"}
+                        <Link to={`/profile/${answer.answerOwner._id}`}>
+                          {answer.answerOwner !== undefined
+                            ? answer.answerOwner.fname +
+                              " " +
+                              answer.answerOwner.lname
+                            : "Anonymous User"}
+                        </Link>
                       </Grid>
                       <Grid item className="fnt-13">
                         {"Answered"}{" "}
@@ -517,7 +521,7 @@ class QuestionCard extends React.Component {
       );
     } else {
       answer = "No Answer";
-      comp = <AnswerCard question={question} />;
+      comp = <AnswerCard question={question} user={this.props.auth.user} />;
     }
 
     return <React.Fragment>{comp}</React.Fragment>;

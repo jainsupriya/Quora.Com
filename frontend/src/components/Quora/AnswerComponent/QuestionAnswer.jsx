@@ -24,7 +24,7 @@ import {
 import Feed from "../layout/feed";
 import QuestionCard from "../layout/QuestionCard";
 import { AskQuestionCard } from "../layout/AskQuestionCard";
-import  AddQuestion  from "../homeComponents/AddQuestion"
+import AddQuestion from "../homeComponents/AddQuestion";
 import AnswerCard from "./AnswerCard";
 
 const styles = theme => ({});
@@ -49,11 +49,9 @@ class QuestionAnswer extends React.Component {
     this.setState({ openAddQuestion: false });
   };
 
-
-
   render() {
     //var userTopicList = this.props.userDetails.interestedTopicList;
-    var userTopicList = ['test1', 'test2'];
+    var userTopicList = ["test1", "test2"];
     var QuestionComp;
 
     if (this.props.questions && this.props.questions.length > 0) {
@@ -67,6 +65,7 @@ class QuestionAnswer extends React.Component {
             <AnswerCard
               question={question}
               answerList={question.answerList}
+              user={this.props.auth.user}
             />
           );
         });
@@ -87,9 +86,9 @@ class QuestionAnswer extends React.Component {
     return (
       <div>
         <AppBar className="m-bg-color" position="sticky">
-          <NavHeader/>
+          <NavHeader />
         </AppBar>
-      
+
         {addQuestion}
         <Grid
           container
@@ -107,12 +106,22 @@ class QuestionAnswer extends React.Component {
             >
               <Grid item xs={2} className="fix-pos">
                 <div style={{ position: "fixed", width: "11%" }}>
-                <h6><div>Questions</div></h6>
-                <Divider/>
-                <h6><div>Questions for you</div></h6>
-                <h6><div>Answer Request</div></h6>
-                <h6><div>Answer Later</div></h6>
-                <h6><div>Draft</div></h6>
+                  <h6>
+                    <div>Questions</div>
+                  </h6>
+                  <Divider />
+                  <h6>
+                    <div>Questions for you</div>
+                  </h6>
+                  <h6>
+                    <div>Answer Request</div>
+                  </h6>
+                  <h6>
+                    <div>Answer Later</div>
+                  </h6>
+                  <h6>
+                    <div>Draft</div>
+                  </h6>
                 </div>
               </Grid>
               <Grid item xs={8} className="m-padding-left-right-15">
@@ -121,43 +130,64 @@ class QuestionAnswer extends React.Component {
                   handleClickOpen={() => this.handleClickOpen()}
                 />
                 <Paper elevation={1} className="m-padding-10">
-                <Grid
-                container
-                direction="row"
-                justify="flex-start"
-                alignItems="flex-start"
-                // className="m-margin-up-down"
-                >
-                <Grid item>
-                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink">
-                    <g id="star" class="icon_svg-stroke icon_svg-fill" stroke="#666" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linejoin="round">
-                        <polygon id="Star" points="12 16.6175467 7.05572809 19.2169043 8 13.7113766 4 9.81234022 9.52786405 9.00909456 12 4 14.472136 9.00909456 20 9.81234022 16 13.7113766 16.9442719 19.2169043"></polygon>
-                    </g>
-                </svg>
-                </Grid>
-                <Grid item>
-                <h5>Question for You</h5>
-                </Grid>
-                </Grid>
-                </Paper> 
+                  <Grid
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="flex-start"
+                    // className="m-margin-up-down"
+                  >
+                    <Grid item>
+                      <svg
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xlink="http://www.w3.org/1999/xlink"
+                      >
+                        <g
+                          id="star"
+                          class="icon_svg-stroke icon_svg-fill"
+                          stroke="#666"
+                          stroke-width="1.5"
+                          fill="none"
+                          fill-rule="evenodd"
+                          stroke-linejoin="round"
+                        >
+                          <polygon
+                            id="Star"
+                            points="12 16.6175467 7.05572809 19.2169043 8 13.7113766 4 9.81234022 9.52786405 9.00909456 12 4 14.472136 9.00909456 20 9.81234022 16 13.7113766 16.9442719 19.2169043"
+                          />
+                        </g>
+                      </svg>
+                    </Grid>
+                    <Grid item>
+                      <h5>Question for You</h5>
+                    </Grid>
+                  </Grid>
+                </Paper>
                 {QuestionComp}
               </Grid>
 
               <Grid item xs={2} className="fix-pos">
                 <Paper className="m-paper" elevation={1}>
-                <b>Add topics you know about</b>
-             
+                  <b>Add topics you know about</b>
+
                   {/* {for (let index = 0; index < 10; index++) {
 
                                         
                                     }} */}
 
-
-                    <br/><br/>
-                    <p>Adding more topics will helps us find questions for you to answer.</p>
-                    <Button variant="contained" className="btn-margin">
-                        Add Topic
-                    </Button>
+                  <br />
+                  <br />
+                  <p>
+                    Adding more topics will helps us find questions for you to
+                    answer.
+                  </p>
+                  <Button variant="contained" className="btn-margin">
+                    Add Topic
+                  </Button>
                 </Paper>
               </Grid>
             </Grid>
@@ -176,7 +206,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(
-    mapStateToProps,
-    { getUserDetails, getQuestions }
-  )(withStyles(styles)(QuestionAnswer));
-  
+  mapStateToProps,
+  { getUserDetails, getQuestions }
+)(withStyles(styles)(QuestionAnswer));

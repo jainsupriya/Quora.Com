@@ -13,7 +13,7 @@ export const getUserDetails = userId => dispatch => {
     .get(`/user/${userId}`)
     .then(res => {
       var data = res.data[0];
-      console.log("data::" + data);
+
       if (
         data.interestedTopicList !== undefined &&
         data.interestedTopicList.length
