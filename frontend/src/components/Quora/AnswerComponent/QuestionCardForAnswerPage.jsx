@@ -45,9 +45,10 @@ class QuestionCardForAnswerPage extends React.Component {
     this.setState({ readMore: false});  
   };
   componentDidMount() {
+      console.log(this.props.answerList)
     var upvoteCount = 0;
     var isUpvoted = false;
-    axios.put(`/answer/view/`+this.props.answerList[0]._id)
+    /*axios.put(`/answer/view/`+this.props.answer._id)
     .then(response =>{
         if(response.status === 200){
             console.log(response.data);
@@ -55,7 +56,7 @@ class QuestionCardForAnswerPage extends React.Component {
                 products: response.data
             });
         }
-    });
+    });*/
 
     if (
       this.props.answerList !== undefined &&
@@ -110,21 +111,21 @@ class QuestionCardForAnswerPage extends React.Component {
 
   render() {
     const { question, user } = this.props;
-
+    console.log(this.props.answer)
     var comp = "";
     var upvotecomp = "";
     var upvoteCount = 0;
     var isUpvoted = false;
-    if (this.props.answerList !== undefined && this.props.answerList.length) {
+    if (this.props.answer !== undefined && this.props.answer.length) {
       var answer = this.props.answerList;
   
       if (
-        this.props.answerList[0].upVotes !== undefined &&
-        this.props.answerList[0].upVotes.length
+        this.props.upVotes !== undefined &&
+        this.props.upVotes.length
       ) {
-        upvoteCount = this.props.answerList[0].upVotes.length;
+        upvoteCount = this.props.upVotes.length;
 
-        if (this.props.answerList[0].upVotes.includes(user._id)) {
+        if (this.props.answer.includes(user._id)) {
           isUpvoted = true;
           upvotecomp = (
             <span>
@@ -228,15 +229,15 @@ class QuestionCardForAnswerPage extends React.Component {
                   <Grid item>
                     <Avatar
                       alt={
-                        answer.answerOwner !== undefined
-                          ? answer.answerOwner.fname +
+                        this.props.answerOwner !== undefined
+                          ?  this.props.answerOwner.fname +
                             " " +
-                            answer.answerOwner.lname
+                            this.props.answerOwner.lname
                           : "Anonymous User"
                       }
                       src={
-                        answer.answerOwner !== undefined
-                          ? answer.answerOwner.profileImg
+                        this.props.answerOwner !== undefined
+                          ?  this.props.answerOwner.profileImg
                           : ""
                       }
                       className="avatar"
@@ -251,16 +252,16 @@ class QuestionCardForAnswerPage extends React.Component {
                       className="m-margin-up-down"
                     >
                       <Grid item className="black-clr">
-                        {answer.answerOwner !== undefined
-                          ? answer.answerOwner.fname +
+                        { this.props.answerOwner !== undefined
+                          ?  this.props.answerOwner.fname +
                             " " +
-                            answer.answerOwner.lname
+                            this.props.answerOwner.lname
                           : "Anonymous User"}
                       </Grid>
                       <Grid item className="fnt-13">
                         {"Answered"}{" "}
                         {moment(
-                          new Date(answer.postedTime),
+                          new Date( this.props.postedTime),
                           "MMMM Do YYYY, h:mm:ss a"
                         ).fromNow()}
                       </Grid>
@@ -270,13 +271,13 @@ class QuestionCardForAnswerPage extends React.Component {
 
                 <Grid item className="ans-main-content">
                 { !this.state.readMore &&  <Typography variant="h6"
-               style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(this.props.answerList[0].answer)}</Typography>}
-                { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(this.props.answerList[0].answer)}</Typography>}
-                {Parser(this.props.answerList[0].answer)}
+               style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(this.props.answer)}</Typography>}
+                { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(this.props.answer)}</Typography>}
+        
                 </Grid>
 
                 <Grid item className="votes">
-                  {this.props.answerList[0].views} {`views`}
+                  {this.props.views} {`views`}
                 </Grid>
                 <Grid
                   container

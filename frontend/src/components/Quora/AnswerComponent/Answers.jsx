@@ -109,19 +109,19 @@ class Answers extends React.Component {
       QuestionComp = <React.Fragment>No Data Found</React.Fragment>;
     }
     var AnswerComp;
-    console.log(this.props.answerforquestions[0].answerList)
-    if (this.props.answerforquestions && this.props.answerforquestions.length > 0) {
-      AnswerComp = this.props.answerforquestions
-        .sort(
-          (ques1, ques2) =>
-            new Date(ques2.postedTime) - new Date(ques1.postedTime)
-        )
-        .map(question => {
+    console.log(this.props.answerforquestions.length )
+    if (this.props.answerforquestions && this.props.answerforquestions[0].answerList.length > 0) {
+      AnswerComp = this.props.answerforquestions[0].answerList
+        .map(answer => {
           return (
 
             <QuestionCardForAnswerPage
-            answerList={this.props.answerforquestions[0].answerList}
+            answer={answer.answer}
+            upvoteCount = {answer.upVotes}
             user={this.props.auth.user}
+            answerOwner = {answer.answerOwner}
+            postedTime = {answer.postedTime}
+            views = {answer.views}
           />
           );
         });
