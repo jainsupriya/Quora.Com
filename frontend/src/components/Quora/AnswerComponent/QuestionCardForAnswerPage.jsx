@@ -115,7 +115,6 @@ class QuestionCardForAnswerPage extends React.Component {
     var upvotecomp = "";
     var upvoteCount = 0;
     var isUpvoted = false;
-
     if (this.props.answerList !== undefined && this.props.answerList.length) {
       var answer = this.props.answerList;
   
@@ -273,6 +272,7 @@ class QuestionCardForAnswerPage extends React.Component {
                 { !this.state.readMore &&  <Typography variant="h6"
                style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(this.props.answerList[0].answer)}</Typography>}
                 { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(this.props.answerList[0].answer)}</Typography>}
+                {Parser(this.props.answerList[0].answer)}
                 </Grid>
 
                 <Grid item className="votes">

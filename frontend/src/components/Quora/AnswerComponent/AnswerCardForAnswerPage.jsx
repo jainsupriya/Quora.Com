@@ -15,6 +15,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import ReadMoreReact from "read-more-react";
+import Typography from '@material-ui/core/Typography';
 import isEmpty from "../../../validator/is-empty";
 import moment from "moment";
 import axios from "axios";
@@ -83,14 +84,7 @@ class AnswerCardForAnswerPage extends React.Component {
       answerComp = (
         <React.Fragment>
           <Grid item className="ans-main-content">
-            <ReadMoreReact
-              text={totalAnswerCount}
-              min={80}
-              ideal={100}
-              max={200}
-              readMoreText="...(more)"
-              showLessButton={true}
-            />
+          <Link to={"/" + question._id} style={{ color: "#000000" }}><Typography variant="subtitle1" component="p">{totalAnswerCount}</Typography></Link>
           </Grid>
           <Grid
             container

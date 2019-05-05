@@ -7,6 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 // import Toolbar from "@material-ui/core/Toolbar";
 // import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Typography from '@material-ui/core/Typography';
 // import IconButton from "@material-ui/core/IconButton";
 // import MenuIcon from "@material-ui/icons/Menu";
 import Divider from "@material-ui/core/Divider";
@@ -132,13 +133,7 @@ class AnswerCard extends React.Component {
       answerComp = (
         <React.Fragment>
           <Grid item className="ans-main-content">
-            <ReadMoreReact
-              text={totalAnswerCount}
-              min={80}
-              ideal={100}
-              max={200}
-              showLessButton={true}
-            />
+          <Link to={"/" + question._id} style={{ color: "#000000" }}><Typography variant="subtitle1" component="p">{totalAnswerCount}</Typography></Link>
           </Grid>
           <Grid
             container
