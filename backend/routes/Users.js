@@ -3,7 +3,7 @@ const UserRoutes = express.Router();
 var kafka = require("../kafka/client");
 const TOPIC = "user";
 const redis = require("redis");
-const EXP_TIME = 40;
+const EXP_TIME = 1;
 
 // Create Redis Client
 let client = redis.createClient();
