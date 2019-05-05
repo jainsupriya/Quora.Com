@@ -192,7 +192,7 @@ class QuestionCard extends React.Component {
                 <span className="reason-txt">Answer · Recommended for you</span>
               </Grid>
               <Grid item>
-                <span className="question-txt">{question.question}</span>
+              <Link to={"/" + question._id} style={{ color: "#000000" }}><span className="question-txt">{question.question}</span></Link>
               </Grid>
 
               <React.Fragment>
@@ -251,7 +251,7 @@ class QuestionCard extends React.Component {
                 { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(answer.answer)}</Typography>}
                 </Grid>
                 <Grid item className="votes">
-                  {answer.viewCount} {`views · View Upvoters`}
+                  {answer.views} {`views · View Upvoters`}
                 </Grid>
                 <Grid
                   container

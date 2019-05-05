@@ -41,6 +41,17 @@ class QuestionCardForAnswerPage extends React.Component {
   componentDidMount() {
     var upvoteCount = 0;
     var isUpvoted = false;
+    console.log(this.props.answerList[0]._id);
+    axios.put(`/answer/view/`+this.props.answerList[0]._id)
+    .then(response =>{
+        if(response.status === 200){
+            console.log(response.data);
+            this.setState({
+                products: response.data
+            });
+        }
+    });
+
     if (
       this.props.answerList !== undefined &&
       this.props.answerList.length
@@ -260,7 +271,7 @@ class QuestionCardForAnswerPage extends React.Component {
                 </Grid>
 
                 <Grid item className="votes">
-                  {answer.viewCount} {`views · View Upvoters`}
+                  {this.props.answerList[0].views} {`views`}
                 </Grid>
                 <Grid
                   container

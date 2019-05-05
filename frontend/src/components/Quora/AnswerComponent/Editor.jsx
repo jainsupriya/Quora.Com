@@ -68,7 +68,7 @@ class Editor extends React.Component {
           questionId: this.props.qid
         }
         console.log(answer);
-       axios.post('http://52.9.137.32:5000/answer', answer).
+       axios.post(`/answer`, answer).
           then(res=>{
             console.log(res.status);
             if(res.status === 200)

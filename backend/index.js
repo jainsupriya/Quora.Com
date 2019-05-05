@@ -13,13 +13,14 @@ app.use(cors({ origin: "*", credentials: true }));
 app.use(express.static('./public'))
 
 // Bodyparser middleware
-app.use(
+/*app.use(
     bodyParser.urlencoded({
         extended: true
         // extended: false
     })
-);
-app.use(bodyParser.json());
+);*/
+app.use(bodyParser.json({limit: "20mb"}));
+app.use(bodyParser.urlencoded({limit: "20mb", extended: true, parameterLimit:50000}))
 
 //Allow Access Control
 app.use(function(req, res, next) {
