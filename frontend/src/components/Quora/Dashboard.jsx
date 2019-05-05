@@ -156,10 +156,10 @@ class Dashboard extends React.Component {
     ]
     console.log(this.props.answerByViewDetails.answersByViews);
 
-    const answers = this.props.answersByViews;
+    const answers = this.props.answerByViewDetails.answersByViews;
     // _(answers).sortBy().take(3).value();
-    let temp = _.sortBy(answers, [item => item.views]);
-    // temp = _.take(temp, 10)
+    let temp = _.reverse(_.sortBy(answers, item => item.views));
+    temp = _.take(temp, 10)
     console.log(temp);
 
     const mainListItems = (
@@ -288,13 +288,15 @@ class Dashboard extends React.Component {
                 <Table>
                   <TableHead>
                     <TableRow>
+                      <TableCell align="left">Question</TableCell>
                       <TableCell align="left">Answers</TableCell>
                       <TableCell align="left">Views</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {data.map(n => (
+                    {temp.map(n => (
                       <TableRow key={n.id}>
+                        <TableCell align="left">{n.questionId}</TableCell>
                         <TableCell align="left">{n.answer}</TableCell>
                         <TableCell align="left">{n.views}</TableCell>
                       </TableRow>

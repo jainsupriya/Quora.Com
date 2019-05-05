@@ -37,7 +37,8 @@ class Content extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getContentDetails("5cbe44ad5445656fa98b6f7d");
+    const userID = this.props.userDetails._id;
+    this.props.getContentDetails(userID);
     this.setState({
       contentDetails: this.props.contentDetails.contents
     });
@@ -442,7 +443,7 @@ const mapStateToProps = state => ({
   // auth: state.auth,
   // userState: state.userState,
   // errors: state.errors,
-  // userDetails: state.homeState.userDetails,
+  userDetails: state.homeState.userDetails,
   contentDetails: state.contents
 });
 
