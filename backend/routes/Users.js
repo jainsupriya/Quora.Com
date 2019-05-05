@@ -4,6 +4,7 @@ var kafka = require("../kafka/client");
 const TOPIC = "user";
 const redis = require("redis");
 const EXP_TIME = 1;
+const redisHmapMax = 4;
 
 // Create Redis Client
 let client = redis.createClient();
@@ -92,36 +93,14 @@ UserRoutes.get("/user/:userId", (req, res, next) => {
             console.log(err);
             res.status(422).send(err);
         } else {
-            console.log("abc");
             client.hlen("get/user/",(err,length)=>{
-                console.log(err)
-                console.log(length)
-            })
-            client.hkeys("get/user/",(err,keys)=>{
-                console.log(err)
-                console.log(keys)
-            })
-            client.hlen("get/user/",(err,length)=>{
-                console.log(err)
-                console.log(length)
-
-                if(length>=4){
+                if(length>=redisHmapMax){
                     client.hkeys("get/user/",(err,keys)=>{
-                        console.log(err)
-                        console.log(keys)
-                        console.log(keys[3])
-                        // client.hdel("get/user/",(err,keys)=>{
-                        //     console.log(err)
-                        //     console.log(keys)
-                        // })
+                        console.log(keys[0])
+                        client.hdel("get/user/",keys[0])
                     })
                 }
             })
-            
-
-            // console.log(client.hkeys("get/user/"));
-            // console.log(client.hgetall("get/user/"));
-            console.log("def");
             if (reply) {
                 res.status(200).send(JSON.parse(reply));
             } else {
@@ -131,13 +110,11 @@ UserRoutes.get("/user/:userId", (req, res, next) => {
                 };
                 kafka.make_request(TOPIC, reqMsg, function(err, results) {
                     res.status(results.status).send(results.data);
-                    // client.setex("get/user/"+req.params.userId, EXP_TIME ,JSON.stringify(results.data));
                     client.hset(
                         "get/user/",
                         req.params.userId,
                         JSON.stringify(results.data)
                     );
-                    // client.expire("get/user/"+req.params.userId ,EXP_TIME)
                 });
             }
         }
@@ -151,12 +128,36 @@ UserRoutes.get("/users/searchByUsername/:usernameQuery", (req, res, next) => {
     );
     console.log("/get/users/searchByUsername/:usernameQuery");
 
-    var reqMsg = {
-        api: "get/users/searchByUsername/:usernameQuery",
-        reqBody: { usernameQuery: req.params.usernameQuery }
-    };
-    kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.status(results.status).send(results.data);
+    client.hget("get/users/searchByUsername/", req.params.usernameQuery, function(err, reply) {
+        if (err) {
+            console.log(err);
+            res.status(422).send(err);
+        } else {
+            client.hlen("get/users/searchByUsername/",(err,length)=>{
+                if(length>=redisHmapMax){
+                    client.hkeys("get/users/searchByUsername/",(err,keys)=>{
+                        console.log(keys[0])
+                        client.hdel("get/users/searchByUsername/",keys[0])
+                    })
+                }
+            })
+            if (reply) {
+                res.status(200).send(JSON.parse(reply));
+            } else {
+                var reqMsg = {
+                    api: "get/users/searchByUsername/:usernameQuery",
+                    reqBody: { usernameQuery: req.params.usernameQuery }
+                };
+                kafka.make_request(TOPIC, reqMsg, function(err, results) {
+                    res.status(results.status).send(results.data);
+                    client.hset(
+                        "get/users/searchByUsername/",
+                        req.params.usernameQuery,
+                        JSON.stringify(results.data)
+                    );
+                });
+            }
+        }
     });
 });
 
