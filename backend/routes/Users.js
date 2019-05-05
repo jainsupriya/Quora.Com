@@ -343,6 +343,24 @@ UserRoutes.put("/user/followQuestion/:userId/:questionId", (req, res, next) => {
     });
 });
 
+// unFollow a question
+UserRoutes.put("/user/unFollowQuestion/:userId/:questionId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/put/user/unFollowQuestion/:userId/:questionId");
+    var reqMsg = {
+        api: "put/user/unFollowQuestion/:userId/:questionId",
+        reqBody: {
+            userId: req.params.userId,
+            questionId: req.params.questionId
+        }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
 // Follow a User u2 is following u1
 UserRoutes.put("/user/followUser/:u1/:u2", (req, res, next) => {
     console.log(
@@ -351,6 +369,21 @@ UserRoutes.put("/user/followUser/:u1/:u2", (req, res, next) => {
     console.log("/put/user/followUser/:u1/:u2");
     var reqMsg = {
         api: "put/user/followUser/:u1/:u2",
+        reqBody: { u1: req.params.u1, u2: req.params.u2 }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
+// unFollow a User u2 is unfollowing u1
+UserRoutes.put("/user/unFollowUser/:u1/:u2", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/put/user/unFollowUser/:u1/:u2");
+    var reqMsg = {
+        api: "put/user/unFollowUser/:u1/:u2",
         reqBody: { u1: req.params.u1, u2: req.params.u2 }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
@@ -369,6 +402,16 @@ UserRoutes.put("/user/:userId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        if(client.hexists(
+            "get/user/",
+            req.params.userId
+        )){
+            client.hset(
+                "get/user/",
+                req.params.userId,
+                JSON.stringify(results.data)
+            );
+        }
     });
 });
 
@@ -380,6 +423,21 @@ UserRoutes.put("/user/bookmarkAnswer/:userId/:answerId", (req, res, next) => {
     console.log("/put/user/bookmarkAnswer/:userId/:answerId");
     var reqMsg = {
         api: "put/user/bookmarkAnswer/:userId/:answerId",
+        reqBody: { userId: req.params.userId, answerId: req.params.answerId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
+// unBookmark an answer
+UserRoutes.put("/user/unBookmarkAnswer/:userId/:answerId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/put/user/unBookmarkAnswer/:userId/:answerId");
+    var reqMsg = {
+        api: "put/user/unBookmarkAnswer/:userId/:answerId",
         reqBody: { userId: req.params.userId, answerId: req.params.answerId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
