@@ -308,11 +308,11 @@ export class SignUp extends Component {
               <div id="__w2_wJNkelKg8_connect_explanation">
                 <a
                   className="signup_email_link"
-                  href="/signup"
+                  href="/login"
                   tabindex="8"
                   id="__w2_wJNkelKg8_continue_with_email"
                 >
-                  Sign Up With Email
+                  Login
                 </a>
                 <span className="tos_disclaimer">
                   .{" "}
