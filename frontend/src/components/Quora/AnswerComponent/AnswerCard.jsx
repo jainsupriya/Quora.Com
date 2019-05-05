@@ -61,7 +61,7 @@ class AnswerCard extends React.Component {
   render() {
     const { classes } = this.props;
     const { question } = this.props;
-
+    console.log(question._id)
     const { answer } = this.state;
     var answerComp;
     var totalAnswerCount;

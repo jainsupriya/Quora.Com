@@ -34,14 +34,19 @@ class QuestionCardForAnswerPage extends React.Component {
       isUpvoted: false,
       upvoteCount: 0,
       comment: "New Comment added",
-      showComment: false
+      showComment: false,
+      readMore:false
     };
   }
-
+  readMoreText = () => {
+    this.setState({ readMore: true});  
+  };
+  readMoreTextClose = () => {
+    this.setState({ readMore: false});  
+  };
   componentDidMount() {
     var upvoteCount = 0;
     var isUpvoted = false;
-    console.log(this.props.answerList[0]._id);
     axios.put(`/answer/view/`+this.props.answerList[0]._id)
     .then(response =>{
         if(response.status === 200){
@@ -118,7 +123,7 @@ class QuestionCardForAnswerPage extends React.Component {
         this.props.answerList[0].upVotes !== undefined &&
         this.props.answerList[0].upVotes.length
       ) {
-        upvoteCount = question.answerList[0].upVotes.length;
+        upvoteCount = this.props.answerList[0].upVotes.length;
 
         if (this.props.answerList[0].upVotes.includes(user._id)) {
           isUpvoted = true;
