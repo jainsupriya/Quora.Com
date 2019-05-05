@@ -45,12 +45,6 @@ class QuestionCard extends React.Component {
     this.setState({ readMore: false});  
   };
   componentDidMount() {
-    console.log(
-      "question card mount" +
-        JSON.stringify(this.props.question.question) +
-        ":::Answer::" +
-        JSON.stringify(this.props.question.answerList)
-    );
     var upvoteCount = 0;
     var isUpvoted = false;
     if (

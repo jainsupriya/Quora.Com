@@ -6,7 +6,7 @@ import SimpleReactValidator from "simple-react-validator";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/authActions";
-
+import { getUserDetails } from "../../redux/actions/homeAction";
 const styles = theme => ({
   main: {
     width: "auto",
@@ -80,7 +80,7 @@ export class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/");
+      nextProps.history.push("/");
     }
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -214,10 +214,11 @@ Login.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  userDetails: state.homeState.userDetails
 });
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser, getUserDetails }
 )(withStyles(styles)(withRouter(Login)));

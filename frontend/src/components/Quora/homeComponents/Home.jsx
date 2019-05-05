@@ -43,7 +43,7 @@ class Home extends React.Component {
     var questionData = {
       question: question,
       questionOwner: this.props.auth.user._id,
-      topicList: topic
+      interestedTopicList: []
     };
 
     this.props.addQuestion(questionData);
@@ -60,19 +60,8 @@ class Home extends React.Component {
     this.setState({ openAddQuestion: false });
   };
 
-  async componentDidMount() {
-    await this.props.getUserDetails(this.props.auth.user._id);
-
-    if (
-      this.props.userDetails.interestedTopicList &&
-      this.props.userDetails.interestedTopicList.length > 0
-    ) {
-      this.props.getTopicQuestions(
-        this.props.userDetails.interestedTopicList[0]
-      );
-    } else {
-      this.props.getQuestions();
-    }
+  componentDidMount() {
+    this.props.getUserDetails(this.props.auth.user._id);
   }
 
   handleTopicClick = newTopic => {
@@ -80,9 +69,11 @@ class Home extends React.Component {
   };
 
   render() {
-    var userTopicList = this.props.userDetails.interestedTopicList;
     var QuestionComp;
-
+    var userTopicList =
+      this.props.userDetails !== undefined
+        ? this.props.userDetails.interestedTopicList
+        : [];
     if (this.props.questions && this.props.questions.length > 0) {
       QuestionComp = this.props.questions
         .sort(

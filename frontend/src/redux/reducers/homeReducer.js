@@ -3,8 +3,13 @@ import {
   GET_QUESTION,
   GET_USER_DETAILS,
   CLEAR_HOMESTATE,
+<<<<<<< Updated upstream
   SET_USER_DETAILS,
   GET_ANSWERS_FOR_QUESTIONS
+=======
+  GET_USER_DETAILS_QUESTIONS,
+  SET_USER_DETAILS
+>>>>>>> Stashed changes
 } from "../actions/types";
 const initialState = {
   questions: [],
@@ -21,11 +26,19 @@ export default function(state = initialState, action) {
         userDetails: action.payload
       };
 
-      case SET_USER_DETAILS:
+    case SET_USER_DETAILS:
       return {
         ...state,
         isChanged: !state.isChanged,
         userDetails: action.payload
+      };
+
+    case GET_USER_DETAILS_QUESTIONS:
+      return {
+        ...state,
+        isChanged: !state.isChanged,
+        userDetails: action.payload.userDetails,
+        questions: action.payload.questions
       };
 
     case GET_QUESTIONS:
