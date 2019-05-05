@@ -156,7 +156,10 @@ function handle_request(msg, callback) {
                     populate: {
                     path: 'answerOwner',
                     select: 'profileImg lname fname',
-                    } 
+                    },
+                    populate: {
+		    	path: 'commentList',
+		    }
                 })                
                 .then((result, err) => {
                     if (err) {
