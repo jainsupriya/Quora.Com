@@ -3,13 +3,9 @@ import {
   GET_ERRORS,
   GET_QUESTIONS,
   GET_QUESTION,
-<<<<<<< Updated upstream
-  GET_USER_DETAILS,
   GET_ANSWERS_FOR_QUESTIONS,
-=======
   GET_USER_DETAILS_QUESTIONS,
   GET_USER_DETAILS
->>>>>>> Stashed changes
 } from "./types";
 
 export const getUserDetails = userId => dispatch => {
@@ -176,7 +172,7 @@ export const addQuestion = questionData => dispatch => {
 };
 
 export const getAnswersForQuestion = questionId => dispatch => {
-  console.log(questionId)
+  console.log(questionId);
   axios
     .get(`/question/${questionId}`)
     .then(res =>
@@ -191,5 +187,4 @@ export const getAnswersForQuestion = questionId => dispatch => {
         payload: err.data
       })
     );
-  
 };
