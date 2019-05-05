@@ -7,6 +7,7 @@ import ReactHtmlParser, {
   convertNodeToElement,
   htmlparser2
 } from "react-html-parser";
+import { BookmarkBorder, Bookmark } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 // import PropTypes from 'prop-types';
@@ -37,9 +38,10 @@ class QuestionCard extends React.Component {
       answer: "No answer",
       isUpvoted: false,
       upvoteCount: 0,
-      comment: "New Comment added",
+      addedComment: "New Comment added",
       showComments: false,
-      readMore: false
+      readMore: false,
+      isBookmarked: false
     };
   }
   showComments = () => {
@@ -127,9 +129,28 @@ class QuestionCard extends React.Component {
     });
   };
 
-  handleAddComment = () => {
+  handleBookmarkAnswer = answerId => {
+    axios
+      .put(`/user/bookmarkAnswer/${this.props.user._id}/${answerId}`)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err.data));
     this.setState({
-      showComment: true
+      isBookmarked: !this.state.isBookmarked
+    });
+  };
+
+  handleAddComment = answerId => {
+    var commentData = {
+      comment: this.state.addedComment,
+      answerId: answerId,
+      commentOwner: this.props.user._id
+    };
+    axios
+      .post("/comment", commentData)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err.data));
+    this.setState({
+      showComments: true
     });
   };
 
@@ -427,6 +448,21 @@ class QuestionCard extends React.Component {
                         </g>
                       </svg>
                     </span>
+                    <span className="m-padding-left-right-15">
+                      {this.state.isBookmarked ? (
+                        <Bookmark
+                          onClick={() => {
+                            this.handleBookmarkAnswer(answer._id);
+                          }}
+                        />
+                      ) : (
+                        <BookmarkBorder
+                          onClick={() => {
+                            this.handleBookmarkAnswer(answer._id);
+                          }}
+                        />
+                      )}
+                    </span>
                   </Grid>
                   <Grid item>
                     <div
@@ -461,7 +497,7 @@ class QuestionCard extends React.Component {
                       placeholder="Add a Comment"
                       onChange={e => {
                         this.setState({
-                          comment: e.target.value
+                          addedComment: e.target.value
                         });
                       }}
                     />
@@ -471,7 +507,7 @@ class QuestionCard extends React.Component {
                       variant="contained"
                       className="btn-margin"
                       onClick={() => {
-                        this.handleAddComment();
+                        this.handleAddComment(answer._id);
                       }}
                     >
                       Add Comment
@@ -507,6 +543,7 @@ class QuestionCard extends React.Component {
                           <Grid item className="fnt-13">
                             {"Just now"}
                           </Grid>
+                          {this.state.addedComment}
                         </Grid>
                       </Grid>
                     </Grid>
