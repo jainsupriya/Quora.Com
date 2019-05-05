@@ -24,7 +24,7 @@ const Slice = props => {
 
     let arc = d3.arc().innerRadius(0).outerRadius(200);
 
-    let interpolate = d3.interpolateRgb("#eaaf79", "#bc3358");
+    let interpolate = d3.interpolateRgb("#eaaf79", "#b92b27");
 
     return pie.map((slice, index) => {
         let sliceColor = interpolate(index / (pie.length - 1));

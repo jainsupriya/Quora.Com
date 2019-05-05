@@ -36,10 +36,11 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PeopleIcon from "@material-ui/icons/People";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import LayersIcon from "@material-ui/icons/Layers";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+import HomeIcon from "@material-ui/icons/Home";
+import Parser from "html-react-parser";
 import _ from "lodash";
 
-import {getAnswersByViews} from "../../redux/actions/dashboardActions";
+import { getAnswersByViews } from "../../redux/actions/dashboardActions";
 
 const drawerWidth = 240;
 
@@ -143,9 +144,8 @@ class Dashboard extends React.Component {
   };
 
   componentWillMount = () => {
-    this.props.getAnswersByViews()
-    
-  }
+    this.props.getAnswersByViews();
+  };
 
   render() {
     const { classes } = this.props;
@@ -153,13 +153,12 @@ class Dashboard extends React.Component {
       { answer: "Answer1", views: 8 },
       { answer: "Answer2", views: 8 },
       { answer: "Answer3", views: 8 }
-    ]
+    ];
     console.log(this.props.answerByViewDetails.answersByViews);
 
     const answers = this.props.answerByViewDetails.answersByViews;
-    // _(answers).sortBy().take(3).value();
     let temp = _.reverse(_.sortBy(answers, item => item.views));
-    temp = _.take(temp, 10)
+    temp = _.take(temp, 10);
     console.log(temp);
 
     const mainListItems = (
@@ -241,6 +240,11 @@ class Dashboard extends React.Component {
               Dashboard
             </Typography> */}
             <div className="logo-img" />
+            <div style={{ position: 'absolute', right : '2.5%' }}>
+             <a href="/" style={{ color: "#b92b27" }}>
+             <HomeIcon />
+               </a>
+            </div>
             {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -268,7 +272,12 @@ class Dashboard extends React.Component {
           <Divider />
           {/* <List>{secondaryListItems}</List> */}
         </Drawer>
-        <main className={classes.content} style={{display: this.state.showChart === "byAnswerViews" ? 'block' : 'none'}}>
+        <main
+          className={classes.content}
+          style={{
+            display: this.state.showChart === "byAnswerViews" ? "block" : "none"
+          }}
+        >
           <div className={classes.appBarSpacer} />
           <Typography variant="h5" gutterBottom component="h2">
             10 Answers with Views
@@ -281,7 +290,7 @@ class Dashboard extends React.Component {
             alignItems="flex-start"
           >
             <Grid item xs={5}>
-              <PieChart data={data} />
+              <PieChart data={temp} />
             </Grid>
             <Grid item xs={7}>
               <Paper>
@@ -297,7 +306,7 @@ class Dashboard extends React.Component {
                     {temp.map(n => (
                       <TableRow key={n.id}>
                         <TableCell align="left">{n.questionId}</TableCell>
-                        <TableCell align="left">{n.answer}</TableCell>
+                        <TableCell align="left">{Parser(n.answer)}</TableCell>
                         <TableCell align="left">{n.views}</TableCell>
                       </TableRow>
                     ))}
@@ -309,7 +318,12 @@ class Dashboard extends React.Component {
           <div className={classes.tableContainer}>{/* <SimpleTable /> */}</div>
         </main>
 
-        <main className={classes.content} style={{display: this.state.showChart === "byUpVotes" ? 'block' : 'none'}}>
+        <main
+          className={classes.content}
+          style={{
+            display: this.state.showChart === "byUpVotes" ? "block" : "none"
+          }}
+        >
           <div className={classes.appBarSpacer} />
           <Typography variant="h5" gutterBottom component="h2">
             10 Answers with Views

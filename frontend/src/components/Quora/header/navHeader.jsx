@@ -18,7 +18,7 @@ import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
 import { logoutUser } from "../../../redux/actions/authActions";
-import axios from 'axios';
+import axios from "axios";
 
 const styles = theme => ({
   notificationDialog: {
@@ -111,19 +111,17 @@ class NavHeader extends Component {
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.searchForTopicOrPeople = this.searchForTopicOrPeople.bind(this);
   }
-  searchForTopicOrPeople(event)
-  {
-    const {name, value} = event.target;
-    console.log(value)
-    axios.get(`/topics/search/`+value)
-        .then(response =>{
-            if(response.status === 200){
-                console.log(response.data);
-                this.setState({
-                    products: response.data
-                });
-            }
+  searchForTopicOrPeople(event) {
+    const { name, value } = event.target;
+    console.log(value);
+    axios.get(`/topics/search/` + value).then(response => {
+      if (response.status === 200) {
+        console.log(response.data);
+        this.setState({
+          products: response.data
         });
+      }
+    });
   }
   handleAddQuestion = (question, topic) => {
     var questionData = {
@@ -374,12 +372,14 @@ class NavHeader extends Component {
                   </a>
                 </li>
                 <li className={classes.listStyle}>
-                  <a className={classes.profileMenu} href="/">
+                  <a className={classes.profileMenu} href="/content">
                     Your Content
                   </a>
                 </li>
                 <li className={classes.listStyle}>
-                  <a className={classes.profileMenu}>Settings</a>
+                  <a className={classes.profileMenu} href="/dashboard">
+                  Dashboard
+                  </a>
                 </li>
                 <li className={classes.listStyle}>
                   <a
@@ -553,7 +553,7 @@ class NavHeader extends Component {
                 placeholder="Search Quora"
                 autoFocus="True"
                 type="text"
-                onChange= {this.searchForTopicOrPeople} 
+                onChange={this.searchForTopicOrPeople}
               />
               <div
                 onClick={this.handleAvatarClick}
