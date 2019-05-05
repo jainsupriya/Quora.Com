@@ -39,9 +39,16 @@ class Answers extends React.Component {
     this.state = {
       topic: "Change",
       userDetails: {},
-      openAddQuestion: false
+      openAddQuestion: false,
+      visible :2
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
+    this.loadMore = this.loadMore.bind(this);
+  }
+  loadMore() {
+    this.setState((prev) => {
+      return {visible: prev.visible + 2};
+    });
   }
 
   handleAddQuestion = (question, topic) => {
@@ -111,7 +118,7 @@ class Answers extends React.Component {
     var AnswerComp;
     console.log(this.props.answerforquestions.length )
     if (this.props.answerforquestions && this.props.answerforquestions[0].answerList.length > 0) {
-      AnswerComp = this.props.answerforquestions[0].answerList
+      AnswerComp = this.props.answerforquestions[0].answerList.slice(0, this.state.visible)
         .map(answer => {
           return (
 
@@ -207,6 +214,9 @@ class Answers extends React.Component {
           </Grid>
           <Grid item xs={2} />
         </Grid>
+        {this.state.visible <  this.props.answerforquestions[0].answerList.length  &&
+             <button onClick={this.loadMore} type="button" className="load-more" style ={{marginLeft: 650}}>Load more</button>
+          }
       </div>
     );
   }
