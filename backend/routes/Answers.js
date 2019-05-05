@@ -3,6 +3,16 @@ const AnswerRoutes = express.Router();
 var kafka = require("../kafka/client");
 const TOPIC = "answer";
 
+var Pusher = require('pusher');
+
+var pusher = new Pusher({
+  appId: '776224',
+  key: '67f71ccfff5990b594ee',
+  secret: 'ec808fa31e3693ea10c5',
+  cluster: 'us3',
+  encrypted: true
+});
+
 // answer
 // answerOwner[]
 // imageList[]
@@ -13,6 +23,12 @@ const TOPIC = "answer";
 // postedTime
 
 AnswerRoutes.post("/answer", (req, res, next) => {
+    
+    if(req.body.answerowner === "5ccdd8dabdae7817b83431e"){
+        pusher.trigger('quora', 'post-answer', {
+            "message": req.body
+          });
+    }
     console.log(
         "===================================================================================================================================================="
     );
