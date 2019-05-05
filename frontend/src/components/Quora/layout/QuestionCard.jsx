@@ -180,7 +180,7 @@ class QuestionCard extends React.Component {
       comp = (
        
         <div>
-          <Paper elevation={1} className="m-padding-10">
+          <Paper elevation={2} className="m-padding-10">
             <Grid
               container
               direction="column"

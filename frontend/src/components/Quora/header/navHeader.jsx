@@ -18,6 +18,7 @@ import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
 import { logoutUser } from "../../../redux/actions/authActions";
+import axios from 'axios';
 
 const styles = theme => ({
   notificationDialog: {
@@ -105,12 +106,25 @@ class NavHeader extends Component {
       openNotification: false,
       topic: "",
       question: "",
-      openProfileMenu: false,
-      openSearchDialog: false
+      openProfileMenu: false
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
+    this.searchForTopicOrPeople = this.searchForTopicOrPeople.bind(this);
   }
-
+  searchForTopicOrPeople(event)
+  {
+    const {name, value} = event.target;
+    console.log(value)
+    axios.get(`/topics/search/`+value)
+        .then(response =>{
+            if(response.status === 200){
+                console.log(response.data);
+                this.setState({
+                    products: response.data
+                });
+            }
+        });
+  }
   handleAddQuestion = (question, topic) => {
     var questionData = {
       question: question,
@@ -164,38 +178,14 @@ class NavHeader extends Component {
     });
   };
 
-  handleSearchDialogClose = () => {
-    this.setState({
-      openSearchDialog: false
-    });
-  }
-
   handleLogout = () => {
     this.props.logoutUser();
   };
 
-  changeSearchHandler = event => {
-    console.log(event.target.value);
-    const searchValue = event.target.value;
-    if(searchValue != '')
-    {
-      this.setState({
-        openSearchDialog : searchValue
-      })
-    }
-    else
-    {
-      this.setState({
-        openSearchDialog : false
-      })
-    }
-  }
-
   render() {
-    const { openNotification, openProfileMenu, openSearchDialog } = this.state;
+    const { openNotification, openProfileMenu } = this.state;
     const open1 = Boolean(openNotification);
     const open2 = Boolean(openProfileMenu);
-    const open3 = Boolean(openSearchDialog);
     const { classes, auth } = this.props;
 
     const notificationList = {
@@ -384,7 +374,7 @@ class NavHeader extends Component {
                   </a>
                 </li>
                 <li className={classes.listStyle}>
-                  <a className={classes.profileMenu} href="/content">
+                  <a className={classes.profileMenu} href="/">
                     Your Content
                   </a>
                 </li>
@@ -408,79 +398,11 @@ class NavHeader extends Component {
       </div>
     );
 
-    const searchDialog = (
-        <div>
-          <Popover
-            id="simple-popper"
-            open={open3}
-            anchorEl={document.getElementById("search")}
-            onClose={this.handleSearchDialogClose}
-            anchorReference="anchorPosition"
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center"
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left"
-            }}
-            anchorPosition={{
-              left: 1115,
-              top: 68
-            }}
-          >
-            <div className={classes.profileDialogWidth}>
-              <div
-                className={classes.notificationContent}
-                style={{ overflow: "hidden" }}
-              >
-                <ul
-                  style={{
-                    listStyle: "none",
-                    marginBottom: "0rem",
-                    paddingLeft: 0
-                  }}
-                >
-                  <li className={classes.listStyle}>
-                    <a
-                      className={classes.profileMenu}
-                      style={{ borderTop: "none" }}
-                      href="/myprofile"
-                    >
-                      Profile
-                    </a>
-                  </li>
-                  <li className={classes.listStyle}>
-                    <a className={classes.profileMenu} href="/">
-                      Your Content
-                    </a>
-                  </li>
-                  <li className={classes.listStyle}>
-                    <a className={classes.profileMenu}>Settings</a>
-                  </li>
-                  <li className={classes.listStyle}>
-                    <a
-                      className={classes.profileMenu}
-                      onClick={() => {
-                        this.handleLogout();
-                      }}
-                    >
-                      Logout
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </Popover>
-        </div>
-      );
-
     return (
       <div>
         {addQuestion}
         {notifications}
         {profilePopover}
-        {searchDialog}
         <Grid
           container
           direction="row"
@@ -628,12 +550,10 @@ class NavHeader extends Component {
               </div>
               <input
                 className="header-search"
-                id="search"
                 placeholder="Search Quora"
+                autoFocus="True"
                 type="text"
-                value={this.state.searchValue}
-                onFocus={this.changeSearchHandler}
-                autoFocus={true}
+                onChange= {this.searchForTopicOrPeople} 
               />
               <div
                 onClick={this.handleAvatarClick}
