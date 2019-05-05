@@ -23,12 +23,44 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import navHeader from "../header/navHeader";
 import Editor from "./Editor";
+import Popover from "@material-ui/core/Popover";
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2
-  }
+  },
+  dialogWidth: {
+    borderRadius: 3,
+    background: "#f7f7f7",
+    border: "1px solid #ccc",
+    boxShadow: "0 1px 3px rgba(200,200,200,0.7)",
+    padding: 0,
+    minWidth: 190,
+    maxHeight: 300,
+    fontSize: 14
+  },
+  dialogContent: {
+    borderTop: "1px solid #e2e2e2",
+    background: "#fff",
+    overflowY: "scroll",
+    maxHeight: "80vh",
+    textAlign: "left"
+  },
+  dialogMenu: {
+    borderTop: "1px solid #e2e2e2",
+    padding: "8px 16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    color: "#2b6dad !important"
+  },
+  listStyle: {
+    textDecoration: 'none',
+    "&:hover": {
+      background: "#eaf4ff"
+    }
+  },
 });
 
 class AnswerCard extends React.Component {
@@ -40,7 +72,9 @@ class AnswerCard extends React.Component {
       editorHtml: "",
       totalAnswer: "",
       followAnswer: true,
-      followerCount: 0
+      followerCount: 0,
+      showMenu: false,
+      anchorEl: null
     };
     this.GiveAnswer = this.GiveAnswer.bind(this);
   }
@@ -126,12 +160,35 @@ class AnswerCard extends React.Component {
       followerCount: followerCount
     });
   }
+
+  handleMenu = event => {
+    console.log("Hello")
+    console.log(event.currentTarget.id)
+    console.log(document.getElementById(event.currentTarget.id).offsetTop)
+
+    this.setState({
+      showMenu: true,
+      anchorEl: event.currentTarget,
+    });
+  }
+
+  handleMenuClose = () => {
+    console.log("closed")
+    this.setState({
+      showMenu: false,
+      anchorEl: null
+    });
+  }
   render() {
     const { classes } = this.props;
     const { question } = this.props;
-    console.log(question._id)
+    console.log(question._id);
     const { answer } = this.props;
     var answerComp;
+    const position = {
+      left: 1115,
+      top: 386
+    }
     var totalAnswerCount;
     if (question.answerList.length > 0) {
       totalAnswerCount = question.answerList.length;
@@ -439,7 +496,12 @@ class AnswerCard extends React.Component {
               <Grid item xs={5} />
 
               <Grid item xs={1}>
-                <span class="ui_button_icon" aria-hidden="true">
+                <span
+                  id="menuid"
+                  class="ui_button_icon"
+                  aria-hidden="true"
+                  onClick={this.handleMenu}
+                >
                   <svg
                     width="24px"
                     height="24px"
@@ -463,6 +525,54 @@ class AnswerCard extends React.Component {
               </Grid>
             </Grid>
           </Grid>
+          <Popover
+          id="simple-popper-1"
+          open={Boolean(this.state.showMenu)}
+          anchorEl={this.state.anchorEl}
+          onClose={this.handleMenuClose}
+          anchorReference={position}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left"
+          }}
+          anchorPosition={{
+            left: 1115,
+            top: 1212
+          }}
+          // onFocus={this.abc}
+        >
+          {/* style={{ opacity: this.state.searchValue && this.state.searchValue !== '' ? 0 : 1 }} */}
+          <div className={classes.dialogWidth}>
+            <div
+              className={classes.dialogContent}
+              style={{ overflow: "hidden" }}
+            >
+              <ul
+                style={{
+                  listStyle: "none",
+                  marginBottom: "0rem",
+                  paddingLeft: 0
+                }}
+              >
+                <li className={classes.listStyle}>
+                  <a
+                    className={classes.dialogMenu}
+                    style={{ borderTop: "none" }}
+                    href="/"
+                  >
+                    Answer Anonymously
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Popover>
+        {console.log(this)}
+        {/* {document.getElementById("search").focus()} */}
         </React.Fragment>
       );
     }
