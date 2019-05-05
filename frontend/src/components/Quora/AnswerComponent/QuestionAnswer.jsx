@@ -35,8 +35,15 @@ class QuestionAnswer extends React.Component {
     this.state = {
       topic: "Change",
       userDetails: {},
-      openAddQuestion: false
+      openAddQuestion: false,
+      visible :2
     };
+    this.loadMore = this.loadMore.bind(this);
+  }
+  loadMore() {
+    this.setState((prev) => {
+      return {visible: prev.visible + 2};
+    });
   }
 
   handleClickOpen = () => {
@@ -50,12 +57,12 @@ class QuestionAnswer extends React.Component {
   };
 
   render() {
-    //var userTopicList = this.props.userDetails.interestedTopicList;
-    var userTopicList = ["test1", "test2"];
+    var userTopicList = this.props.userDetails.interestedTopicList;
+    //var userTopicList = ["test1", "test2"];
     var QuestionComp;
 
     if (this.props.questions && this.props.questions.length > 0) {
-      QuestionComp = this.props.questions
+      QuestionComp = this.props.questions.slice(0, this.state.visible)
         .sort(
           (ques1, ques2) =>
             new Date(ques2.postedTime) - new Date(ques1.postedTime)
@@ -194,6 +201,9 @@ class QuestionAnswer extends React.Component {
           </Grid>
           <Grid item xs={2} />
         </Grid>
+        {this.state.visible <  this.props.questions.length &&
+             <button onClick={this.loadMore} type="button" className="load-more">Load more</button>
+          }
       </div>
     );
   }
