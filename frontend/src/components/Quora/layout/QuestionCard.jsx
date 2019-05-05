@@ -1,10 +1,14 @@
 import React from "react";
 // import "../styles/home.css";
 import "../../../styles/questionCard.css";
-import Parser from 'html-react-parser';
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import Parser from "html-react-parser";
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2
+} from "react-html-parser";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 // import PropTypes from 'prop-types';
 import AppBar from "@material-ui/core/AppBar";
 // import Toolbar from "@material-ui/core/Toolbar";
@@ -34,19 +38,23 @@ class QuestionCard extends React.Component {
       isUpvoted: false,
       upvoteCount: 0,
       comment: "New Comment added",
-      showComment: false,
-      readMore:false
+      showComments: false,
+      readMore: false
     };
   }
+  showComments = () => {
+    this.setState({ showComments: !this.state.showComments });
+  };
   readMoreText = () => {
-    this.setState({ readMore: true});  
+    this.setState({ readMore: true });
   };
   readMoreTextClose = () => {
-    this.setState({ readMore: false});  
+    this.setState({ readMore: false });
   };
   componentDidMount() {
     var upvoteCount = 0;
     var isUpvoted = false;
+
     if (
       this.props.question.answerList !== undefined &&
       this.props.question.answerList.length
@@ -60,6 +68,32 @@ class QuestionCard extends React.Component {
           this.props.question.answerList[0].upVotes.includes(
             this.props.user._id
           )
+        ) {
+          isUpvoted = true;
+        }
+      }
+    }
+    this.setState({
+      isUpvoted: isUpvoted,
+      upvoteCount: upvoteCount
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    var upvoteCount = 0;
+    var isUpvoted = false;
+
+    if (
+      nextProps.question.answerList !== undefined &&
+      nextProps.question.answerList.length
+    ) {
+      if (
+        nextProps.question.answerList[0].upVotes !== undefined &&
+        nextProps.question.answerList[0].upVotes.length
+      ) {
+        upvoteCount = nextProps.question.answerList[0].upVotes.length;
+        if (
+          nextProps.question.answerList[0].upVotes.includes(nextProps.user._id)
         ) {
           isUpvoted = true;
         }
@@ -143,8 +177,6 @@ class QuestionCard extends React.Component {
           </span>
         );
       } else {
-     
-
         upvotecomp = (
           <span>
             <span>
@@ -178,7 +210,6 @@ class QuestionCard extends React.Component {
       }
 
       comp = (
-       
         <div>
           <Paper elevation={2} className="m-padding-10">
             <Grid
@@ -246,9 +277,29 @@ class QuestionCard extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                { !this.state.readMore &&  <Typography variant="h6"
-               style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(answer.answer)}</Typography>}
-                { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(answer.answer)}</Typography>}
+                  {!this.state.readMore && (
+                    <Typography
+                      variant="h6"
+                      style={{
+                        width: 50,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}
+                      onClick={() => this.readMoreText()}
+                    >
+                      {Parser(answer.answer)}
+                    </Typography>
+                  )}
+                  {this.state.readMore && (
+                    <Typography
+                      variant="h6"
+                      style={{ maxWidth: 1000 }}
+                      onClick={() => this.readMoreTextClose()}
+                    >
+                      {Parser(answer.answer)}
+                    </Typography>
+                  )}
                 </Grid>
                 <Grid item className="votes">
                   {answer.views} {`views · View Upvoters`}
@@ -373,6 +424,16 @@ class QuestionCard extends React.Component {
                       </svg>
                     </span>
                   </Grid>
+                  <Grid item>
+                    <div
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        this.showComments();
+                      }}
+                    >
+                      All
+                    </div>
+                  </Grid>
                 </Grid>
                 <Divider className="m-divider" />
                 <Grid
@@ -382,14 +443,14 @@ class QuestionCard extends React.Component {
                   alignItems="center"
                   // className="m-margin-up-down"
                 >
-                  <Grid item>
+                  <Grid item xs={1}>
                     <Avatar
                       alt={user.firstname}
                       src={user.profileImg}
                       className="avatar"
                     />
                   </Grid>
-                  <Grid item xs={9}>
+                  <Grid item xs={8}>
                     <input
                       type="text"
                       class="form-control corner-rounded"
@@ -412,24 +473,39 @@ class QuestionCard extends React.Component {
                       Add Comment
                     </Button>
                   </Grid>
-                  {this.state.showComment ? (
-                    <div className="comment_wrapper">
-                      <Avatar
-                        alt={user.fname}
-                        src={user.profileImg}
-                        className="avatar"
-                      />
-                      <div className="ui_layout_text">
-                        <span style={{ fontWeight: "bold", color: "black" }}>
-                          {" "}
-                          {user.fname + " " + user.lname}
-                        </span>
-                        <Grid item className="fnt-13">
-                          {"Just now"}
+                  {this.state.showComments ? (
+                    <Grid
+                      container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="flex-start"
+                      // className="m-margin-up-down"
+                    >
+                      <Grid item>
+                        <Avatar
+                          alt={user.fname}
+                          src={user.profileImg}
+                          className="avatar"
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Grid
+                          container
+                          direction="column"
+                          justify="flex-start"
+                          alignItems="flex-start"
+                          className="m-margin-up-down"
+                        >
+                          <Grid item className="black-clr">
+                            {" "}
+                            {user.fname + " " + user.lname}
+                          </Grid>
+                          <Grid item className="fnt-13">
+                            {"Just now"}
+                          </Grid>
                         </Grid>
-                        {this.state.comment}
-                      </div>
-                    </div>
+                      </Grid>
+                    </Grid>
                   ) : (
                     ""
                   )}

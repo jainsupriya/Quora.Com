@@ -64,6 +64,13 @@ class Home extends React.Component {
     this.props.getUserDetails(this.props.auth.user._id);
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.questions != this.props.questions) {
+  //     console.log("changed::" + JSON.stringify(nextProps.questions));
+  //     this.props.getUserDetails(nextProps.auth.user._id);
+  //   }
+  // }
+
   handleTopicClick = newTopic => {
     this.props.getTopicQuestions(newTopic);
   };
