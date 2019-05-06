@@ -87,36 +87,38 @@ class DialogEducation extends Component {
 
   componentWillReceiveProps(nextProps) {
     //console.log(nextProps);
-    this.setState({
-      current:
-        nextProps.education.current !== undefined
-          ? nextProps.education.current
-          : "",
-      school:
-        nextProps.education.school !== undefined
-          ? nextProps.education.school
-          : "",
-      Concentration:
-        nextProps.education.Concentration !== undefined
-          ? nextProps.education.Concentration
-          : "",
-      secondaryConcentration:
-        nextProps.education.secondaryConcentration !== undefined
-          ? nextProps.education.secondaryConcentration
-          : "",
-      degreeType:
-        nextProps.education.degreeType !== undefined
-          ? nextProps.education.degreeType
-          : "",
-      graduationYear:
-        nextProps.education.graduationYear !== undefined
-          ? nextProps.education.graduationYear
-          : "",
-      description:
-        nextProps.education.description !== undefined
-          ? nextProps.education.description
-          : ""
-    });
+    if (nextProps.education !== undefined) {
+      this.setState({
+        current:
+          nextProps.education.current !== undefined
+            ? nextProps.education.current
+            : "",
+        school:
+          nextProps.education.school !== undefined
+            ? nextProps.education.school
+            : "",
+        Concentration:
+          nextProps.education.Concentration !== undefined
+            ? nextProps.education.Concentration
+            : "",
+        secondaryConcentration:
+          nextProps.education.secondaryConcentration !== undefined
+            ? nextProps.education.secondaryConcentration
+            : "",
+        degreeType:
+          nextProps.education.degreeType !== undefined
+            ? nextProps.education.degreeType
+            : "",
+        graduationYear:
+          nextProps.education.graduationYear !== undefined
+            ? nextProps.education.graduationYear
+            : "",
+        description:
+          nextProps.education.description !== undefined
+            ? nextProps.education.description
+            : ""
+      });
+    }
   }
 
   onChange(e) {
@@ -150,7 +152,6 @@ class DialogEducation extends Component {
 
   render() {
     const { classes } = this.props;
-
 
     const education = this.props.education;
 

@@ -549,9 +549,9 @@ class MyProfile extends React.Component {
                   justify="space-between"
                   alignItems="center"
                 />
-                <Content
-                  user={userDetails !== undefined ? userDetails._id : ""}
-                />
+                {userDetails !== undefined ? (
+                  <Content user={userDetails._id} />
+                ) : null}
               </Grid>
 
               <Grid item xs={3} className="fix-pos">

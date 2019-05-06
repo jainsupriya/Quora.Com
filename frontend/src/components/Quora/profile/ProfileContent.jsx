@@ -15,7 +15,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import { getContentDetails } from "../../../redux/actions/contentAction";
-import { getUserDetails } from "../../../redux/actions/homeAction";
+
 import _ from "lodash";
 import QuestionCardForAnswerPage from "../AnswerComponent/QuestionCardForAnswerPage";
 import AnswerCardForAnswerPage from "../AnswerComponent/AnswerCardForAnswerPage";
@@ -33,12 +33,15 @@ class ProfileContent extends Component {
       topic: "",
       userDetails: {},
       contentDetails: [],
-      bgColorType: "All Types"
+      bgColorType: "All Types",
+      questionAsked: [],
+      questionfollowed:[],
+      answer:[]
     };
   }
 
   componentDidMount = () => {
-    this.props.getContentDetails(this.props.userDetails._id);
+    this.props.getContentDetails(this.props.user);
     this.setState({
       contentDetails: this.props.contentDetails.contents
     });
@@ -436,7 +439,7 @@ const mapStateToProps = state => ({
   // auth: state.auth,
   // userState: state.userState,
   // errors: state.errors,
-  userDetails: state.homeState.userDetails,
+  //userDetails: state.homeState.userDetails,
   profile: state.profile,
   auth: state.auth,
   contentDetails: state.contents
@@ -444,5 +447,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getContentDetails, getUserDetails }
+  { getContentDetails }
 )(withStyles(styles)(withRouter(ProfileContent)));
