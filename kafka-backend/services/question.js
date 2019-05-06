@@ -154,13 +154,16 @@ function handle_request(msg, callback) {
                 .populate({ 
                     path: 'answerList',
                     populate: {
-                    path: 'answerOwner',
-                    select: 'profileImg lname fname',
+                        path: 'answerOwner',
+                        select: 'profileImg lname fname',
                     },
+                })
+                .populate({ 
+                    path: 'answerList',
                     populate: {
-		    	path: 'commentList',
-		    }
-                })                
+                        path: 'commentList',
+                    },
+                })                    
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
