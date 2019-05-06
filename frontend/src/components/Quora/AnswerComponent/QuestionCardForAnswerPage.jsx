@@ -219,7 +219,7 @@ class QuestionCardForAnswerPage extends React.Component {
                 <span className="reason-txt">Answer · Recommended for you</span>
               </Grid>
               <React.Fragment>
-                 { this.props.question && <Typography variant="h6">{this.props.question}</Typography>}
+                 { this.props.question && <Typography variant="subtitle">{this.props.question}</Typography>}
                 <Grid
                   container
                   direction="row"
@@ -293,9 +293,15 @@ class QuestionCardForAnswerPage extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                { !this.state.readMore &&  <Typography variant="h6"
-               style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(this.props.answer)}</Typography>}
-                { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(this.props.answer)}</Typography>}
+                { !this.state.readMore && 
+                   <Typography variant="subtitle"
+                              style ={{   height: 100, maxWidth: 750 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} 
+                              onClick={() => this.readMoreText()} >{Parser(this.props.answer)}
+                              </Typography>}
+                { this.state.readMore &&  
+                    <Typography variant="subtitle"  style ={{ maxWidth: 1000}} 
+                    onClick={() => this.readMoreTextClose()} >{Parser(this.props.answer)}
+                    </Typography>}
         
                 </Grid>
 
