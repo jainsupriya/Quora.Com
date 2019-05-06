@@ -214,7 +214,7 @@ class Answers extends React.Component {
           </Grid>
           <Grid item xs={2} />
         </Grid>
-        {this.state.visible <  this.props.answerforquestions[0].answerList.length  &&
+        { this.props.answerforquestions[0].answerList.length  && this.state.visible <  this.props.answerforquestions[0].answerList.length  &&
              <button onClick={this.loadMore} type="button" className="load-more" style ={{marginLeft: 650}}>Load more</button>
           }
       </div>
