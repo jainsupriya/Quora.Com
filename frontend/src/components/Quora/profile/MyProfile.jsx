@@ -505,9 +505,9 @@ class MyProfile extends React.Component {
                                   <span id="w4a2NguV53">
                                     <span id="__w2_w4a2NguV54_link">
                                       <span className="user">
-                                        {this.state.fname +
+                                        {(this.state.fname !==undefined && this.state.lname !==undefined)  ? (this.state.fname +
                                           "    " +
-                                          this.state.lname}
+                                          this.state.lname):"Add your full name"}
                                       </span>
                                     </span>
                                   </span>
