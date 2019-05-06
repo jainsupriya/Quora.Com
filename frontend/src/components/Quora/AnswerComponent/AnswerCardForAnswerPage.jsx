@@ -104,7 +104,7 @@ class AnswerCardForAnswerPage extends React.Component {
       answerComp = (
         <React.Fragment>
           <Grid item className="ans-main-content">
-          <Link to={"/" + question._id} style={{ color: "#000000" }}><Typography variant="subtitle1" component="p">{totalAnswerCount}</Typography></Link>
+          <Link to={"/" + question._id} style={{ color: "#000000" }}><Typography variant="h6" component="p">{totalAnswerCount}</Typography></Link>
           </Grid>
           <Grid
             container
@@ -514,7 +514,7 @@ class AnswerCardForAnswerPage extends React.Component {
             <Grid item>
               <span className="question-txt">
                
-                 { this.props.question}
+              <Typography variant="title"> { this.props.question}</Typography>
                
               </span>
             </Grid>

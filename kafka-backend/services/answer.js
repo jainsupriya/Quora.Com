@@ -56,13 +56,13 @@ function handle_request(msg, callback) {
                                                     callback
                                                 );
                                             } else {
-                                                Activity.create(
-                                                    {
-                                                        userId: msg.reqBody.answerOwner,
-                                                        activityType: "CREATE_ANSWER",
-                                                        createdAnswer: result._id
-                                                    }
-                                                )
+                                                Activity.create({
+                                                    userId:
+                                                        msg.reqBody.answerOwner,
+                                                    activityType:
+                                                        "CREATE_ANSWER",
+                                                    createdAnswer: result._id
+                                                })
                                                     // .updateOne({sqlUserId:msg.reqBody.answerOwner},{ $addToSet: { myAnswerList: result._id } })
                                                     .then((result3, err3) => {
                                                         if (err3) {
@@ -92,7 +92,11 @@ function handle_request(msg, callback) {
                                                         }
                                                     })
                                                     .catch(err3 => {
-                                                        myCallback(err3, null, callback);
+                                                        myCallback(
+                                                            err3,
+                                                            null,
+                                                            callback
+                                                        );
                                                     });
                                             }
                                         })
@@ -110,8 +114,28 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
-        case "get/answer":
+        case "get/answer/:answerId":
             Answer.find({ _id: msg.reqBody.answerId })
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "get/answerWithCommentList/:answerId":
+            Answer.find({ _id: msg.reqBody.answerId })
+                .populate({
+                    path: "commentList",
+                    populate: {
+                        path: "commentOwner",
+                        select: "profileImg lname fname"
+                    }
+                })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);

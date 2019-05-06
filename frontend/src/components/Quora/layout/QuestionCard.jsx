@@ -289,7 +289,7 @@ class QuestionCard extends React.Component {
               </Grid>
               <Grid item>
                 <Link to={"/" + question._id} style={{ color: "#000000" }}>
-                  <span className="question-txt">{question.question}</span>
+                  <span className="question-txt"><Typography variant="title">{question.question}</Typography></span>
                 </Link>
               </Grid>
 
@@ -350,9 +350,10 @@ class QuestionCard extends React.Component {
                 <Grid item className="ans-main-content">
                   {!this.state.readMore && (
                     <Typography
-                      variant="h6"
+                      variant="subtitle"
                       style={{
-                        width: 50,
+                        height: 100,
+                        maxWidth: 750,
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap"
@@ -364,7 +365,7 @@ class QuestionCard extends React.Component {
                   )}
                   {this.state.readMore && (
                     <Typography
-                      variant="h6"
+                      variant="subtitle1"
                       style={{ maxWidth: 1000 }}
                       onClick={() => this.readMoreTextClose()}
                     >
