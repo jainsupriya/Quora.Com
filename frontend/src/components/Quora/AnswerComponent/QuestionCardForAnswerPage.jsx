@@ -7,8 +7,8 @@ import AppBar from "@material-ui/core/AppBar";
 // import Toolbar from "@material-ui/core/Toolbar";
 // import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Typography from '@material-ui/core/Typography';
-import Parser from 'html-react-parser';
+import Typography from "@material-ui/core/Typography";
+import Parser from "html-react-parser";
 // import IconButton from "@material-ui/core/IconButton";
 // import MenuIcon from "@material-ui/icons/Menu";
 import Divider from "@material-ui/core/Divider";
@@ -35,43 +35,37 @@ class QuestionCardForAnswerPage extends React.Component {
       upvoteCount: 0,
       comment: "New Comment added",
       showComment: false,
-      readMore:false
+      readMore: false
     };
   }
   readMoreText = () => {
-    this.setState({ readMore: true});  
+    this.setState({ readMore: true });
   };
   readMoreTextClose = () => {
-    this.setState({ readMore: false});  
+    this.setState({ readMore: false });
   };
   componentDidMount() {
-      console.log(this.props.answerList)
+    console.log("answerList" + this.props.answerList);
     var upvoteCount = 0;
     var isUpvoted = false;
-    axios.put(`/answer/view/`+this.props.answer._id)
-    .then(response =>{
-        if(response.status === 200){
-            console.log(response.data);
-            this.setState({
-                products: response.data
-            });
+    if (this.props.answer !== undefined) {
+      axios.put(`/answer/view/` + this.props.answer._id).then(response => {
+        if (response.status === 200) {
+          console.log(response.data);
+          this.setState({
+            products: response.data
+          });
         }
-    });
+      });
+    }
 
-    if (
-      this.props.answerList !== undefined &&
-      this.props.answerList.length
-    ) {
+    if (this.props.answerList !== undefined && this.props.answerList.length) {
       if (
         this.props.answerList[0].upVotes !== undefined &&
         this.props.answerList[0].upVotes.length
       ) {
         upvoteCount = this.props.answerList[0].upVotes.length;
-        if (
-          this.props.answerList[0].upVotes.includes(
-            this.props.user._id
-          )
-        ) {
+        if (this.props.answerList[0].upVotes.includes(this.props.user._id)) {
           isUpvoted = true;
         }
       }
@@ -117,11 +111,8 @@ class QuestionCardForAnswerPage extends React.Component {
     var isUpvoted = false;
     if (this.props.answer !== undefined && this.props.answer.length) {
       var answer = this.props.answerList;
-  
-      if (
-        this.props.upVotes !== undefined &&
-        this.props.upVotes.length
-      ) {
+
+      if (this.props.upVotes !== undefined && this.props.upVotes.length) {
         upvoteCount = this.props.upVotes.length;
 
         if (this.props.answer.includes(user._id)) {
@@ -219,45 +210,50 @@ class QuestionCardForAnswerPage extends React.Component {
                 <span className="reason-txt">Answer · Recommended for you</span>
               </Grid>
               <React.Fragment>
-                 { this.props.question && <Typography variant="h6">{this.props.question}</Typography>}
+                {this.props.question && (
+                  <Typography variant="h6">{this.props.question}</Typography>
+                )}
                 <Grid
                   container
                   direction="row"
                   justify="flex-start"
                   alignItems="flex-start"
                 >
-                
                   <Grid item>
-                    {this.props.user && <Avatar
-                      alt={
-                        this.props.user !== undefined
-                          ?  this.props.user.fname +
-                            " " +
-                            this.props.user.lname
-                          : "Anonymous User"
-                      }
-                      src={
-                        this.props.user !== undefined
-                          ?  this.props.user.profileImg
-                          : ""
-                      }
-                      className="avatar"
-                    />}
-                    {!this.props.user && <Avatar
-                    alt={
-                      this.props.answerOwner !== undefined
-                        ?  this.props.answerOwner.fname +
-                          " " +
-                          this.props.answerOwner.lname
-                        : "Anonymous User"
-                    }
-                    src={
-                      this.props.answerOwner !== undefined
-                        ?  this.props.answerOwner.profileImg
-                        : ""
-                    }
-                    className="avatar"
-                  />}
+                    {this.props.user && (
+                      <Avatar
+                        alt={
+                          this.props.user !== undefined
+                            ? this.props.user.fname +
+                              " " +
+                              this.props.user.lname
+                            : "Anonymous User"
+                        }
+                        src={
+                          this.props.user !== undefined
+                            ? this.props.user.profileImg
+                            : ""
+                        }
+                        className="avatar"
+                      />
+                    )}
+                    {!this.props.user && (
+                      <Avatar
+                        alt={
+                          this.props.answerOwner !== undefined
+                            ? this.props.answerOwner.fname +
+                              " " +
+                              this.props.answerOwner.lname
+                            : "Anonymous User"
+                        }
+                        src={
+                          this.props.answerOwner !== undefined
+                            ? this.props.answerOwner.profileImg
+                            : ""
+                        }
+                        className="avatar"
+                      />
+                    )}
                   </Grid>
                   <Grid item>
                     <Grid
@@ -267,24 +263,28 @@ class QuestionCardForAnswerPage extends React.Component {
                       alignItems="flex-start"
                       className="m-margin-up-down"
                     >
-                      {this.props.user && <Grid item className="black-clr">
-                        { this.props.user !== undefined
-                          ?  this.props.user.fname +
-                            " " +
-                            this.props.user.lname
-                          : "Anonymous User"}
-                      </Grid>}
-                      {!this.props.user && <Grid item className="black-clr">
-                        { this.props.answerOwner !== undefined
-                          ?  this.props.answerOwner.fname +
-                            " " +
-                            this.props.answerOwner.lname
-                          : "Anonymous User"}
-                      </Grid>}
+                      {this.props.user && (
+                        <Grid item className="black-clr">
+                          {this.props.user !== undefined
+                            ? this.props.user.fname +
+                              " " +
+                              this.props.user.lname
+                            : "Anonymous User"}
+                        </Grid>
+                      )}
+                      {!this.props.user && (
+                        <Grid item className="black-clr">
+                          {this.props.answerOwner !== undefined
+                            ? this.props.answerOwner.fname +
+                              " " +
+                              this.props.answerOwner.lname
+                            : "Anonymous User"}
+                        </Grid>
+                      )}
                       <Grid item className="fnt-13">
                         {"Answered"}{" "}
                         {moment(
-                          new Date( this.props.postedTime),
+                          new Date(this.props.postedTime),
                           "MMMM Do YYYY, h:mm:ss a"
                         ).fromNow()}
                       </Grid>
@@ -293,10 +293,29 @@ class QuestionCardForAnswerPage extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                { !this.state.readMore &&  <Typography variant="h6"
-               style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(this.props.answer)}</Typography>}
-                { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(this.props.answer)}</Typography>}
-        
+                  {!this.state.readMore && (
+                    <Typography
+                      variant="h6"
+                      style={{
+                        width: 50,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}
+                      onClick={() => this.readMoreText()}
+                    >
+                      {Parser(this.props.answer)}
+                    </Typography>
+                  )}
+                  {this.state.readMore && (
+                    <Typography
+                      variant="h6"
+                      style={{ maxWidth: 1000 }}
+                      onClick={() => this.readMoreTextClose()}
+                    >
+                      {Parser(this.props.answer)}
+                    </Typography>
+                  )}
                 </Grid>
 
                 <Grid item className="votes">
@@ -490,7 +509,6 @@ class QuestionCardForAnswerPage extends React.Component {
       );
     } else {
       answer = "No Answer";
-     
     }
 
     return <React.Fragment>{comp}</React.Fragment>;
@@ -506,6 +524,5 @@ export default connect(
   mapStateToProps,
   {}
 )(withStyles(styles)(QuestionCardForAnswerPage));
-
 
 // comp =  <AnswerCardForAnswerPage question={this.props.question}  answerList = {this.props.answerList[0]}/>
