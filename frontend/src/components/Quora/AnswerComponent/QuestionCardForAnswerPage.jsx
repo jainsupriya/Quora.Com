@@ -48,8 +48,9 @@ class QuestionCardForAnswerPage extends React.Component {
     console.log("answerList" + this.props.answerList);
     var upvoteCount = 0;
     var isUpvoted = false;
+    console.log(this.props.answer._id)
     if (this.props.answer !== undefined) {
-      axios.put(`/answer/view/` + this.props.answer._id).then(response => {
+      axios.put(`/answer/view/` + this.props.answer_id).then(response => {
         if (response.status === 200) {
           console.log(response.data);
           this.setState({
@@ -293,7 +294,7 @@ class QuestionCardForAnswerPage extends React.Component {
                 <Grid item className="ans-main-content">
                 { !this.state.readMore && 
                    <Typography variant="subtitle"
-                              style ={{   height: 20, maxWidth: 750 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} 
+                              style ={{   height: 20,maxWidth:700,   overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} 
                               onClick={() => this.readMoreText()} >{Parser(this.props.answer)}
                               </Typography>}
                 { this.state.readMore &&  
