@@ -28,3 +28,10 @@ export const SET_RECEIVER_DATA = "SET_RECEIVER_DATA";
 //DASHBOARD
 export const GET_ANSWER_VIEWS = "GET_ANSWER_VIEWS";
 export const GET_ANSWER_UPVOTES = "GET_ANSWER_UPVOTES";
+
+//Follower
+export const GET_FOLLOWER = "GET_FOLLOWER";
+
+//Following
+export const GET_FOLLOWING = "GET_FOLLOWING";
+
