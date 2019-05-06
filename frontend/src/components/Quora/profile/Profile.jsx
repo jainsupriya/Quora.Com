@@ -131,8 +131,7 @@ class Profile extends React.Component {
   }
 
   async componentDidMount() {
-    console.log(this.props.match.params.id);
-    console.log("here");
+
 
     if (this.props.match.params.id) {
       await this.props.getProfileByUserId(this.props.match.params.id);
@@ -141,7 +140,6 @@ class Profile extends React.Component {
     axios.put(`/user/incView/`+this.props.match.params.id)
     .then(response =>{
         if(response.status === 200){
-            console.log(response.data);
             this.setState({
                 viewCount: response.data.profileViews.length
             });
@@ -150,7 +148,7 @@ class Profile extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+ 
     if (nextProps.state.userDetails.profileCredential !== undefined) {
       this.setState({
         profileCredential: nextProps.state.userDetails.profileCredential
@@ -162,7 +160,7 @@ class Profile extends React.Component {
     }
 
     if (nextProps.state.userDetails.profileImg !== undefined) {
-      console.log("componentWillReceiveProps");
+   
       this.setState({
         profileImage: nextProps.state.userDetails.profileImg,
         isChanged: nextProps.state.userDetails.isChanged
@@ -178,12 +176,11 @@ class Profile extends React.Component {
     let temp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     const { classes } = this.props;
 
-    console.log(this.props);
 
     const userDetails = this.props.profile.profile[0];
     const follower = this.props.state.userDetails;
 
-    console.log(userDetails);
+    
 
     return (
       <div>
@@ -275,8 +272,8 @@ class Profile extends React.Component {
                         <div />
                         <div />
                         <ActionBar
-                          user={userDetails !== undefined ? userDetails : ""}
-                          follower={follower !== undefined ? follower : ""}
+                           user={userDetails !== undefined ? userDetails : ""}
+                           follower={follower !== undefined ? follower : ""}
                         />
                       </div>
                     </div>

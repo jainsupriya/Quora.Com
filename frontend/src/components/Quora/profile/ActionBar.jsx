@@ -18,6 +18,10 @@ import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
 import axios from "axios";
+// import {
+//   setFollower,
+//   removeFollower
+// } from "../../../redux/actions/profileActions";
 
 const styles = theme => ({
   notificationDialog: {
@@ -76,18 +80,18 @@ class ActionBar extends Component {
     this.state = {
       isFollow: false,
       followerCount: 0
-    }
+    };
   }
 
   componentDidMount() {
     var isfollow = false;
-    let followerCountInc = 0;
-    
+    var followerCountInc = 0;
+
     if (this.props.user !== undefined && this.props.follower !== undefined) {
       console.log(this.props.user);
-    console.log(this.props.follower);
+      console.log(this.props.follower);
       if (this.props.user.followersUserList !== undefined) {
-        console.log(this.props.user.followersUserList.length)
+        console.log(this.props.user.followersUserList.length);
         if (
           this.props.user.followersUserList.includes(this.props.follower._id)
         ) {
@@ -102,10 +106,32 @@ class ActionBar extends Component {
     });
   }
 
-  
+  componentWillReceiveProps(nextProps) {
+    var isfollow = false;
+    var followerCountInc = 0;
+
+    if (nextProps.user !== undefined && nextProps.follower !== undefined) {
+      console.log(nextProps.user);
+    console.log(nextProps.follower);
+      if (nextProps.user.followersUserList !== undefined) {
+        console.log(nextProps.user.followersUserList.length)
+        if (
+          nextProps.user.followersUserList.includes(nextProps.follower._id)
+        ) {
+          isfollow = true;
+        }
+        followerCountInc = nextProps.user.followersUserList.length;
+      }
+    }
+    this.setState({
+      isfollow: isfollow,
+      followerCount: followerCountInc
+    });
+  }
 
   handlefollower = () => {
     if (!this.state.isFollow) {
+      // this.props.setFollower(this.props.user._id,this.props.follower._id)
       axios
         .put(
           `/user/followUser/${this.props.user._id}/${this.props.follower._id}`
@@ -113,7 +139,22 @@ class ActionBar extends Component {
         .then(res => {
           console.log(res.data);
           this.setState({
-            followerCount: this.state.followerCount + 1
+            followerCount: this.state.followerCount + 1,
+            isFollow: !this.state.isFollow
+          });
+        })
+        .catch(err => console.log(err.data));
+    } else if (this.state.isFollow && this.state.followerCount != 0) {
+      // this.props.removeFollower(this.props.user._id,this.props.follower._id)
+      axios
+        .put(
+          `/user/unFollowUser/${this.props.user._id}/${this.props.follower._id}`
+        )
+        .then(res => {
+          console.log(res.data);
+          this.setState({
+            followerCount: this.state.followerCount - 1,
+            isFollow: !this.state.isFollow
           });
         })
         .catch(err => console.log(err.data));
@@ -186,7 +227,9 @@ class ActionBar extends Component {
                   </g>
                 </svg>
               </span>
+              <Link to="#">
               <span>Notify Me</span>
+              </Link>
             </div>
           </Grid>
           <Grid item xs={3}>
@@ -228,7 +271,7 @@ class ActionBar extends Component {
               </svg>
             </span>
             <Link to="#" onClick={this.handlefollower}>
-              <span>Follow</span>
+              <span>{this.state.isFollow ? "Unfollow" : "Follow"}</span>
               <span class="bullet"> · </span>
               <span class="ui_button_count_inner" id="__w2_wikv5yOF93_count">
                 {this.state.followerCount}
@@ -270,6 +313,8 @@ class ActionBar extends Component {
 
 ActionBar.propTypes = {
   classes: PropTypes.object.isRequired
+  // setFollower: PropTypes.func,
+  // removeFollower: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -278,5 +323,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {  }
+  {
+    /*setFollower,removeFollower*/
+  }
 )(withStyles(styles)(withRouter(ActionBar)));

@@ -17,7 +17,8 @@ import Divider from "@material-ui/core/Divider";
 import { getContentDetails } from "../../../redux/actions/contentAction";
 import { getUserDetails } from "../../../redux/actions/homeAction";
 import _ from "lodash";
-
+import QuestionCardForAnswerPage from "../AnswerComponent/QuestionCardForAnswerPage";
+import AnswerCardForAnswerPage from "../AnswerComponent/AnswerCardForAnswerPage";
 const styles = theme => ({});
 
 //Create a Main Component
@@ -37,14 +38,14 @@ class ProfileContent extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getContentDetails(this.props.user);
+    this.props.getContentDetails(this.props.userDetails._id);
     this.setState({
       contentDetails: this.props.contentDetails.contents
     });
   };
 
   handleTypeChange = type => {
-   // console.log("Hello", type);
+    // console.log("Hello", type);
     var header = "";
     var typeInRes = "";
     var bgColorType = "";
@@ -74,13 +75,13 @@ class ProfileContent extends Component {
         bgColorType = "Answers";
         break;
 
-        case "Followers":
+      case "Followers":
         header = "Followers";
         typeInRes = "CREATE_ANSWER";
         bgColorType = "Followers";
         break;
 
-        case "Following":
+      case "Following":
         header = "Following";
         typeInRes = "CREATE_ANSWER";
         bgColorType = "Following";
@@ -115,7 +116,7 @@ class ProfileContent extends Component {
     );
   };
   handleTopic = e => {
-   // console.log("In");
+    // console.log("In");
     this.setState(
       {
         topic: e.target.value
@@ -125,7 +126,7 @@ class ProfileContent extends Component {
   };
 
   updateContent = () => {
-   // console.log("In2", this);
+    // console.log("In2", this);
     let contentDetails = this.props.contentDetails.contents;
     const type = this.state.type;
     const year = this.state.selectedYear;
@@ -266,9 +267,7 @@ class ProfileContent extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
-
-    // const contentDetails = this.props.contentDetails.contents;
+    var QuestionComp;
 
     return (
       <div>
@@ -331,11 +330,13 @@ class ProfileContent extends Component {
                   </div>
                 </div>
               </Grid>
+
               <Grid item xs={9} className="m-padding-left-right-15">
                 <div>
-                  <div style={{ padding: "1% 2% 2% 1%" }}>{this.state.header}</div>
+                  <div style={{ padding: "1% 2% 2% 1%" }}>
+                    {this.state.header}
+                  </div>
                 </div>
-                <Divider />
 
                 <div
                 // style={{
@@ -354,11 +355,54 @@ class ProfileContent extends Component {
                                   this.state.contentDetails[index].activityType
                                 ) {
                                   case "CREATE_QUESTION":
-                                    return this.state.contentDetails[index]
-                                      .createdQuestion.question;
+                                    return (
+                                      <AnswerCardForAnswerPage
+                                        question={
+                                          this.state.contentDetails[index]
+                                            .createdQuestion.question
+                                        }
+                                        answerList={
+                                          this.state.contentDetails[index]
+                                            .createdQuestion.answerList
+                                        }
+                                        myanswer="true"
+                                        question_id={
+                                          this.state.contentDetails[index]
+                                            .createdQuestion._id
+                                        }
+                                      />
+                                    );
                                   case "CREATE_ANSWER":
-                                    return this.state.contentDetails[index]
-                                      .createdAnswer.questionId.question;
+                                    return (
+                                      <QuestionCardForAnswerPage
+                                        question={
+                                          this.state.contentDetails[index]
+                                            .createdAnswer.questionId.question
+                                        }
+                                        answer={
+                                          this.state.contentDetails[index]
+                                            .createdAnswer.answer
+                                        }
+                                        upvoteCount={
+                                          this.state.contentDetails[index]
+                                            .createdAnswer.upVotes
+                                        }
+                                        user={this.props.auth.user}
+                                        answerOwner={
+                                          this.state.contentDetails[index]
+                                            .createdAnswer.answerOwner
+                                        }
+                                        postedTime={
+                                          this.state.contentDetails[index]
+                                            .createdAnswer.postedTime
+                                        }
+                                        views={
+                                          this.state.contentDetails[index]
+                                            .createdAnswer.views
+                                        }
+                                        myanswer="true"
+                                      />
+                                    );
                                   case "FOLLOWED_QUESTION":
                                     return this.state.contentDetails[index]
                                       .followedQuestion.question;
@@ -366,22 +410,7 @@ class ProfileContent extends Component {
                               })()}
                             </a>
                           </div>
-                          <div
-                            className="secondaryText"
-                            style={{
-                              padding: "1% 0 0"
-                            }}
-                          >
-                            {this.showInfo(
-                              this.state.contentDetails[index].activityType
-                            )}{" "}
-                            {this.state.contentDetails[index].timeStamp.slice(
-                              0,
-                              10
-                            )}
-                          </div>
                         </div>
-                        <Divider />
                       </div>
                     );
                   })}
@@ -409,10 +438,11 @@ const mapStateToProps = state => ({
   // errors: state.errors,
   userDetails: state.homeState.userDetails,
   profile: state.profile,
+  auth: state.auth,
   contentDetails: state.contents
 });
 
 export default connect(
   mapStateToProps,
-  { getContentDetails }
+  { getContentDetails, getUserDetails }
 )(withStyles(styles)(withRouter(ProfileContent)));

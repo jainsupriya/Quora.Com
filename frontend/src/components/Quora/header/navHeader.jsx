@@ -116,7 +116,7 @@ class NavHeader extends Component {
   searchForTopicOrPeople(event) {
     const { name, value } = event.target;
     event.target.focus()
-    console.log(value);
+
     // document.getElementById("search").focus()
 
     this.setState({
@@ -130,7 +130,7 @@ class NavHeader extends Component {
       });
       axios.get(`/topics/search/` + value).then(response => {
         if (response.status === 200) {
-          console.log(response.data);
+
           this.setState({
             products: response.data
           });
@@ -149,8 +149,6 @@ class NavHeader extends Component {
 
     
     document.getElementById("search").focus()
-    console.log(document.getElementById("search").value)
-    console.log(document.activeElement.tagName)
 
 
   }
@@ -209,14 +207,14 @@ class NavHeader extends Component {
   };
 
   handleSearchDialogClose = () => {
-    console.log("close : ", this.state.openSearchDialog);
+   
     this.setState({
       openSearchDialog: false
     });
   };
 
   showPopover = event => {
-    console.log("show : ", this.state.openSearchDialog);
+   
 
     this.setState({
       openSearchDialog: event.currentTarget
@@ -228,7 +226,7 @@ class NavHeader extends Component {
   };
 
   abc = () => {
-    console.log("called")
+
     document.getElementById("simple-popper-1").blur();
     document.getElementById("search").focus();
   }
@@ -239,7 +237,7 @@ class NavHeader extends Component {
     const open1 = Boolean(openNotification);
     const open2 = Boolean(openProfileMenu);
     const open3 = Boolean(openSearchDialog);
-    console.log(open3);
+ 
     const { classes, auth } = this.props;
 
     const notificationList = {
@@ -502,7 +500,6 @@ class NavHeader extends Component {
             </div>
           </div>
         </Popover>
-        {console.log(this)}
         {/* {document.getElementById("search").focus()} */}
       </div>
     );
