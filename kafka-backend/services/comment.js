@@ -28,7 +28,7 @@ function handle_request(msg, callback) {
                         myCallback(err, null, callback);
                     } else {
                         Answer
-                            .updateOne({_id:msg.reqBody.answerId},{ $addToSet: { commentList: result._id } })
+                            .findOneAndUpdate({_id:msg.reqBody.answerId},{ $addToSet: { commentList: result._id } })
                             .then((result1, err) => {
                                 if (err) {
                                     myCallback(err, null, callback);

@@ -30,7 +30,7 @@ function handle_request(msg, callback) {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        Question.updateOne(
+                        Question.findOneAndUpdate(
                             { _id: msg.reqBody.questionId },
                             { $addToSet: { answerList: result._id } }
                         )
@@ -39,7 +39,7 @@ function handle_request(msg, callback) {
                                 if (err1) {
                                     myCallback(err1, null, callback);
                                 } else {
-                                    User.updateOne(
+                                    User.findOneAndUpdate(
                                         { _id: msg.reqBody.answerOwner },
                                         {
                                             $addToSet: {

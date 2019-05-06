@@ -30,7 +30,7 @@ function handle_request(msg, callback) {
                         myCallback(err, null, callback);
                     } else {
                         User
-                            .updateOne(
+                            .findOneAndUpdate(
                                 {_id:msg.reqBody.questionOwner},
                                 { $addToSet: { myQuestionList: result._id, interestedTopicList: result.topicList.split(", ")} }
                             )

@@ -16,7 +16,7 @@ app.use(require('express-bunyan-logger')({name: 'ShotPitch',
   streams: [{
     type: 'rotating-file',
     level: 'info',                  // loging level
-    path: './logger/logger.json',
+    path: './logger/logger.log',
     period: '1d',   // daily rotation
     count: 3,        // keep 3 back copies
   }]

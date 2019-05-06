@@ -217,7 +217,7 @@ function handle_request(msg, callback) {
                 });
             break;
         case "put/user/incView/:userId":
-            User.updateOne(
+            User.findOneAndUpdate(
                 { _id: msg.reqBody.userId },
                 { $push: { profileViews: Date.now() } },
                 { new: true }
@@ -234,7 +234,7 @@ function handle_request(msg, callback) {
                 });
             break;
         case "put/user/followQuestion/:userId/:questionId":
-            User.updateOne(
+            User.findOneAndUpdate(
                 { _id: msg.reqBody.userId },
                 { $addToSet: { questionFollowingList: msg.reqBody.questionId } }
             )
@@ -270,7 +270,7 @@ function handle_request(msg, callback) {
                 });
             break;
         case "put/user/unFollowQuestion/:userId/:questionId":
-            User.updateOne(
+            User.findOneAndUpdate(
                 { _id: msg.reqBody.userId },
                 { $pull: { questionFollowingList: msg.reqBody.questionId } }
             )
@@ -287,7 +287,7 @@ function handle_request(msg, callback) {
                 });
             break;
         case "put/user/followUser/:u1/:u2":
-            User.updateOne(
+            User.findOneAndUpdate(
                 { _id: msg.reqBody.u2 },
                 { $addToSet: { followingUserList: msg.reqBody.u1 } }
             )
@@ -297,7 +297,7 @@ function handle_request(msg, callback) {
                         myCallback(err, null, callback);
                     } else {
                         // console.log(result._id)
-                        User.updateOne(
+                        User.findOneAndUpdate(
                             { _id: msg.reqBody.u1 },
                             { $addToSet: { followersUserList: msg.reqBody.u2 } }
                         )
@@ -323,7 +323,7 @@ function handle_request(msg, callback) {
                 });
             break;
         case "put/user/unFollowUser/:u1/:u2":
-            User.updateOne(
+            User.findOneAndUpdate(
                 { _id: msg.reqBody.u2 },
                 { $pull: { followingUserList: msg.reqBody.u1 } }
             )
@@ -333,7 +333,7 @@ function handle_request(msg, callback) {
                         myCallback(err, null, callback);
                     } else {
                         // console.log(result._id)
-                        User.updateOne(
+                        User.findOneAndUpdate(
                             { _id: msg.reqBody.u1 },
                             { $pull: { followersUserList: msg.reqBody.u2 } }
                         )
