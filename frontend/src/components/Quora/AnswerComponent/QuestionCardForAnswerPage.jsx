@@ -293,11 +293,11 @@ class QuestionCardForAnswerPage extends React.Component {
                 <Grid item className="ans-main-content">
                 { !this.state.readMore && 
                    <Typography variant="subtitle"
-                              style ={{   height: 100, maxWidth: 750 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} 
+                              style ={{   height: 20, maxWidth: 750 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} 
                               onClick={() => this.readMoreText()} >{Parser(this.props.answer)}
                               </Typography>}
                 { this.state.readMore &&  
-                    <Typography variant="subtitle"  style ={{ maxWidth: 1000}} 
+                    <Typography variant="subtitle"  style ={{ }} 
                     onClick={() => this.readMoreTextClose()} >{Parser(this.props.answer)}
                     </Typography>}
         
