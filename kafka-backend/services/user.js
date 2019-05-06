@@ -257,11 +257,29 @@ function handle_request(msg, callback) {
                                 if (err1) {
                                     myCallback(err1, null, callback);
                                 } else {
-                                    console.log(
-                                        "__________result1_________________\n",
-                                        result1
-                                    );
-                                    myCallback(null, result, callback);
+                                    Question
+                                        .findOneAndUpdate(
+                                            {_id: msg.reqBody.questionId},
+                                            {$addToSet: { followersUserList: msg.reqBody.userId }}
+                                        )
+                                        .then((result2, err2) => {
+                                            if (err2) {
+                                                myCallback(err2, null, callback);
+                                            } else {
+                                                console.log(
+                                                    "__________result1_________________\n",
+                                                    result1
+                                                );
+                                                console.log(
+                                                    "__________result2_________________\n",
+                                                    result2
+                                                );
+                                                myCallback(null, result, callback);
+                                            }
+                                        })
+                                        .catch(err2 => {
+                                            myCallback(err2, null, callback);
+                                        });
                                 }
                             })
                             .catch(err1 => {
@@ -283,7 +301,25 @@ function handle_request(msg, callback) {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        myCallback(null, result, callback);
+                        Question
+                            .findOneAndUpdate(
+                                {_id: msg.reqBody.questionId},
+                                {$pull: { followersUserList: msg.reqBody.userId }}
+                            )
+                            .then((result1, err1) => {
+                                if (err1) {
+                                    myCallback(err1, null, callback);
+                                } else {
+                                    console.log(
+                                        "__________result1_________________\n",
+                                        result1
+                                    );
+                                    myCallback(null, result, callback);
+                                }
+                            })
+                            .catch(err1 => {
+                                myCallback(err1, null, callback);
+                            });
                     }
                 })
                 .catch(err => {
