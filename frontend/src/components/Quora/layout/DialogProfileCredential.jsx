@@ -77,6 +77,7 @@ class DialogProfileCredential extends Component {
       profileCredential: ""
     };
     this.onChange = this.onChange.bind(this);
+    //this.handleSave = this.handleSave.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,7 +89,7 @@ class DialogProfileCredential extends Component {
   }
 
   handleSave = e => {
-    e.preventDefault();
+    //e.preventDefault();
     // console.log(this.props.state.userDetails._id);
     const profileData = {
       profileCredential: this.state.profileCredential
@@ -98,6 +99,7 @@ class DialogProfileCredential extends Component {
       this.props.state.userDetails._id,
       profileData
     );
+    this.props.onClose();
   };
 
   render() {
@@ -199,7 +201,7 @@ class DialogProfileCredential extends Component {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.props.onClose} color="secondary">
               Cancel
             </Button>
             <Button onClick={this.handleSave} color="primary">

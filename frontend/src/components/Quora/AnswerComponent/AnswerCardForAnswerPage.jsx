@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import navHeader from "../header/navHeader";
 import Editor from "./Editor";
+import Popover from "@material-ui/core/Popover";
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
@@ -38,7 +39,8 @@ class AnswerCardForAnswerPage extends React.Component {
       answer: {},
       openQuill: false,
       editorHtml: "",
-      totalAnswer: ""
+      totalAnswer: "",
+      editQuestion:false
     };
     this.GiveAnswer = this.GiveAnswer.bind(this);
   }
@@ -51,6 +53,11 @@ class AnswerCardForAnswerPage extends React.Component {
   followAnswer = () => {
     this.setState({ openQuill: !this.state.openQuill });
   };
+  editQuestion = () => {
+    this.setState({ 
+      editQuestion: !this.state.editQuestion ,
+      openQuill:true });
+  };
   handleClose = () => {
     this.setState({ openQuill: false });
   };
@@ -59,7 +66,21 @@ class AnswerCardForAnswerPage extends React.Component {
       editorHtml: html
     });
   };
+  handleMenu = event => {
+    console.log("Hello");
+    console.log(event.currentTarget.id);
+    console.log(document.getElementById(event.currentTarget.id).offsetTop);
+
+    this.setState({
+      showMenu: true,
+      anchorEl: event.currentTarget
+    });
+  };
   render() {
+    const position = {
+      left: 1115,
+      top: 386
+    };
     const { classes } = this.props;
     const { question } = this.props;
     const { answer } = this.state;
@@ -72,7 +93,6 @@ class AnswerCardForAnswerPage extends React.Component {
       }
 
     else totalAnswerCount = "No Answer yet";
-    console.log(totalAnswerCount);
     if (!isEmpty(answer)) {
       var username = "";
       if (answer.isAnonymous) {
@@ -84,7 +104,7 @@ class AnswerCardForAnswerPage extends React.Component {
       answerComp = (
         <React.Fragment>
           <Grid item className="ans-main-content">
-          <Link to={"/" + question._id} style={{ color: "#000000" }}><Typography variant="subtitle1" component="p">{totalAnswerCount}</Typography></Link>
+          <Link to={"/" + question._id} style={{ color: "#000000" }}><Typography variant="h6" component="p">{totalAnswerCount}</Typography></Link>
           </Grid>
           <Grid
             container
@@ -195,7 +215,7 @@ class AnswerCardForAnswerPage extends React.Component {
                 </div>
               </Grid>
 
-              <Grid item xs={2}>
+              {!this.props.myanswer && <Grid item xs={2}>
                 <div
                   onClick={() => this.passAnswer()}
                   style={{ cursor: "pointer" }}
@@ -249,8 +269,62 @@ class AnswerCardForAnswerPage extends React.Component {
                   </span>
                   <span>Pass</span>
                 </div>
-              </Grid>
-
+              </Grid>}
+              {this.props.myanswer && <Grid item xs={2}>
+              <div
+                onClick={() => this.editQuestion()}
+                style={{ cursor: "pointer" }}
+              >
+                <span class="ui_button_icon" aria-hidden="true">
+                  <svg
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <g
+                      id="cant_answer"
+                      stroke="none"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g
+                        id="pen"
+                        transform="translate(11.485281, 12.485281) rotate(-315.000000) translate(-11.485281, -12.485281) translate(9.485281, 2.485281)"
+                      >
+                        <path
+                          d="M0,7.51471863 L2.22044605e-16,1.99994543 C8.67738547e-17,0.895375929 0.8954305,-5.45711382e-05 2,-5.45711382e-05 C3.1045695,-5.45711382e-05 4,0.895375929 4,1.99994543 L4,7.51471863 M4,12.5147186 L4,16 L2.00256278,20 L0,16 L0,12.5147186"
+                          id="Rectangle-5"
+                          class="icon_svg-stroke"
+                          stroke="#666"
+                          stroke-width="1.5"
+                          stroke-linecap="square"
+                          stroke-linejoin="round"
+                        />
+                        <polygon
+                          id="pen_tip"
+                          class="icon_svg-fill_as_stroke"
+                          fill="#666"
+                          transform="translate(2.000000, 18.750000) scale(1, -1) translate(-2.000000, -18.750000) "
+                          points="2 17.5 3.25 20 0.75 20"
+                        />
+                      </g>
+                      <path
+                        d="M4.63603897,5.63603897 L18.5,19.5"
+                        id="Line"
+                        class="icon_svg-stroke"
+                        stroke="#666"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                <span>Edit</span>
+              </div>
+            </Grid>}
               <Grid item xs={2}>
                 <div
                   onClick={() => this.followAnswer()}
@@ -307,7 +381,11 @@ class AnswerCardForAnswerPage extends React.Component {
               <Grid item xs={5} />
 
               <Grid item xs={1}>
-                <span class="ui_button_icon" aria-hidden="true">
+                <span
+                 id="menuid" 
+                class="ui_button_icon" 
+                aria-hidden="true"
+                onClick={this.handleMenu}>
                   <svg
                     width="24px"
                     height="24px"
@@ -331,6 +409,52 @@ class AnswerCardForAnswerPage extends React.Component {
               </Grid>
             </Grid>
           </Grid>
+          <Popover
+            id="simple-popper-1"
+            open={Boolean(this.state.showMenu)}
+            anchorEl={this.state.anchorEl}
+            onClose={this.handleMenuClose}
+            anchorReference={position}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left"
+            }}
+            anchorPosition={{
+              left: 1115,
+              top: 1212
+            }}
+            // onFocus={this.abc}
+          >
+            {/* style={{ opacity: this.state.searchValue && this.state.searchValue !== '' ? 0 : 1 }} */}
+            <div className={classes.dialogWidth}>
+              <div
+                className={classes.dialogContent}
+                style={{ overflow: "hidden" }}
+              >
+                <ul
+                  style={{
+                    listStyle: "none",
+                    marginBottom: "0rem",
+                    paddingLeft: 0
+                  }}
+                >
+                  <li className={classes.listStyle}>
+                    <div
+                      className={classes.dialogMenu}
+                      style={{ borderTop: "none", cursor: "pointer" }}
+                      onClick={() => this.GiveAnswer()}
+                    >
+                      Edit Answer
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Popover>
         </React.Fragment>
       );
     }
@@ -390,7 +514,7 @@ class AnswerCardForAnswerPage extends React.Component {
             <Grid item>
               <span className="question-txt">
                
-                 { this.props.question}
+              <Typography variant="title"> { this.props.question}</Typography>
                
               </span>
             </Grid>
@@ -399,7 +523,7 @@ class AnswerCardForAnswerPage extends React.Component {
           </Grid>
 
           {this.state.openQuill && (
-            <Editor qid={question._id} toggle={this.handleClose} />
+            <Editor qid={question._id ? question._id : this.props.question_id}  toggle={this.handleClose}  editQuestion={this.props.question}/>
           )}
         </Paper>
       </div>

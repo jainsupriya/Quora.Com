@@ -1,5 +1,6 @@
 const Question = require("../models/question");
 const User = require("../models/user");
+const Topic = require("../models/topic");
 const Content = require("../models/content");
 const Activity = require("../models/activity");
 
@@ -29,6 +30,19 @@ function handle_request(msg, callback) {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
+                        Topic
+                        .findByIdAndUpdate(
+                            "5cd084810892c945c23869ae",
+                            { $addToSet: {allTopic: result.topicList.split(", ")} }
+                        )
+                        .then((result, err) => {
+                            if (err) {
+                                console.log(err)
+                                // myCallback(err, null, callback);
+                            } else {
+                                console.log(result)
+                            }
+                        })
                         User
                             .findOneAndUpdate(
                                 {_id:msg.reqBody.questionOwner},
@@ -122,7 +136,7 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/questions/searchByQuestion/:searchQuery":
-            Question.find({question: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+            Question.find({question: { $regex : msg.reqBody.searchQuery }})
                 .populate('answerList')                
                 .populate('questionOwner')                
                 .then((result, err) => {
@@ -137,7 +151,22 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/questions/searchByTopic/:searchQuery":
-            Question.find({topicList: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+            Question
+                .find({topicList: { $regex : msg.reqBody.searchQuery }})
+                .populate({ 
+                    path: 'answerList',
+                    populate: [
+                        // {
+                        //     path: 'commentList',
+                        //     options: {limit: 1},  
+                        // },
+                        {
+                            path: 'answerOwner',
+                            select: 'profileImg lname fname',
+                        }
+                    ],
+                    options: {limit: 1},
+                })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -150,31 +179,27 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/questions/searchTopic/:searchQuery":
-            Question.find({topicList: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+
+            Question
+                .find({topicList: { $regex : msg.reqBody.searchQuery}})
                 .populate({ 
                     path: 'answerList',
-                    populate: [{
-                        path: 'commentList',
-                        options: {limit: 1},  
-                    },
-                    {
-                        path: 'answerOwner',
-                        select: 'profileImg lname fname',
-                    }
-                ],
+                    populate: [
+                        // {
+                        //     path: 'commentList',
+                        //     options: {limit: 1},  
+                        // },
+                        {
+                            path: 'answerOwner',
+                            select: 'profileImg lname fname',
+                        }
+                    ],
                     options: {limit: 1},
-                })            
+                })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        // let respon = null;
-                        // console.log("-------------********************");
-                        // result.map(res => {
-                        //     if(res.anserList !== null){
-                        //         respon = res.answerList
-                        //     }
-                        // })
                         myCallback(null, result, callback);
                     }
                 })

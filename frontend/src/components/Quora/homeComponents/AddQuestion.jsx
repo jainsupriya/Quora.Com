@@ -144,7 +144,7 @@ class AddQuestion extends React.Component {
               >
                 <Grid item>
                   <Avatar
-                    alt="Remy Sharp"
+                    alt={auth.user.fname}
                     src={auth.user.profileImg}
                     className="avatar"
                   />

@@ -89,7 +89,7 @@ class DialogEmployment extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+
     if (nextProps.state.userDetails.employment !== undefined) {
       this.setState({
         current:

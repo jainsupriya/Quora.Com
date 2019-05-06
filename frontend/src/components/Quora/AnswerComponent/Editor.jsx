@@ -34,7 +34,7 @@ class Editor extends React.Component {
       super(props)
       this.state =
        { 
-         editorHtml: '', 
+        editorHtml: '',
         theme: 'snow' 
       }
 
@@ -45,7 +45,6 @@ class Editor extends React.Component {
 
     handleChange (html) {
         this.setState({ editorHtml: html });
-        console.log(html)
     }
 
     handleClose(){
@@ -60,30 +59,56 @@ class Editor extends React.Component {
     {
 
       event.preventDefault();
-      const answer =
+  
+      if(this.props.editQuestion)
+      {
+        const answer =
+        {
+          question: this.state.editorHtml,
+          topicList: "Change, TopicList1"
+        }
+       
+        axios.put(`/question`+ this.props.qid).
+        then(res=>{
+        
+          if(res.status === 200)
+          {
+          
+            this.setState( 
+              {  
+                editorHtml: ''
+              });
+            this.props.toggle();
+          }
+        })
+        .catch(err =>{
+          console.log(err);
+        });      
+      }
+      else
+      {
+        const answer =
         {
           answer: this.state.editorHtml,
           answerOwner: this.props.auth.user._id,
           isAnonymous: "false",
           questionId: this.props.qid
         }
-        console.log(answer);
-       axios.post(`/answer`, answer).
-          then(res=>{
-            console.log(res.status);
-            if(res.status === 200)
-            {
-              console.log(res.data);
-              this.setState( 
-                {  
-                  editorHtml: ''
-                });
-              this.props.toggle();
-            }
-          })
-          .catch(err =>{
-            console.log(err);
-          });
+        axios.post(`/answer`, answer).
+            then(res=>{     
+              if(res.status === 200)
+              {
+                this.setState( 
+                  {  
+                    editorHtml: ''
+                  });
+                this.props.toggle();
+              }
+            })
+            .catch(err =>{
+              console.log(err);
+            });
+        }
     }
     render () {
       return (

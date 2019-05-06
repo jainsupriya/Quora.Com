@@ -10,10 +10,11 @@
     position: fixed;
     padding-top: 15px;
     padding-bottom: 15px;
-    top: 0px;
-    width: 100%;
+    top: 50px;
+    width: 46.9%;
     z-index: 10;
-    background-color: white
+    background-color: white;
+    border-bottom: 1px solid #e2e2e2;
    }
    .m-chat-bg {
     /* background-color: #eeeeee; */
@@ -61,9 +62,9 @@
    .m-chat-write {
     position: fixed;
     bottom: 0px;
-    padding-bottom: 30px;
-    width: 100%;
-    background-color: white
+    padding-bottom: 50px;
+    width: 46.9%;
+    /*background-color: white */
    }
    .m-center-content{
     margin-left: auto;

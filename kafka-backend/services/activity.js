@@ -68,10 +68,25 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
+        case "get/activity/byUserId/:userId/onlyAnswers":
+            Activity
+                .find({ userId: msg.reqBody.userId, activityType: "CREATE_ANSWER" })
+                .populate({path: 'createdAnswer',populate: {path: 'questionId', model: "question"}, model: "answer"})
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
         case "get/activity/byUserId/:userId/onlyQuestions":
             Activity
                 .find({ userId: msg.reqBody.userId, activityType: "CREATE_QUESTION" })
-                .populate('activityId')
+                .populate({path: 'createdQuestion', model: "question"})
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -86,7 +101,7 @@ function handle_request(msg, callback) {
         case "get/activity/byUserId/:userId/onlyFollowQuestions":
             Activity
                 .find({ userId: msg.reqBody.userId, activityType: "FOLLOW_QUESTION" })
-                .populate('activityId')
+                .populate({path: 'followedQuestion', model: "question"})
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);

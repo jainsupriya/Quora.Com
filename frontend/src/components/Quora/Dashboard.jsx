@@ -332,7 +332,7 @@ class Dashboard extends React.Component {
                 <Typography variant="h5" gutterBottom component="h2">
                   Top 10 Answers with Upvotes
                 </Typography>
-                <PieChart data={temp} type="upvotes" />
+                <PieChart data={answerUpvotes} type="upvotes" />
                 <div style={{ padding: "4%" }}>
                   <Paper>
                     <Table>

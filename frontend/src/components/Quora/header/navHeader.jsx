@@ -19,6 +19,9 @@ import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
 import { logoutUser } from "../../../redux/actions/authActions";
 import axios from "axios";
+import MessageDialog from "../Message/MessageDialog";
+
+import Dialog from '@material-ui/core/Dialog';
 
 const styles = theme => ({
   notificationDialog: {
@@ -108,7 +111,9 @@ class NavHeader extends Component {
       question: "",
       openProfileMenu: false,
       openSearchDialog: false,
-      searchValue: ""
+      searchValue: "",
+      showMsgs: false,
+      dialogContent: ''
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.searchForTopicOrPeople = this.searchForTopicOrPeople.bind(this);
@@ -116,7 +121,7 @@ class NavHeader extends Component {
   searchForTopicOrPeople(event) {
     const { name, value } = event.target;
     event.target.focus()
-    console.log(value);
+
     // document.getElementById("search").focus()
 
     this.setState({
@@ -130,7 +135,7 @@ class NavHeader extends Component {
       });
       axios.get(`/topics/search/` + value).then(response => {
         if (response.status === 200) {
-          console.log(response.data);
+
           this.setState({
             products: response.data
           });
@@ -149,8 +154,6 @@ class NavHeader extends Component {
 
     
     document.getElementById("search").focus()
-    console.log(document.getElementById("search").value)
-    console.log(document.activeElement.tagName)
 
 
   }
@@ -209,14 +212,14 @@ class NavHeader extends Component {
   };
 
   handleSearchDialogClose = () => {
-    console.log("close : ", this.state.openSearchDialog);
+   
     this.setState({
       openSearchDialog: false
     });
   };
 
   showPopover = event => {
-    console.log("show : ", this.state.openSearchDialog);
+   
 
     this.setState({
       openSearchDialog: event.currentTarget
@@ -228,18 +231,30 @@ class NavHeader extends Component {
   };
 
   abc = () => {
-    console.log("called")
+
     document.getElementById("simple-popper-1").blur();
     document.getElementById("search").focus();
   }
   
+  handleMessageDialog = () => {
+    console.log("Hello")
+    this.setState({
+      showMsgs : true,
+      // dialogContent : <MessageDialog open={true} />
+    })
+  }
 
+  handleCloseMessages = () => {
+    this.setState({
+      showMsgs : false
+    })
+  }
   render() {
     const { openNotification, openProfileMenu, openSearchDialog } = this.state;
     const open1 = Boolean(openNotification);
     const open2 = Boolean(openProfileMenu);
     const open3 = Boolean(openSearchDialog);
-    console.log(open3);
+ 
     const { classes, auth } = this.props;
 
     const notificationList = {
@@ -428,6 +443,15 @@ class NavHeader extends Component {
                   </a>
                 </li>
                 <li className={classes.listStyle}>
+                  <div
+                    className={classes.profileMenu}
+                    onClick={this.handleMessageDialog}
+                    style={{cursor: 'pointer'}}
+                  >
+                    Messages
+                  </div>
+                </li>
+                <li className={classes.listStyle}>
                   <a className={classes.profileMenu} href="/content">
                     Your Content
                   </a>
@@ -502,7 +526,6 @@ class NavHeader extends Component {
             </div>
           </div>
         </Popover>
-        {console.log(this)}
         {/* {document.getElementById("search").focus()} */}
       </div>
     );
@@ -512,6 +535,20 @@ class NavHeader extends Component {
         {addQuestion}
         {notifications}
         {profilePopover}
+        {console.log(this.state.dialogContent)}
+       
+        <MessageDialog open={this.state.showMsgs} handleCloseMessages={this.handleCloseMessages}/>
+
+        {/* <div>
+            <Dialog
+          onClose={this.handleCloseMessages}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.showMsgs}
+        >
+        Hello
+
+        </Dialog>
+        </div> */}
         {/* {searchDialog} */}
         <Grid
           container

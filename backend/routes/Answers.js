@@ -46,9 +46,23 @@ AnswerRoutes.get("/answer/:answerId", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
     );
-    console.log("/get/answer");
+    console.log("/get/answer/:answerId");
     var reqMsg = {
-        api: "get/answer",
+        api: "get/answer/:answerId",
+        reqBody: { answerId: req.params.answerId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
+AnswerRoutes.get("/answerWithCommentList/:answerId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/answerWithCommentList/:answerId");
+    var reqMsg = {
+        api: "get/answerWithCommentList/:answerId",
         reqBody: { answerId: req.params.answerId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {

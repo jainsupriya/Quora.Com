@@ -181,12 +181,36 @@ UserRoutes.get("/userWith/QuestionFollowingList/:userId", (req, res, next) => {
         "===================================================================================================================================================="
     );
     console.log("/get/userWith/QuestionFollowingList/:userId");
-    var reqMsg = {
-        api: "get/userWith/QuestionFollowingList/:userId",
-        reqBody: { userId: req.params.userId }
-    };
-    kafka.make_request(TOPIC, reqMsg, function(err, results) {
-        res.status(results.status).send(results.data);
+    client.hget("get/userWith/QuestionFollowingList/", req.params.userId, function(err, reply) {
+        if (err) {
+            console.log(err);
+            res.status(422).send(err);
+        } else {
+            client.hlen("get/userWith/QuestionFollowingList/",(err,length)=>{
+                if(length>=redisHmapMax){
+                    client.hkeys("get/userWith/QuestionFollowingList/",(err,keys)=>{
+                        console.log(keys[0])
+                        client.hdel("get/userWith/QuestionFollowingList/",keys[0])
+                    })
+                }
+            })
+            if (reply) {
+                res.status(200).send(JSON.parse(reply));
+            } else {
+                var reqMsg = {
+                    api: "get/userWith/QuestionFollowingList/:userId",
+                    reqBody: { userId: req.params.userId }
+                };
+                kafka.make_request(TOPIC, reqMsg, function(err, results) {
+                    res.status(results.status).send(results.data);
+                    client.hset(
+                        "get/userWith/QuestionFollowingList/",
+                        req.params.userId,
+                        JSON.stringify(results.data)
+                    );
+                });
+            }
+        }
     });
 });
 
@@ -340,6 +364,12 @@ UserRoutes.put("/user/followQuestion/:userId/:questionId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        if(client.hexists(
+            "get/userWith/QuestionFollowingList/",
+            req.params.userId
+        )){
+            client.hdel("get/userWith/QuestionFollowingList/",req.params.userId)
+        }
     });
 });
 
