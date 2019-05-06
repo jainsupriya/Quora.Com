@@ -269,6 +269,23 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
+        case "put/user/unFollowQuestion/:userId/:questionId":
+            User.updateOne(
+                { _id: msg.reqBody.userId },
+                { $pull: { questionFollowingList: msg.reqBody.questionId } }
+            )
+                // .updateOne({sqlUserId:msg.reqBody.userId},{ $pull: { questionFollowingList: msg.reqBody.questionId } })
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
         case "put/user/followUser/:u1/:u2":
             User.updateOne(
                 { _id: msg.reqBody.u2 },
@@ -305,10 +322,63 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
+        case "put/user/unFollowUser/:u1/:u2":
+            User.updateOne(
+                { _id: msg.reqBody.u2 },
+                { $pull: { followingUserList: msg.reqBody.u1 } }
+            )
+                // .updateOne({sqlUserId:msg.reqBody.u2},{ $pull: { followingUserList: msg.reqBody.u1 } })
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        // console.log(result._id)
+                        User.updateOne(
+                            { _id: msg.reqBody.u1 },
+                            { $pull: { followersUserList: msg.reqBody.u2 } }
+                        )
+                            // .updateOne({sqlUserId:msg.reqBody.u1},{ $pull: { followingUserList: result[0]._id } })
+                            .then((result1, err1) => {
+                                if (err1) {
+                                    myCallback(err1, null, callback);
+                                } else {
+                                    console.log(
+                                        "__________result_________________\n",
+                                        result
+                                    );
+                                    myCallback(null, result1, callback);
+                                }
+                            })
+                            .catch(err1 => {
+                                myCallback(err1, null, callback);
+                            });
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
         case "put/user/bookmarkAnswer/:userId/:answerId":
             User.findOneAndUpdate(
                 { _id: msg.reqBody.userId },
                 { $addToSet: { bookmarkedAnswerList: msg.reqBody.answerId } },
+                { new: true }
+            )
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "put/user/unBookmarkAnswer/:userId/:answerId":
+            User.findOneAndUpdate(
+                { _id: msg.reqBody.userId },
+                { $pull: { bookmarkedAnswerList: msg.reqBody.answerId } },
                 { new: true }
             )
                 .then((result, err) => {
