@@ -153,17 +153,17 @@ function handle_request(msg, callback) {
             Question.find({topicList: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
                 .populate({ 
                     path: 'answerList',
-                    populate: {
+                    populate: [{
+                        path: 'commentList',
+                        options: {limit: 1},  
+                    },
+                    {
                         path: 'answerOwner',
                         select: 'profileImg lname fname',
-                    },
-                })
-                .populate({ 
-                    path: 'answerList',
-                    populate: {
-                        path: 'commentList',
-                    },
-                })                    
+                    }
+                ],
+                    options: {limit: 1},
+                })            
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);

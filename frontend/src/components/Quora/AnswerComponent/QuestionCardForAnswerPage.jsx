@@ -48,7 +48,7 @@ class QuestionCardForAnswerPage extends React.Component {
       console.log(this.props.answerList)
     var upvoteCount = 0;
     var isUpvoted = false;
-    /*axios.put(`/answer/view/`+this.props.answer._id)
+    axios.put(`/answer/view/`+this.props.answer._id)
     .then(response =>{
         if(response.status === 200){
             console.log(response.data);
@@ -56,7 +56,7 @@ class QuestionCardForAnswerPage extends React.Component {
                 products: response.data
             });
         }
-    });*/
+    });
 
     if (
       this.props.answerList !== undefined &&
