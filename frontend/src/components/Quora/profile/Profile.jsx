@@ -184,6 +184,7 @@ class Profile extends React.Component {
     const follower = this.props.state.userDetails;
 
     console.log(userDetails);
+    
 
     return (
       <div>
@@ -275,8 +276,8 @@ class Profile extends React.Component {
                         <div />
                         <div />
                         <ActionBar
-                          user={userDetails !== undefined ? userDetails : ""}
-                          follower={follower !== undefined ? follower : ""}
+                           user={userDetails !== undefined ? userDetails : ""}
+                           follower={follower !== undefined ? follower : ""}
                         />
                       </div>
                     </div>
