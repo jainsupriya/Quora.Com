@@ -352,7 +352,8 @@ class QuestionCard extends React.Component {
                     <Typography
                       variant="h6"
                       style={{
-                        width: 50,
+                        height: 100,
+                        maxWidth: 750,
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap"

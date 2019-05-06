@@ -91,11 +91,11 @@ class Home extends React.Component {
         : [];
     if (this.props.questions && this.props.questions.length > 0) {
       QuestionComp = this.props.questions
-        .slice(0, this.state.visible)
+        
         .sort(
           (ques1, ques2) =>
             new Date(ques2.postedTime) - new Date(ques1.postedTime)
-        )
+        ).slice(0, this.state.visible)
         .map(question => {
           return (
             <QuestionCard

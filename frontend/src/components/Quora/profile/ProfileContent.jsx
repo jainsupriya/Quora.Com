@@ -361,10 +361,14 @@ class ProfileContent extends Component {
 
                                     
                                        
-                                        <AnswerCardForAnswerPage question={this.state.contentDetails[index]
-                                          .createdQuestion.question}  answerList =  {this.state.contentDetails[index]
+                                        <AnswerCardForAnswerPage 
+                                        question={this.state.contentDetails[index]
+                                          .createdQuestion.question}  
+                                        answerList =  {this.state.contentDetails[index]
                                             .createdQuestion.answerList} 
-                                            myanswer= "true"/>
+                                        myanswer= "true"
+                                        question_id= {this.state.contentDetails[index]
+                                        .createdQuestion._id}/>
                                     
                                     ) 
                                   case "CREATE_ANSWER":
@@ -382,6 +386,7 @@ class ProfileContent extends Component {
                                           .createdAnswer.postedTime}
                                         views = {this.state.contentDetails[index]
                                           .createdAnswer.views}
+                                        myanswer= "true"
                                       />)
                                   case "FOLLOWED_QUESTION":
                                     return this.state.contentDetails[index]
