@@ -19,6 +19,9 @@ import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
 import { logoutUser } from "../../../redux/actions/authActions";
 import axios from "axios";
+import MessageDialog from "../Message/MessageDialog";
+
+import Dialog from '@material-ui/core/Dialog';
 
 const styles = theme => ({
   notificationDialog: {
@@ -108,7 +111,9 @@ class NavHeader extends Component {
       question: "",
       openProfileMenu: false,
       openSearchDialog: false,
-      searchValue: ""
+      searchValue: "",
+      showMsgs: false,
+      dialogContent: ''
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.searchForTopicOrPeople = this.searchForTopicOrPeople.bind(this);
@@ -233,7 +238,19 @@ class NavHeader extends Component {
     document.getElementById("search").focus();
   }
   
+  handleMessageDialog = () => {
+    console.log("Hello")
+    this.setState({
+      showMsgs : true,
+      // dialogContent : <MessageDialog open={true} />
+    })
+  }
 
+  handleCloseMessages = () => {
+    this.setState({
+      showMsgs : false
+    })
+  }
   render() {
     const { openNotification, openProfileMenu, openSearchDialog } = this.state;
     const open1 = Boolean(openNotification);
@@ -428,6 +445,15 @@ class NavHeader extends Component {
                   </a>
                 </li>
                 <li className={classes.listStyle}>
+                  <div
+                    className={classes.profileMenu}
+                    onClick={this.handleMessageDialog}
+                    style={{cursor: 'pointer'}}
+                  >
+                    Messages
+                  </div>
+                </li>
+                <li className={classes.listStyle}>
                   <a className={classes.profileMenu} href="/content">
                     Your Content
                   </a>
@@ -512,6 +538,20 @@ class NavHeader extends Component {
         {addQuestion}
         {notifications}
         {profilePopover}
+        {console.log(this.state.dialogContent)}
+       
+        <MessageDialog open={this.state.showMsgs} handleCloseMessages={this.handleCloseMessages}/>
+
+        {/* <div>
+            <Dialog
+          onClose={this.handleCloseMessages}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.showMsgs}
+        >
+        Hello
+
+        </Dialog>
+        </div> */}
         {/* {searchDialog} */}
         <Grid
           container
