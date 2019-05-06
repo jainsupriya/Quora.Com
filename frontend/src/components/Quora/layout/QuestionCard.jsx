@@ -21,7 +21,6 @@ import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
-import { connect } from "react-redux";
 import iReact from "read-more-react";
 import isEmpty from "../../../validator/is-empty";
 import moment from "moment";
@@ -41,7 +40,8 @@ class QuestionCard extends React.Component {
       addedComment: "New Comment added",
       showComments: false,
       readMore: false,
-      isBookmarked: false
+      isBookmarked: false,
+      commentList: []
     };
   }
   showComments = () => {
@@ -56,11 +56,24 @@ class QuestionCard extends React.Component {
   componentDidMount() {
     var upvoteCount = 0;
     var isUpvoted = false;
+    var isBookmarked = false;
+    var commentList = [];
 
     if (
       this.props.question.answerList !== undefined &&
       this.props.question.answerList.length
     ) {
+      commentList = this.props.question.answerList[0].commentList;
+      if (
+        this.props.user.bookmarkedAnswerList !== undefined &&
+        this.props.user.bookmarkedAnswerList.length &&
+        this.props.user.bookmarkedAnswerList.includes(
+          this.props.question.answerList[0]._id
+        )
+      ) {
+        isBookmarked = true;
+      }
+
       if (
         this.props.question.answerList[0].upVotes !== undefined &&
         this.props.question.answerList[0].upVotes.length
@@ -77,25 +90,38 @@ class QuestionCard extends React.Component {
     }
     this.setState({
       isUpvoted: isUpvoted,
-      upvoteCount: upvoteCount
+      upvoteCount: upvoteCount,
+      isBookmarked: isBookmarked,
+      commentList: commentList
     });
   }
 
   componentWillReceiveProps(nextProps) {
     var upvoteCount = 0;
     var isUpvoted = false;
-
+    var isBookmarked = false;
+    var commentList = [];
     if (
       nextProps.question.answerList !== undefined &&
       nextProps.question.answerList.length
     ) {
+      commentList = nextProps.question.answerList[0].commentList;
+      if (
+        nextProps.user.bookmarkedAnswerList !== undefined &&
+        nextProps.user.bookmarkedAnswerList.length &&
+        nextProps.user.bookmarkedAnswerList.includes(
+          nextProps.question.answerList[0]._id
+        )
+      ) {
+        isBookmarked = true;
+      }
       if (
         nextProps.question.answerList[0].upVotes !== undefined &&
         nextProps.question.answerList[0].upVotes.length
       ) {
         upvoteCount = nextProps.question.answerList[0].upVotes.length;
         if (
-          nextProps.question.answerList[0].upVotes.includes(nextProps.user._id)
+          nextProps.question.answerList[0].upVotes.includes(this.props.user._id)
         ) {
           isUpvoted = true;
         }
@@ -103,7 +129,9 @@ class QuestionCard extends React.Component {
     }
     this.setState({
       isUpvoted: isUpvoted,
-      upvoteCount: upvoteCount
+      upvoteCount: upvoteCount,
+      isBookmarked: isBookmarked,
+      commentList: commentList
     });
   }
 
@@ -130,16 +158,25 @@ class QuestionCard extends React.Component {
   };
 
   handleBookmarkAnswer = answerId => {
-    axios
-      .put(`/user/bookmarkAnswer/${this.props.user._id}/${answerId}`)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err.data));
+    if (!this.state.isBookmarked) {
+      axios
+        .put(`/user/bookmarkAnswer/${this.props.user._id}/${answerId}`)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err.data));
+    } else {
+      axios
+        .put(`/user/unBookmarkAnswer/${this.props.user._id}/${answerId}`)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err.data));
+    }
+
     this.setState({
       isBookmarked: !this.state.isBookmarked
     });
   };
 
   handleAddComment = answerId => {
+    var commentList = this.state.commentList;
     var commentData = {
       comment: this.state.addedComment,
       answerId: answerId,
@@ -147,15 +184,19 @@ class QuestionCard extends React.Component {
     };
     axios
       .post("/comment", commentData)
-      .then(res => console.log(res.data))
+      .then(res => console.log())
       .catch(err => console.log(err.data));
+
+    commentList.push(commentData);
+    alert(JSON.stringify(commentList));
     this.setState({
-      showComments: true
+      showComments: true,
+      commentList: commentList
     });
   };
 
   render() {
-    const { question, user } = this.props;
+    const { question } = this.props;
     const { isUpvoted, upvoteCount } = this.state;
 
     var comp = "";
@@ -485,8 +526,8 @@ class QuestionCard extends React.Component {
                 >
                   <Grid item xs={1}>
                     <Avatar
-                      alt={user.firstname}
-                      src={user.profileImg}
+                      alt={this.props.user.fname}
+                      src={this.props.user.profileImg}
                       className="avatar"
                     />
                   </Grid>
@@ -513,43 +554,54 @@ class QuestionCard extends React.Component {
                       Add Comment
                     </Button>
                   </Grid>
-                  {this.state.showComments ? (
-                    <Grid
-                      container
-                      direction="row"
-                      justify="flex-start"
-                      alignItems="flex-start"
-                      // className="m-margin-up-down"
-                    >
-                      <Grid item>
-                        <Avatar
-                          alt={user.fname}
-                          src={user.profileImg}
-                          className="avatar"
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Grid
-                          container
-                          direction="column"
-                          justify="flex-start"
-                          alignItems="flex-start"
-                          className="m-margin-up-down"
-                        >
-                          <Grid item className="black-clr">
-                            {" "}
-                            {user.fname + " " + user.lname}
-                          </Grid>
-                          <Grid item className="fnt-13">
-                            {"Just now"}
-                          </Grid>
-                          {this.state.addedComment}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  ) : (
-                    ""
-                  )}
+                  {this.state.showComments
+                    ? this.state.commentList.length
+                      ? this.state.commentList.map(comment => {
+                          return (
+                            <Grid
+                              container
+                              direction="row"
+                              justify="flex-start"
+                              alignItems="flex-start"
+                              // className="m-margin-up-down"
+                            >
+                              <Grid item>
+                                <Avatar
+                                  alt={this.props.user.fname}
+                                  src={this.props.user.profileImg}
+                                  className="avatar"
+                                />
+                              </Grid>
+                              <Grid item>
+                                <Grid
+                                  container
+                                  direction="column"
+                                  justify="flex-start"
+                                  alignItems="flex-start"
+                                  className="m-margin-up-down"
+                                >
+                                  <Grid item className="black-clr">
+                                    {" "}
+                                    {this.props.user.fname +
+                                      " " +
+                                      this.props.user.lname}
+                                  </Grid>
+                                  <Grid item className="fnt-13">
+                                    {comment.postedTime !== undefined
+                                      ? moment(
+                                          new Date(comment.postedTime),
+                                          "MMMM Do YYYY, h:mm:ss a"
+                                        ).fromNow()
+                                      : "Just now"}
+                                  </Grid>
+                                  {comment.comment}
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                          );
+                        })
+                      : ""
+                    : ""}
                 </Grid>
               </React.Fragment>
             </Grid>
@@ -558,19 +610,11 @@ class QuestionCard extends React.Component {
       );
     } else {
       answer = "No Answer";
-      comp = <AnswerCard question={question} user={this.props.auth.user} />;
+      comp = <AnswerCard question={question} user={this.props.user} />;
     }
 
     return <React.Fragment>{comp}</React.Fragment>;
   }
 }
-const mapStateToProps = state => ({
-  auth: state.auth,
-  state: state.homeState,
-  userState: state.userState
-});
 
-export default connect(
-  mapStateToProps,
-  {}
-)(withStyles(styles)(QuestionCard));
+export default withStyles(styles)(QuestionCard);

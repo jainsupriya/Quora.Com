@@ -84,6 +84,7 @@ class AnswerCard extends React.Component {
   passAnswer = () => {
     this.setState({ openQuill: !this.state.openQuill });
   };
+
   followAnswer = () => {
     var followerCount = 0;
     if (!this.state.followAnswer) {
@@ -101,7 +102,7 @@ class AnswerCard extends React.Component {
         this.state.followerCount > 0 ? this.state.followerCount - 1 : 0;
       axios
         .put(
-          `/user/followQuestion/${this.props.user._id}/${
+          `/user/unFollowQuestion/${this.props.user._id}/${
             this.props.question._id
           }`
         )
@@ -128,11 +129,13 @@ class AnswerCard extends React.Component {
     var followAnswer = false;
 
     if (
-      this.props.question.followersUserList !== undefined &&
-      this.props.question.followersUserList.length
+      this.props.user.questionFollowingList !== undefined &&
+      this.props.user.questionFollowingList.length
     ) {
-      followerCount = this.props.question.followersUserList.length;
-      if (this.props.question.followersUserList.includes(this.props.user._id)) {
+      followerCount = this.props.user.questionFollowingList.length;
+      if (
+        this.props.user.questionFollowingList.includes(this.props.question._id)
+      ) {
         followAnswer = true;
       }
     }
@@ -147,11 +150,13 @@ class AnswerCard extends React.Component {
     var followAnswer = false;
 
     if (
-      nextProps.question.followersUserList !== undefined &&
-      nextProps.question.followersUserList.length
+      nextProps.user.questionFollowingList !== undefined &&
+      nextProps.user.questionFollowingList.length
     ) {
-      followerCount = nextProps.question.followersUserList.length;
-      if (nextProps.question.followersUserList.includes(nextProps.user._id)) {
+      followerCount = nextProps.user.questionFollowingList.length;
+      if (
+        nextProps.user.questionFollowingList.includes(nextProps.question._id)
+      ) {
         followAnswer = true;
       }
     }
@@ -650,7 +655,6 @@ class AnswerCard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
   state: state.homeState,
   userState: state.userState
 });

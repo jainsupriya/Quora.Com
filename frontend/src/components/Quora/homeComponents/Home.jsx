@@ -35,18 +35,17 @@ class Home extends React.Component {
       topic: "Change",
       userDetails: {},
       openAddQuestion: false,
-      visible :2
+      visible: 2
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.loadMore = this.loadMore.bind(this);
   }
 
   loadMore() {
-    this.setState((prev) => {
-      return {visible: prev.visible + 2};
+    this.setState(prev => {
+      return { visible: prev.visible + 2 };
     });
   }
-
 
   handleAddQuestion = (question, topic) => {
     var questionData = {
@@ -91,7 +90,8 @@ class Home extends React.Component {
         ? this.props.userDetails.interestedTopicList
         : [];
     if (this.props.questions && this.props.questions.length > 0) {
-      QuestionComp = this.props.questions.slice(0, this.state.visible)
+      QuestionComp = this.props.questions
+        .slice(0, this.state.visible)
         .sort(
           (ques1, ques2) =>
             new Date(ques2.postedTime) - new Date(ques1.postedTime)
@@ -101,7 +101,7 @@ class Home extends React.Component {
             <QuestionCard
               question={question}
               answerList={question.answerList}
-              user={this.props.auth.user}
+              user={this.props.userDetails}
             />
           );
         });
@@ -201,9 +201,12 @@ class Home extends React.Component {
           </Grid>
           <Grid item xs={2} />
         </Grid>
-          {this.props.questions.length&& this.state.visible <  this.props.questions.length &&
-             <button onClick={this.loadMore} type="button" className="load-more">Load more</button>
-          }
+        {this.props.questions.length &&
+          this.state.visible < this.props.questions.length && (
+            <button onClick={this.loadMore} type="button" className="load-more">
+              Load more
+            </button>
+          )}
       </div>
     );
   }
