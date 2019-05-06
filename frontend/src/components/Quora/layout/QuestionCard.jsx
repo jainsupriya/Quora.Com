@@ -97,42 +97,46 @@ class QuestionCard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var upvoteCount = 0;
-    var isUpvoted = false;
-    var isBookmarked = false;
-    var commentList = [];
-    if (
-      nextProps.question.answerList !== undefined &&
-      nextProps.question.answerList.length
-    ) {
-      commentList = nextProps.question.answerList[0].commentList;
+    if (this.props.question != nextProps.question) {
+      var upvoteCount = 0;
+      var isUpvoted = false;
+      var isBookmarked = false;
+      var commentList = [];
       if (
-        nextProps.user.bookmarkedAnswerList !== undefined &&
-        nextProps.user.bookmarkedAnswerList.length &&
-        nextProps.user.bookmarkedAnswerList.includes(
-          nextProps.question.answerList[0]._id
-        )
+        nextProps.question.answerList !== undefined &&
+        nextProps.question.answerList.length
       ) {
-        isBookmarked = true;
-      }
-      if (
-        nextProps.question.answerList[0].upVotes !== undefined &&
-        nextProps.question.answerList[0].upVotes.length
-      ) {
-        upvoteCount = nextProps.question.answerList[0].upVotes.length;
+        commentList = nextProps.question.answerList[0].commentList;
         if (
-          nextProps.question.answerList[0].upVotes.includes(this.props.user._id)
+          nextProps.user.bookmarkedAnswerList !== undefined &&
+          nextProps.user.bookmarkedAnswerList.length &&
+          nextProps.user.bookmarkedAnswerList.includes(
+            nextProps.question.answerList[0]._id
+          )
         ) {
-          isUpvoted = true;
+          isBookmarked = true;
+        }
+        if (
+          nextProps.question.answerList[0].upVotes !== undefined &&
+          nextProps.question.answerList[0].upVotes.length
+        ) {
+          upvoteCount = nextProps.question.answerList[0].upVotes.length;
+          if (
+            nextProps.question.answerList[0].upVotes.includes(
+              this.props.user._id
+            )
+          ) {
+            isUpvoted = true;
+          }
         }
       }
+      this.setState({
+        isUpvoted: isUpvoted,
+        upvoteCount: upvoteCount,
+        isBookmarked: isBookmarked,
+        commentList: commentList
+      });
     }
-    this.setState({
-      isUpvoted: isUpvoted,
-      upvoteCount: upvoteCount,
-      isBookmarked: isBookmarked,
-      commentList: commentList
-    });
   }
 
   handleUpvote = answerOwnerId => {
@@ -188,7 +192,6 @@ class QuestionCard extends React.Component {
       .catch(err => console.log(err.data));
 
     commentList.push(commentData);
-    alert(JSON.stringify(commentList));
     this.setState({
       showComments: true,
       commentList: commentList
@@ -201,10 +204,10 @@ class QuestionCard extends React.Component {
 
     var comp = "";
     var upvotecomp = "";
+    var answer = {};
 
     if (question.answerList !== undefined && question.answerList.length) {
-      var answer = question.answerList[0];
-
+      answer = question.answerList[0];
       if (isUpvoted) {
         upvotecomp = (
           <span>
@@ -234,7 +237,7 @@ class QuestionCard extends React.Component {
               <Link
                 to=""
                 onClick={() => this.handleUpvote(question.answerList[0]._id)}
-              >{`Upvote`}</Link>
+              >{`Upvoted`}</Link>
             </span>
           </span>
         );
@@ -323,13 +326,15 @@ class QuestionCard extends React.Component {
                       className="m-margin-up-down"
                     >
                       <Grid item className="black-clr">
-                        <Link to={`/profile/${answer.answerOwner._id}`}>
-                          {answer.answerOwner !== undefined
-                            ? answer.answerOwner.fname +
+                        {answer.answerOwner !== undefined ? (
+                          <Link to={`/profile/${answer.answerOwner._id}`}>
+                            {answer.answerOwner.fname +
                               " " +
-                              answer.answerOwner.lname
-                            : "Anonymous User"}
-                        </Link>
+                              answer.answerOwner.lname}
+                          </Link>
+                        ) : (
+                          "Anonymous User"
+                        )}
                       </Grid>
                       <Grid item className="fnt-13">
                         {"Answered"}{" "}
@@ -354,7 +359,7 @@ class QuestionCard extends React.Component {
                       }}
                       onClick={() => this.readMoreText()}
                     >
-                      {Parser(answer.answer)}
+                      {answer.answer !== undefined ? Parser(answer.answer) : ""}
                     </Typography>
                   )}
                   {this.state.readMore && (
@@ -363,7 +368,7 @@ class QuestionCard extends React.Component {
                       style={{ maxWidth: 1000 }}
                       onClick={() => this.readMoreTextClose()}
                     >
-                      {Parser(answer.answer)}
+                      {answer.answer !== undefined ? Parser(answer.answer) : ""}
                     </Typography>
                   )}
                 </Grid>
@@ -379,6 +384,7 @@ class QuestionCard extends React.Component {
                 >
                   <Grid item>
                     {upvotecomp}
+
                     <span className="m-padding-left-right-15">
                       {" "}
                       {upvoteCount}
