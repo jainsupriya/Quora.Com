@@ -45,8 +45,10 @@ function handle_request(msg, callback) {
                 connection.query(queryString, (err, rows, fields) => {
                     if (err || rows.length <= 0) {
                         console.log(err)
-                        console.log("row <= 0 \n OR \n"+err)
-                        myCallback("row <= 0 \n OR \n"+err, null, callback);
+                        let err= {
+                            msg: "Email or Password is incorrect."
+                        }
+                        myCallback(err, null, callback);
                     }else{
                         let passMatch = false
                         try {

@@ -346,6 +346,11 @@ UserRoutes.put("/user/incView/:userId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        client.hset(
+            "get/user/",
+            req.params.userId,
+            JSON.stringify(results.data)
+        );
     });
 });
 
@@ -364,12 +369,11 @@ UserRoutes.put("/user/followQuestion/:userId/:questionId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
-        if(client.hexists(
-            "get/userWith/QuestionFollowingList/",
-            req.params.userId
-        )){
-            client.hdel("get/userWith/QuestionFollowingList/",req.params.userId)
-        }
+        client.hset(
+            "get/user/",
+            req.params.userId,
+            JSON.stringify(results.data)
+        );
     });
 });
 
@@ -388,6 +392,11 @@ UserRoutes.put("/user/unFollowQuestion/:userId/:questionId", (req, res, next) =>
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        client.hset(
+            "get/user/",
+            req.params.userId,
+            JSON.stringify(results.data)
+        );
     });
 });
 
@@ -403,6 +412,15 @@ UserRoutes.put("/user/followUser/:u1/:u2", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        client.hset(
+            "get/user/",
+            req.params.u1,
+            JSON.stringify(results.data)
+        );
+        client.hdel(
+            "get/user/",
+            req.params.u2
+        );
     });
 });
 
@@ -418,6 +436,15 @@ UserRoutes.put("/user/unFollowUser/:u1/:u2", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        client.hset(
+            "get/user/",
+            req.params.u1,
+            JSON.stringify(results.data)
+        );
+        client.hdel(
+            "get/user/",
+            req.params.u2
+        );
     });
 });
 
@@ -432,16 +459,11 @@ UserRoutes.put("/user/:userId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
-        if(client.hexists(
+        client.hset(
             "get/user/",
-            req.params.userId
-        )){
-            client.hset(
-                "get/user/",
-                req.params.userId,
-                JSON.stringify(results.data)
-            );
-        }
+            req.params.userId,
+            JSON.stringify(results.data)
+        );
     });
 });
 
@@ -457,6 +479,11 @@ UserRoutes.put("/user/bookmarkAnswer/:userId/:answerId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        client.hset(
+            "get/user/",
+            req.params.userId,
+            JSON.stringify(results.data)
+        );
     });
 });
 
@@ -472,6 +499,11 @@ UserRoutes.put("/user/unBookmarkAnswer/:userId/:answerId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        client.hset(
+            "get/user/",
+            req.params.userId,
+            JSON.stringify(results.data)
+        );
     });
 });
 
@@ -491,6 +523,11 @@ UserRoutes.put(
         };
         kafka.make_request(TOPIC, reqMsg, function(err, results) {
             res.status(results.status).send(results.data);
+            client.hset(
+                "get/user/",
+                req.params.userId,
+                JSON.stringify(results.data)
+            );
         });
     }
 );
