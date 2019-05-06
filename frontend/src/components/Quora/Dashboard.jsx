@@ -40,13 +40,20 @@ import HomeIcon from "@material-ui/icons/Home";
 import Parser from "html-react-parser";
 import _ from "lodash";
 import LineChart from './charts/LineChart';
+import Moment from "moment";
 
 import {
   getAnswersByViews,
   getAnswersByUpvotes
 } from "../../redux/actions/dashboardActions";
 
+
 const drawerWidth = 240;
+Date.prototype.addDays = function(days) {
+  var dat = new Date(this.valueOf())
+  dat.setDate(dat.getDate() + days);
+  return dat;
+}
 
 const styles = theme => ({
   root: {
@@ -122,13 +129,18 @@ const styles = theme => ({
   },
   h5: {
     marginBottom: theme.spacing.unit * 2
+  },
+  chartHeader: {
+    textAlign: 'center',
+    paddingTop: 20
   }
 });
 
 class Dashboard extends React.Component {
   state = {
     open: true,
-    showChart: "byAnswerViews"
+    showChart: "byAnswerViews",
+    profileViewsData: []
   };
 
   handleDrawerOpen = () => {
@@ -147,18 +159,48 @@ class Dashboard extends React.Component {
     });
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.getAnswersByViews();
     this.props.getAnswersByUpvotes();
+    console.log(this.props.userDetails.profileViews);
+    this.getDateArray();
   };
+
+  getDateArray = () => {
+    let stopDate = new Date();
+    let startDate = stopDate.addDays(-30)
+    let dateMap = this.getDates1(startDate, stopDate);
+    const profileViews = this.props.userDetails.profileViews;
+    for (let i = 0; i < profileViews.length; i++) {
+      if(dateMap[profileViews[i].substring(0, 10)] != "undefined")
+      {
+        dateMap.set(profileViews[i].substring(0, 10), dateMap.get(profileViews[i].substring(0, 10)) + 1)
+      }
+    }
+    let myArr = [];
+    for (var [key, value] of dateMap.entries()) {
+      myArr.push({ date: key, count: value })
+    }
+    myArr.forEach(function(element) {
+      console.log(element);
+    });
+    this.setState({
+      profileViewsData : myArr
+    })
+  }
+
+  getDates1= (startDate, stopDate) => {
+    let myMap = new Map();
+    let currentDate = startDate;
+    while (currentDate <= stopDate) {
+      myMap.set(Moment(currentDate).format("YYYY-MM-DD"), 0);
+      currentDate = currentDate.addDays(1);
+    }
+    return myMap;
+  }
 
   render() {
     const { classes } = this.props;
-    let data = [
-      { answer: "Answer1", views: 8 },
-      { answer: "Answer2", views: 8 },
-      { answer: "Answer3", views: 8 }
-    ];
 
     const answers = this.props.answerByViewDetails.answersByViews;
     let temp = _.reverse(_.sortBy(answers, item => item.views));
@@ -174,25 +216,13 @@ class Dashboard extends React.Component {
     const mainListItems = (
       <List>
         <ListItem button onClick={() => this.handleMenuChange("byAnswerViews")}>
-          <ListItemIcon>
+          <ListItemIcon style={{color : '#a94442'}}>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Show By View" />
         </ListItem>
-        <ListItem button onClick={() => this.handleMenuChange("byUpVotes")}>
-          <ListItemIcon>
-            <ShoppingCartIcon />
-          </ListItemIcon>
-          <ListItemText primary="Show By Upvotes" />
-        </ListItem>
-        <ListItem button onClick={() => this.handleMenuChange("byDownVotes")}>
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText primary="Show By Downvotes" />
-        </ListItem>
         <ListItem button onClick={() => this.handleMenuChange("byBokkmarked")}>
-          <ListItemIcon>
+          <ListItemIcon style={{color : '#a94442'}}>
             <BarChartIcon />
           </ListItemIcon>
           <ListItemText primary="Bookmarked Answers" />
@@ -201,7 +231,7 @@ class Dashboard extends React.Component {
           button
           onClick={() => this.handleMenuChange("byProfileViews")}
         >
-          <ListItemIcon>
+          <ListItemIcon style={{color : '#a94442'}}>
             <LayersIcon />
           </ListItemIcon>
           <ListItemText primary="Profile Views" />
@@ -237,18 +267,6 @@ class Dashboard extends React.Component {
               <MenuIcon />
             </IconButton>
 
-            {/* <AppBar className="m-bg-color" position="sticky" style={{paddingLeft : 50}}>
-              <NavHeader />
-            </AppBar> */}
-            {/* <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              className={classes.title}
-            >
-              Dashboard
-            </Typography> */}
             <div className="logo-img" />
             <div style={{ position: "absolute", right: "2.5%" }}>
               <a href="/" style={{ color: "#b92b27" }}>
@@ -280,7 +298,6 @@ class Dashboard extends React.Component {
           <Divider />
           <div>{mainListItems}</div>
           <Divider />
-          {/* <List>{secondaryListItems}</List> */}
         </Drawer>
 
         <main
@@ -291,7 +308,6 @@ class Dashboard extends React.Component {
         >
           <div className={classes.appBarSpacer} />
 
-          {/* <Typography component="div" className={classes.chartContainer} /> */}
           <Grid
             container
             direction="row"
@@ -300,7 +316,7 @@ class Dashboard extends React.Component {
           >
             <Grid item xs={4} style={{ padding: "1%" }}>
               <Paper>
-                <Typography variant="h5" gutterBottom component="h2">
+                <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
                   Top 10 Answers with Views
                 </Typography>
                 <PieChart data={temp} type="views" />
@@ -309,14 +325,14 @@ class Dashboard extends React.Component {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell align="left">Question</TableCell>
+                          <TableCell align="left">Answer</TableCell>
                           <TableCell align="left">Views</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {temp.map(n => (
+                        {temp.map((n, index) => (
                           <TableRow key={n.id}>
-                            <TableCell align="left">{n.questionId}</TableCell>
+                            <TableCell align="left">{"Answer " + (++index)}</TableCell>
                             <TableCell align="left">{n.views}</TableCell>
                           </TableRow>
                         ))}
@@ -329,7 +345,7 @@ class Dashboard extends React.Component {
 
             <Grid item xs={4} style={{ padding: "1%" }}>
               <Paper>
-                <Typography variant="h5" gutterBottom component="h2">
+                <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
                   Top 10 Answers with Upvotes
                 </Typography>
                 <PieChart data={answerUpvotes} type="upvotes" />
@@ -338,14 +354,14 @@ class Dashboard extends React.Component {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell align="left">Question</TableCell>
+                          <TableCell align="left">Answer</TableCell>
                           <TableCell align="left">Upvotes</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {answerUpvotes.map(n => (
-                          <TableRow key={n.id}>
-                            <TableCell align="left">{n.questionId}</TableCell>
+                        {answerUpvotes.map((n, index) => (
+                          <TableRow key={index}>
+                            <TableCell align="left">{"Answer " + (++index)}</TableCell>
                             <TableCell align="left">
                               {n.upVotes.length}
                             </TableCell>
@@ -360,7 +376,7 @@ class Dashboard extends React.Component {
 
             <Grid item xs={4} style={{ padding: "1%" }}>
               <Paper>
-                <Typography variant="h5" gutterBottom component="h2">
+                <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
                   Top 5 Answers with Downvotes
                 </Typography>
                 <PieChart data={temp} type="downvotes" />
@@ -369,14 +385,14 @@ class Dashboard extends React.Component {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell align="left">Question</TableCell>
+                          <TableCell align="left">Answer</TableCell>
                           <TableCell align="left">Views</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {temp.map(n => (
-                          <TableRow key={n.id}>
-                            <TableCell align="left">{n.questionId}</TableCell>
+                        {temp.map((n, index) => (
+                          <TableRow key={index}>
+                            <TableCell align="left">{"Answer " + (++index)}</TableCell>
                             <TableCell align="left">{n.views}</TableCell>
                           </TableRow>
                         ))}
@@ -392,7 +408,7 @@ class Dashboard extends React.Component {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell align="left">Question</TableCell>
+                      <TableCell align="left">Answer</TableCell>
                       <TableCell align="left">Answers</TableCell>
                       <TableCell align="left">Views</TableCell>
                     </TableRow>
@@ -416,7 +432,7 @@ class Dashboard extends React.Component {
         <main
           className={classes.content}
           style={{
-            display: this.state.showChart === "byUpVotes" ? "block" : "none"
+            display: this.state.showChart === "byProfileViews" ? "block" : "none"
           }}
         >
           <div className={classes.appBarSpacer} />
@@ -428,10 +444,10 @@ class Dashboard extends React.Component {
             alignItems="flex-start"
           >
             <Paper>
-              <Typography variant="h5" gutterBottom component="h2">
+              <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
                 Profile Views Per Day
               </Typography>
-              <LineChart />
+              <LineChart data={this.state.profileViewsData} />
             </Paper>
           </Grid>
         </main>
@@ -445,7 +461,8 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  answerByViewDetails: state.dashboard
+  answerByViewDetails: state.dashboard,
+  userDetails: state.homeState.userDetails
 });
 
 export default connect(
