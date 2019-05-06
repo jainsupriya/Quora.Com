@@ -7,7 +7,9 @@ import {
   GET_ERRORS,
   SET_CURRENT_USER,
   SET_USER_DETAILS,
-  GET_USER_DETAILS
+  GET_USER_DETAILS,
+  GET_FOLLOWER,
+  GET_FOLLOWING
 } from "./types";
 
 // set profile name
@@ -89,6 +91,32 @@ export const getProfileByUserId = (userId) => dispatch => {
     .then(res => {
       dispatch({
         type: GET_PROFILE,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// GET FOLLOWERS
+export const getFollowers = (userId) => dispatch => {
+  axios
+    .get(`/userWith/FollowersUserList/${userId}`)
+    .then(res => {
+      dispatch({
+        type: GET_FOLLOWER,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// GET FOLLOWERS
+export const getFollowing = (userId) => dispatch => {
+  axios
+    .get(`/userWith/FollowingUserList/${userId}`)
+    .then(res => {
+      dispatch({
+        type: GET_FOLLOWING,
         payload: res.data
       });
     })
