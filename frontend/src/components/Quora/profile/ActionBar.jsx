@@ -17,6 +17,7 @@ import Popover from "@material-ui/core/Popover";
 import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
+import axios from "axios";
 
 const styles = theme => ({
   notificationDialog: {
@@ -69,60 +70,61 @@ const styles = theme => ({
 });
 
 //Create a Main Component
-class ActiveBar extends Component {
+class ActionBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openAddQuestion: false,
-      navSelectedItem: "home",
-      openNotification: false,
-      topic: "",
-      question: ""
-    };
-    this.handleAddQuestion = this.handleAddQuestion.bind(this);
+      isFollow: false,
+      followerCount: 0
+    }
   }
 
-  handleAddQuestion = (question, topic) => {
-    var questionData = {
-      question: question,
-      questionOwner: this.props.auth.user._id,
-      topicList: topic
-    };
-
-    this.props.addQuestion(questionData);
-    this.setState({ openAddQuestion: false });
-  };
-
-  handleClickOpen = () => {
+  componentDidMount() {
+    var isfollow = false;
+    let followerCountInc = 0;
+    
+    if (this.props.user !== undefined && this.props.follower !== undefined) {
+      console.log(this.props.user);
+    console.log(this.props.follower);
+      if (this.props.user.followersUserList !== undefined) {
+        console.log(this.props.user.followersUserList.length)
+        if (
+          this.props.user.followersUserList.includes(this.props.follower._id)
+        ) {
+          isfollow = true;
+        }
+        followerCountInc = this.props.user.followersUserList.length;
+      }
+    }
     this.setState({
-      openAddQuestion: true
+      isfollow: isfollow,
+      followerCount: followerCountInc
     });
-  };
+  }
 
-  handleNotification = event => {
-    this.setState({
-      openNotification: event.currentTarget
-    });
-  };
+  
 
-  handleClose = () => {
-    this.setState({ openAddQuestion: false });
-  };
-
-  navigationClick = selectedItem => {
-    this.setState({
-      navSelectedItem: selectedItem
-    });
-  };
-
-  handleNotificationClose = () => {
-    this.setState({
-      openNotification: null
-    });
+  handlefollower = () => {
+    if (!this.state.isFollow) {
+      axios
+        .put(
+          `/user/followUser/${this.props.user._id}/${this.props.follower._id}`
+        )
+        .then(res => {
+          console.log(res.data);
+          this.setState({
+            followerCount: this.state.followerCount + 1
+          });
+        })
+        .catch(err => console.log(err.data));
+    }
   };
 
   render() {
     const { classes } = this.props;
+    console.log(this.props);
+    // const user = this.props;
+    // const follower = this.props;
 
     return (
       <div>
@@ -135,7 +137,7 @@ class ActiveBar extends Component {
           alignItems="flex-start"
           //className="answer-actions"
         >
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <div onClick={() => this.GiveAnswer()}>
               <span class="ui_button_icon" aria-hidden="true">
                 <svg
@@ -184,60 +186,10 @@ class ActiveBar extends Component {
                   </g>
                 </svg>
               </span>
-              <span>Answer</span>
+              <span>Notify Me</span>
             </div>
           </Grid>
-          <Grid item xs={2}>
-            <span class="ui_button_icon" aria-hidden="true">
-              <svg
-                width="24px"
-                height="24px"
-                viewBox="0 0 24 24"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xlink="http://www.w3.org/1999/xlink"
-              >
-                <g
-                  id="cant_answer"
-                  stroke="none"
-                  fill="none"
-                  fill-rule="evenodd"
-                >
-                  <g
-                    id="pen"
-                    transform="translate(11.485281, 12.485281) rotate(-315.000000) translate(-11.485281, -12.485281) translate(9.485281, 2.485281)"
-                  >
-                    <path
-                      d="M0,7.51471863 L2.22044605e-16,1.99994543 C8.67738547e-17,0.895375929 0.8954305,-5.45711382e-05 2,-5.45711382e-05 C3.1045695,-5.45711382e-05 4,0.895375929 4,1.99994543 L4,7.51471863 M4,12.5147186 L4,16 L2.00256278,20 L0,16 L0,12.5147186"
-                      id="Rectangle-5"
-                      class="icon_svg-stroke"
-                      stroke="#666"
-                      stroke-width="1.5"
-                      stroke-linecap="square"
-                      stroke-linejoin="round"
-                    />
-                    <polygon
-                      id="pen_tip"
-                      class="icon_svg-fill_as_stroke"
-                      fill="#666"
-                      transform="translate(2.000000, 18.750000) scale(1, -1) translate(-2.000000, -18.750000) "
-                      points="2 17.5 3.25 20 0.75 20"
-                    />
-                  </g>
-                  <path
-                    d="M4.63603897,5.63603897 L18.5,19.5"
-                    id="Line"
-                    class="icon_svg-stroke"
-                    stroke="#666"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                  />
-                </g>
-              </svg>
-            </span>
-            <span>Pass</span>
-          </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <span class="ui_button_icon" aria-hidden="true">
               <svg
                 width="24px"
@@ -275,7 +227,13 @@ class ActiveBar extends Component {
                 </g>
               </svg>
             </span>
-            <span >Follow</span>
+            <Link to="#" onClick={this.handlefollower}>
+              <span>Follow</span>
+              <span class="bullet"> · </span>
+              <span class="ui_button_count_inner" id="__w2_wikv5yOF93_count">
+                {this.state.followerCount}
+              </span>
+            </Link>
             <span class="bullet"> · </span>
             <span class="ui_button_count_inner" id="__w2_wikv5yOF93_count" />
           </Grid>
@@ -310,9 +268,8 @@ class ActiveBar extends Component {
   }
 }
 
-ActiveBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  
+ActionBar.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -321,5 +278,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addQuestion }
-)(withStyles(styles)(withRouter(ActiveBar)));
+  {  }
+)(withStyles(styles)(withRouter(ActionBar)));
