@@ -85,7 +85,7 @@ class ActionBar extends Component {
 
   componentDidMount() {
     var isfollow = false;
-    let followerCountInc = 0;
+    var followerCountInc = 0;
 
     if (this.props.user !== undefined && this.props.follower !== undefined) {
       console.log(this.props.user);
@@ -106,28 +106,28 @@ class ActionBar extends Component {
     });
   }
 
-  // componentWillReceiveProps() {
-  //   var isfollow = false;
-  //   let followerCountInc = 0;
+  componentWillReceiveProps(nextProps) {
+    var isfollow = false;
+    var followerCountInc = 0;
 
-  //   if (this.props.user !== undefined && this.props.follower !== undefined) {
-  //     console.log(this.props.user);
-  //   console.log(this.props.follower);
-  //     if (this.props.user.followersUserList !== undefined) {
-  //       console.log(this.props.user.followersUserList.length)
-  //       if (
-  //         this.props.user.followersUserList.includes(this.props.follower._id)
-  //       ) {
-  //         isfollow = true;
-  //       }
-  //       followerCountInc = this.props.user.followersUserList.length;
-  //     }
-  //   }
-  //   this.setState({
-  //     isfollow: isfollow,
-  //     followerCount: followerCountInc
-  //   });
-  // }
+    if (nextProps.user !== undefined && nextProps.follower !== undefined) {
+      console.log(nextProps.user);
+    console.log(nextProps.follower);
+      if (nextProps.user.followersUserList !== undefined) {
+        console.log(nextProps.user.followersUserList.length)
+        if (
+          nextProps.user.followersUserList.includes(nextProps.follower._id)
+        ) {
+          isfollow = true;
+        }
+        followerCountInc = nextProps.user.followersUserList.length;
+      }
+    }
+    this.setState({
+      isfollow: isfollow,
+      followerCount: followerCountInc
+    });
+  }
 
   handlefollower = () => {
     if (!this.state.isFollow) {
