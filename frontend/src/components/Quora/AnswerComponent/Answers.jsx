@@ -128,6 +128,7 @@ class Answers extends React.Component {
             answerOwner = {answer.answerOwner}
             postedTime = {answer.postedTime}
             views = {answer.views}
+            answer_id = {answer._id}
           />
           );
         });

@@ -352,7 +352,7 @@ class QuestionCard extends React.Component {
                     <Typography
                       variant="subtitle"
                       style={{
-                        height: 100,
+                        height: 30,
                         maxWidth: 750,
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -366,7 +366,6 @@ class QuestionCard extends React.Component {
                   {this.state.readMore && (
                     <Typography
                       variant="subtitle1"
-                      style={{ maxWidth: 1000 }}
                       onClick={() => this.readMoreTextClose()}
                     >
                       {answer.answer !== undefined ? Parser(answer.answer) : ""}
