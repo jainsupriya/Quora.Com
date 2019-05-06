@@ -18,6 +18,7 @@ import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
 import { logoutUser } from "../../../redux/actions/authActions";
+import axios from "axios";
 
 const styles = theme => ({
   notificationDialog: {
@@ -32,15 +33,15 @@ const styles = theme => ({
     // overflowY: 'scroll'
     "&:before": {
       content: "",
-      display: "block",
-      width: 0,
-      height: 0,
+      position: 'absolute',
+      top: -20,
+      right: 5,
       borderColor: "rgba(204,204,204,0)",
       borderLeft: "7.5px solid transparent",
       borderRight: "7.5px solid transparen",
       borderBottom: "7px solid #ccc",
-      left: 14,
-      marginTop: -7
+      borderTop: "7.5px solid transparen",
+      zIndex: 10
     }
   },
   notificationContent: {
@@ -106,9 +107,52 @@ class NavHeader extends Component {
       topic: "",
       question: "",
       openProfileMenu: false,
-      openSearchDialog: false
+      openSearchDialog: false,
+      searchValue: ""
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
+    this.searchForTopicOrPeople = this.searchForTopicOrPeople.bind(this);
+  }
+  searchForTopicOrPeople(event) {
+    const { name, value } = event.target;
+    event.target.focus()
+    console.log(value);
+    // document.getElementById("search").focus()
+
+    this.setState({
+      searchValue: value
+    });
+    // document.getElementById("search").focus()
+
+    if (value !== "") {
+      this.setState({
+        openSearchDialog: event.currentTarget
+      });
+      axios.get(`/topics/search/` + value).then(response => {
+        if (response.status === 200) {
+          console.log(response.data);
+          this.setState({
+            products: response.data
+          });
+        }
+      });
+    }
+    else
+    {
+      this.setState({
+        openSearchDialog: null
+      });
+    // document.getElementById("search").focus()
+
+    }
+    // document.getElementById("search").focus()
+
+    
+    document.getElementById("search").focus()
+    console.log(document.getElementById("search").value)
+    console.log(document.activeElement.tagName)
+
+
   }
 
   handleAddQuestion = (question, topic) => {
@@ -165,37 +209,37 @@ class NavHeader extends Component {
   };
 
   handleSearchDialogClose = () => {
+    console.log("close : ", this.state.openSearchDialog);
     this.setState({
       openSearchDialog: false
     });
-  }
+  };
+
+  showPopover = event => {
+    console.log("show : ", this.state.openSearchDialog);
+
+    this.setState({
+      openSearchDialog: event.currentTarget
+    });
+  };
 
   handleLogout = () => {
     this.props.logoutUser();
   };
 
-  changeSearchHandler = event => {
-    console.log(event.target.value);
-    const searchValue = event.target.value;
-    if(searchValue != '')
-    {
-      this.setState({
-        openSearchDialog : searchValue
-      })
-    }
-    else
-    {
-      this.setState({
-        openSearchDialog : false
-      })
-    }
+  abc = () => {
+    console.log("called")
+    document.getElementById("simple-popper-1").blur();
+    document.getElementById("search").focus();
   }
+  
 
   render() {
     const { openNotification, openProfileMenu, openSearchDialog } = this.state;
     const open1 = Boolean(openNotification);
     const open2 = Boolean(openProfileMenu);
     const open3 = Boolean(openSearchDialog);
+    console.log(open3);
     const { classes, auth } = this.props;
 
     const notificationList = {
@@ -389,7 +433,9 @@ class NavHeader extends Component {
                   </a>
                 </li>
                 <li className={classes.listStyle}>
-                  <a className={classes.profileMenu}>Settings</a>
+                  <a className={classes.profileMenu} href="/dashboard">
+                    Dashboard
+                  </a>
                 </li>
                 <li className={classes.listStyle}>
                   <a
@@ -409,78 +455,64 @@ class NavHeader extends Component {
     );
 
     const searchDialog = (
-        <div>
-          <Popover
-            id="simple-popper"
-            open={open3}
-            anchorEl={document.getElementById("search")}
-            onClose={this.handleSearchDialogClose}
-            anchorReference="anchorPosition"
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center"
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left"
-            }}
-            anchorPosition={{
-              left: 1115,
-              top: 68
-            }}
-          >
-            <div className={classes.profileDialogWidth}>
-              <div
-                className={classes.notificationContent}
-                style={{ overflow: "hidden" }}
+      <div>
+        <Popover
+          id="simple-popper-1"
+          open={open3}
+          // anchorEl={openSearchDialog}
+          onClose={this.handleSearchDialogClose}
+          anchorReference="anchorPosition"
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left"
+          }}
+          anchorPosition={{
+            left: 1115,
+            top: 68
+          }}
+          onFocus={this.abc}
+        >
+          {/* style={{ opacity: this.state.searchValue && this.state.searchValue !== '' ? 0 : 1 }} */}
+          <div className={classes.profileDialogWidth}>
+            <div
+              className={classes.notificationContent}
+              style={{ overflow: "hidden" }}
+            >
+              <ul
+                style={{
+                  listStyle: "none",
+                  marginBottom: "0rem",
+                  paddingLeft: 0
+                }}
               >
-                <ul
-                  style={{
-                    listStyle: "none",
-                    marginBottom: "0rem",
-                    paddingLeft: 0
-                  }}
-                >
-                  <li className={classes.listStyle}>
-                    <a
-                      className={classes.profileMenu}
-                      style={{ borderTop: "none" }}
-                      href="/myprofile"
-                    >
-                      Profile
-                    </a>
-                  </li>
-                  <li className={classes.listStyle}>
-                    <a className={classes.profileMenu} href="/">
-                      Your Content
-                    </a>
-                  </li>
-                  <li className={classes.listStyle}>
-                    <a className={classes.profileMenu}>Settings</a>
-                  </li>
-                  <li className={classes.listStyle}>
-                    <a
-                      className={classes.profileMenu}
-                      onClick={() => {
-                        this.handleLogout();
-                      }}
-                    >
-                      Logout
-                    </a>
-                  </li>
-                </ul>
-              </div>
+                <li className={classes.listStyle}>
+                  <a
+                    className={classes.profileMenu}
+                    style={{ borderTop: "none" }}
+                    href="/myprofile"
+                  >
+                    Profile
+                  </a>
+                </li>
+              </ul>
             </div>
-          </Popover>
-        </div>
-      );
+          </div>
+        </Popover>
+        {console.log(this)}
+        {/* {document.getElementById("search").focus()} */}
+      </div>
+    );
 
     return (
       <div>
         {addQuestion}
         {notifications}
         {profilePopover}
-        {searchDialog}
+        {/* {searchDialog} */}
         <Grid
           container
           direction="row"
@@ -627,14 +659,68 @@ class NavHeader extends Component {
                 {" Notifications"}
               </div>
               <input
-                className="header-search"
                 id="search"
+                className="header-search"
                 placeholder="Search Quora"
-                type="text"
-                value={this.state.searchValue}
-                onFocus={this.changeSearchHandler}
                 autoFocus={true}
+                type="text"
+                value={this.searchValue}
+                onChange={this.searchForTopicOrPeople}
               />
+              <div id="smpl">
+              <div>
+        <Popover
+          id="simple-popper-1"
+          open={open3}
+          anchorEl={document.getElementById("search")}
+          onClose={this.handleSearchDialogClose}
+          anchorReference="anchorPosition"
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left"
+          }}
+          anchorPosition={{
+            left: 1115,
+            top: 68
+          }}
+          // onFocus={this.abc}
+        >
+          {/* style={{ opacity: this.state.searchValue && this.state.searchValue !== '' ? 0 : 1 }} */}
+          <div className={classes.profileDialogWidth}>
+            <div
+              className={classes.notificationContent}
+              style={{ overflow: "hidden" }}
+            >
+              <ul
+                style={{
+                  listStyle: "none",
+                  marginBottom: "0rem",
+                  paddingLeft: 0
+                }}
+              >
+                <li className={classes.listStyle}>
+                  <a
+                    className={classes.profileMenu}
+                    style={{ borderTop: "none" }}
+                    href="/myprofile"
+                  >
+                    Profile
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Popover>
+        {console.log(this)}
+        {/* {document.getElementById("search").focus()} */}
+      </div>
+
+                </div>
+              {/* onFocus={this.showPopover} */}
               <div
                 onClick={this.handleAvatarClick}
                 className={classes.showCursor}

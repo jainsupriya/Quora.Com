@@ -36,10 +36,15 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PeopleIcon from "@material-ui/icons/People";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import LayersIcon from "@material-ui/icons/Layers";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+import HomeIcon from "@material-ui/icons/Home";
+import Parser from "html-react-parser";
 import _ from "lodash";
+import LineChart from './charts/LineChart';
 
-import {getAnswersByViews} from "../../redux/actions/dashboardActions";
+import {
+  getAnswersByViews,
+  getAnswersByUpvotes
+} from "../../redux/actions/dashboardActions";
 
 const drawerWidth = 240;
 
@@ -143,9 +148,9 @@ class Dashboard extends React.Component {
   };
 
   componentWillMount = () => {
-    this.props.getAnswersByViews()
-    
-  }
+    this.props.getAnswersByViews();
+    this.props.getAnswersByUpvotes();
+  };
 
   render() {
     const { classes } = this.props;
@@ -153,14 +158,18 @@ class Dashboard extends React.Component {
       { answer: "Answer1", views: 8 },
       { answer: "Answer2", views: 8 },
       { answer: "Answer3", views: 8 }
-    ]
-    console.log(this.props.answerByViewDetails.answersByViews);
+    ];
 
     const answers = this.props.answerByViewDetails.answersByViews;
-    // _(answers).sortBy().take(3).value();
     let temp = _.reverse(_.sortBy(answers, item => item.views));
-    temp = _.take(temp, 10)
-    console.log(temp);
+    temp = _.take(temp, 10);
+
+    console.log(this.props.answerByViewDetails.answersByUpvotes);
+    let answerUpvotes = this.props.answerByViewDetails.answersByUpvotes;
+    answerUpvotes = _.reverse(
+      _.sortBy(answerUpvotes, item => item.upVotes.length)
+    );
+    answerUpvotes = _.take(answerUpvotes, 10);
 
     const mainListItems = (
       <List>
@@ -241,6 +250,11 @@ class Dashboard extends React.Component {
               Dashboard
             </Typography> */}
             <div className="logo-img" />
+            <div style={{ position: "absolute", right: "2.5%" }}>
+              <a href="/" style={{ color: "#b92b27" }}>
+                <HomeIcon />
+              </a>
+            </div>
             {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -268,22 +282,112 @@ class Dashboard extends React.Component {
           <Divider />
           {/* <List>{secondaryListItems}</List> */}
         </Drawer>
-        <main className={classes.content} style={{display: this.state.showChart === "byAnswerViews" ? 'block' : 'none'}}>
+
+        <main
+          className={classes.content}
+          style={{
+            display: this.state.showChart === "byAnswerViews" ? "block" : "none"
+          }}
+        >
           <div className={classes.appBarSpacer} />
-          <Typography variant="h5" gutterBottom component="h2">
-            10 Answers with Views
-          </Typography>
-          <Typography component="div" className={classes.chartContainer} />
+
+          {/* <Typography component="div" className={classes.chartContainer} /> */}
           <Grid
             container
             direction="row"
             justify="center"
             alignItems="flex-start"
           >
-            <Grid item xs={5}>
-              <PieChart data={data} />
+            <Grid item xs={4} style={{ padding: "1%" }}>
+              <Paper>
+                <Typography variant="h5" gutterBottom component="h2">
+                  Top 10 Answers with Views
+                </Typography>
+                <PieChart data={temp} type="views" />
+                <div style={{ padding: "4%" }}>
+                  <Paper>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="left">Question</TableCell>
+                          <TableCell align="left">Views</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {temp.map(n => (
+                          <TableRow key={n.id}>
+                            <TableCell align="left">{n.questionId}</TableCell>
+                            <TableCell align="left">{n.views}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Paper>
+                </div>
+              </Paper>
             </Grid>
-            <Grid item xs={7}>
+
+            <Grid item xs={4} style={{ padding: "1%" }}>
+              <Paper>
+                <Typography variant="h5" gutterBottom component="h2">
+                  Top 10 Answers with Upvotes
+                </Typography>
+                <PieChart data={temp} type="upvotes" />
+                <div style={{ padding: "4%" }}>
+                  <Paper>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="left">Question</TableCell>
+                          <TableCell align="left">Upvotes</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {answerUpvotes.map(n => (
+                          <TableRow key={n.id}>
+                            <TableCell align="left">{n.questionId}</TableCell>
+                            <TableCell align="left">
+                              {n.upVotes.length}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Paper>
+                </div>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={4} style={{ padding: "1%" }}>
+              <Paper>
+                <Typography variant="h5" gutterBottom component="h2">
+                  Top 5 Answers with Downvotes
+                </Typography>
+                <PieChart data={temp} type="downvotes" />
+                <div style={{ padding: "4%" }}>
+                  <Paper>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="left">Question</TableCell>
+                          <TableCell align="left">Views</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {temp.map(n => (
+                          <TableRow key={n.id}>
+                            <TableCell align="left">{n.questionId}</TableCell>
+                            <TableCell align="left">{n.views}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Paper>
+                </div>
+              </Paper>
+            </Grid>
+
+            {/* <Grid item xs={7}>
               <Paper>
                 <Table>
                   <TableHead>
@@ -297,55 +401,39 @@ class Dashboard extends React.Component {
                     {temp.map(n => (
                       <TableRow key={n.id}>
                         <TableCell align="left">{n.questionId}</TableCell>
-                        <TableCell align="left">{n.answer}</TableCell>
+                        <TableCell align="left">{Parser(n.answer)}</TableCell>
                         <TableCell align="left">{n.views}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </Paper>
-            </Grid>
+            </Grid> */}
           </Grid>
           <div className={classes.tableContainer}>{/* <SimpleTable /> */}</div>
         </main>
 
-        <main className={classes.content} style={{display: this.state.showChart === "byUpVotes" ? 'block' : 'none'}}>
+        <main
+          className={classes.content}
+          style={{
+            display: this.state.showChart === "byUpVotes" ? "block" : "none"
+          }}
+        >
           <div className={classes.appBarSpacer} />
-          <Typography variant="h5" gutterBottom component="h2">
-            10 Answers with Views
-          </Typography>
-          <Typography component="div" className={classes.chartContainer} />
+
           <Grid
             container
             direction="row"
             justify="center"
             alignItems="flex-start"
           >
-            <Grid item xs={5}>
-              <PieChart data={data} />
-            </Grid>
-            <Grid item xs={7}>
-              <Paper>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="left">Answers</TableCell>
-                      <TableCell align="left">Views</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.map(n => (
-                      <TableRow key={n.id}>
-                        <TableCell align="left">{n.answer}</TableCell>
-                        <TableCell align="left">{n.views}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Paper>
-            </Grid>
+            <Paper>
+              <Typography variant="h5" gutterBottom component="h2">
+                Profile Views Per Day
+              </Typography>
+              <LineChart />
+            </Paper>
           </Grid>
-          <div className={classes.tableContainer}>{/* <SimpleTable /> */}</div>
         </main>
       </div>
     );
@@ -362,5 +450,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAnswersByViews }
+  { getAnswersByViews, getAnswersByUpvotes }
 )(withStyles(styles)(Dashboard));

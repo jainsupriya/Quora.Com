@@ -10,16 +10,27 @@ app.use(cors({ origin: "*", credentials: true }));
 // app.use(cors({ origin: "http://52.53.221.35:3000", credentials: true }));
 // app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-app.use(express.static('./public'))
+app.use(express.static('./public'));
+
+app.use(require('express-bunyan-logger')({name: 'ShotPitch',
+  streams: [{
+    type: 'rotating-file',
+    level: 'info',                  // loging level
+    path: './logger/logger.json',
+    period: '1d',   // daily rotation
+    count: 3,        // keep 3 back copies
+  }]
+}));
 
 // Bodyparser middleware
-app.use(
+/*app.use(
     bodyParser.urlencoded({
         extended: true
         // extended: false
     })
-);
-app.use(bodyParser.json());
+);*/
+app.use(bodyParser.json({limit: "20mb"}));
+app.use(bodyParser.urlencoded({limit: "20mb", extended: true, parameterLimit:50000}))
 
 //Allow Access Control
 app.use(function(req, res, next) {

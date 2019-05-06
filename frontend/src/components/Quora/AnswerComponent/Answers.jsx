@@ -39,9 +39,16 @@ class Answers extends React.Component {
     this.state = {
       topic: "Change",
       userDetails: {},
-      openAddQuestion: false
+      openAddQuestion: false,
+      visible :2
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
+    this.loadMore = this.loadMore.bind(this);
+  }
+  loadMore() {
+    this.setState((prev) => {
+      return {visible: prev.visible + 2};
+    });
   }
 
   handleAddQuestion = (question, topic) => {
@@ -109,19 +116,19 @@ class Answers extends React.Component {
       QuestionComp = <React.Fragment>No Data Found</React.Fragment>;
     }
     var AnswerComp;
-    console.log(this.props.answerforquestions[0].answerList)
-    if (this.props.answerforquestions && this.props.answerforquestions.length > 0) {
-      AnswerComp = this.props.answerforquestions
-        .sort(
-          (ques1, ques2) =>
-            new Date(ques2.postedTime) - new Date(ques1.postedTime)
-        )
-        .map(question => {
+    console.log(this.props.answerforquestions.length )
+    if (this.props.answerforquestions && this.props.answerforquestions[0].answerList.length > 0) {
+      AnswerComp = this.props.answerforquestions[0].answerList.slice(0, this.state.visible)
+        .map(answer => {
           return (
 
             <QuestionCardForAnswerPage
-            answerList={this.props.answerforquestions[0].answerList}
+            answer={answer.answer}
+            upvoteCount = {answer.upVotes}
             user={this.props.auth.user}
+            answerOwner = {answer.answerOwner}
+            postedTime = {answer.postedTime}
+            views = {answer.views}
           />
           );
         });
@@ -207,6 +214,9 @@ class Answers extends React.Component {
           </Grid>
           <Grid item xs={2} />
         </Grid>
+        {this.state.visible <  this.props.answerforquestions[0].answerList.length  &&
+             <button onClick={this.loadMore} type="button" className="load-more" style ={{marginLeft: 650}}>Load more</button>
+          }
       </div>
     );
   }

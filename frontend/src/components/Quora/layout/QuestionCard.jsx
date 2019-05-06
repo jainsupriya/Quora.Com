@@ -1,10 +1,15 @@
 import React from "react";
 // import "../styles/home.css";
 import "../../../styles/questionCard.css";
-import Parser from 'html-react-parser';
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import Parser from "html-react-parser";
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2
+} from "react-html-parser";
+import { BookmarkBorder, Bookmark } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 // import PropTypes from 'prop-types';
 import AppBar from "@material-ui/core/AppBar";
 // import Toolbar from "@material-ui/core/Toolbar";
@@ -33,20 +38,25 @@ class QuestionCard extends React.Component {
       answer: "No answer",
       isUpvoted: false,
       upvoteCount: 0,
-      comment: "New Comment added",
-      showComment: false,
-      readMore:false
+      addedComment: "New Comment added",
+      showComments: false,
+      readMore: false,
+      isBookmarked: false
     };
   }
+  showComments = () => {
+    this.setState({ showComments: !this.state.showComments });
+  };
   readMoreText = () => {
-    this.setState({ readMore: true});  
+    this.setState({ readMore: true });
   };
   readMoreTextClose = () => {
-    this.setState({ readMore: false});  
+    this.setState({ readMore: false });
   };
   componentDidMount() {
     var upvoteCount = 0;
     var isUpvoted = false;
+
     if (
       this.props.question.answerList !== undefined &&
       this.props.question.answerList.length
@@ -60,6 +70,32 @@ class QuestionCard extends React.Component {
           this.props.question.answerList[0].upVotes.includes(
             this.props.user._id
           )
+        ) {
+          isUpvoted = true;
+        }
+      }
+    }
+    this.setState({
+      isUpvoted: isUpvoted,
+      upvoteCount: upvoteCount
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    var upvoteCount = 0;
+    var isUpvoted = false;
+
+    if (
+      nextProps.question.answerList !== undefined &&
+      nextProps.question.answerList.length
+    ) {
+      if (
+        nextProps.question.answerList[0].upVotes !== undefined &&
+        nextProps.question.answerList[0].upVotes.length
+      ) {
+        upvoteCount = nextProps.question.answerList[0].upVotes.length;
+        if (
+          nextProps.question.answerList[0].upVotes.includes(nextProps.user._id)
         ) {
           isUpvoted = true;
         }
@@ -93,9 +129,28 @@ class QuestionCard extends React.Component {
     });
   };
 
-  handleAddComment = () => {
+  handleBookmarkAnswer = answerId => {
+    axios
+      .put(`/user/bookmarkAnswer/${this.props.user._id}/${answerId}`)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err.data));
     this.setState({
-      showComment: true
+      isBookmarked: !this.state.isBookmarked
+    });
+  };
+
+  handleAddComment = answerId => {
+    var commentData = {
+      comment: this.state.addedComment,
+      answerId: answerId,
+      commentOwner: this.props.user._id
+    };
+    axios
+      .post("/comment", commentData)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err.data));
+    this.setState({
+      showComments: true
     });
   };
 
@@ -143,8 +198,6 @@ class QuestionCard extends React.Component {
           </span>
         );
       } else {
-     
-
         upvotecomp = (
           <span>
             <span>
@@ -178,9 +231,8 @@ class QuestionCard extends React.Component {
       }
 
       comp = (
-       
         <div>
-          <Paper elevation={1} className="m-padding-10">
+          <Paper elevation={2} className="m-padding-10">
             <Grid
               container
               direction="column"
@@ -192,7 +244,9 @@ class QuestionCard extends React.Component {
                 <span className="reason-txt">Answer · Recommended for you</span>
               </Grid>
               <Grid item>
-                <span className="question-txt">{question.question}</span>
+                <Link to={"/" + question._id} style={{ color: "#000000" }}>
+                  <span className="question-txt">{question.question}</span>
+                </Link>
               </Grid>
 
               <React.Fragment>
@@ -228,11 +282,13 @@ class QuestionCard extends React.Component {
                       className="m-margin-up-down"
                     >
                       <Grid item className="black-clr">
-                        {answer.answerOwner !== undefined
-                          ? answer.answerOwner.fname +
-                            " " +
-                            answer.answerOwner.lname
-                          : "Anonymous User"}
+                        <Link to={`/profile/${answer.answerOwner._id}`}>
+                          {answer.answerOwner !== undefined
+                            ? answer.answerOwner.fname +
+                              " " +
+                              answer.answerOwner.lname
+                            : "Anonymous User"}
+                        </Link>
                       </Grid>
                       <Grid item className="fnt-13">
                         {"Answered"}{" "}
@@ -246,12 +302,32 @@ class QuestionCard extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                { !this.state.readMore &&  <Typography variant="h6"
-               style ={{ width: 50 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} onClick={() => this.readMoreText()} >{Parser(answer.answer)}</Typography>}
-                { this.state.readMore &&  <Typography variant="h6"  style ={{ maxWidth: 1000}} onClick={() => this.readMoreTextClose()} >{Parser(answer.answer)}</Typography>}
+                  {!this.state.readMore && (
+                    <Typography
+                      variant="h6"
+                      style={{
+                        width: 50,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}
+                      onClick={() => this.readMoreText()}
+                    >
+                      {Parser(answer.answer)}
+                    </Typography>
+                  )}
+                  {this.state.readMore && (
+                    <Typography
+                      variant="h6"
+                      style={{ maxWidth: 1000 }}
+                      onClick={() => this.readMoreTextClose()}
+                    >
+                      {Parser(answer.answer)}
+                    </Typography>
+                  )}
                 </Grid>
                 <Grid item className="votes">
-                  {answer.viewCount} {`views · View Upvoters`}
+                  {answer.views} {`views · View Upvoters`}
                 </Grid>
                 <Grid
                   container
@@ -372,6 +448,31 @@ class QuestionCard extends React.Component {
                         </g>
                       </svg>
                     </span>
+                    <span className="m-padding-left-right-15">
+                      {this.state.isBookmarked ? (
+                        <Bookmark
+                          onClick={() => {
+                            this.handleBookmarkAnswer(answer._id);
+                          }}
+                        />
+                      ) : (
+                        <BookmarkBorder
+                          onClick={() => {
+                            this.handleBookmarkAnswer(answer._id);
+                          }}
+                        />
+                      )}
+                    </span>
+                  </Grid>
+                  <Grid item>
+                    <div
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        this.showComments();
+                      }}
+                    >
+                      All
+                    </div>
                   </Grid>
                 </Grid>
                 <Divider className="m-divider" />
@@ -382,21 +483,21 @@ class QuestionCard extends React.Component {
                   alignItems="center"
                   // className="m-margin-up-down"
                 >
-                  <Grid item>
+                  <Grid item xs={1}>
                     <Avatar
                       alt={user.firstname}
                       src={user.profileImg}
                       className="avatar"
                     />
                   </Grid>
-                  <Grid item xs={9}>
+                  <Grid item xs={8}>
                     <input
                       type="text"
                       class="form-control corner-rounded"
                       placeholder="Add a Comment"
                       onChange={e => {
                         this.setState({
-                          comment: e.target.value
+                          addedComment: e.target.value
                         });
                       }}
                     />
@@ -406,30 +507,46 @@ class QuestionCard extends React.Component {
                       variant="contained"
                       className="btn-margin"
                       onClick={() => {
-                        this.handleAddComment();
+                        this.handleAddComment(answer._id);
                       }}
                     >
                       Add Comment
                     </Button>
                   </Grid>
-                  {this.state.showComment ? (
-                    <div className="comment_wrapper">
-                      <Avatar
-                        alt={user.fname}
-                        src={user.profileImg}
-                        className="avatar"
-                      />
-                      <div className="ui_layout_text">
-                        <span style={{ fontWeight: "bold", color: "black" }}>
-                          {" "}
-                          {user.fname + " " + user.lname}
-                        </span>
-                        <Grid item className="fnt-13">
-                          {"Just now"}
+                  {this.state.showComments ? (
+                    <Grid
+                      container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="flex-start"
+                      // className="m-margin-up-down"
+                    >
+                      <Grid item>
+                        <Avatar
+                          alt={user.fname}
+                          src={user.profileImg}
+                          className="avatar"
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Grid
+                          container
+                          direction="column"
+                          justify="flex-start"
+                          alignItems="flex-start"
+                          className="m-margin-up-down"
+                        >
+                          <Grid item className="black-clr">
+                            {" "}
+                            {user.fname + " " + user.lname}
+                          </Grid>
+                          <Grid item className="fnt-13">
+                            {"Just now"}
+                          </Grid>
+                          {this.state.addedComment}
                         </Grid>
-                        {this.state.comment}
-                      </div>
-                    </div>
+                      </Grid>
+                    </Grid>
                   ) : (
                     ""
                   )}
@@ -441,7 +558,7 @@ class QuestionCard extends React.Component {
       );
     } else {
       answer = "No Answer";
-      comp = <AnswerCard question={question} />;
+      comp = <AnswerCard question={question} user={this.props.auth.user} />;
     }
 
     return <React.Fragment>{comp}</React.Fragment>;

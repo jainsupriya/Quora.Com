@@ -7,6 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 // import Toolbar from "@material-ui/core/Toolbar";
 // import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 // import IconButton from "@material-ui/core/IconButton";
 // import MenuIcon from "@material-ui/icons/Menu";
 import Divider from "@material-ui/core/Divider";
@@ -22,11 +23,43 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import navHeader from "../header/navHeader";
 import Editor from "./Editor";
+import Popover from "@material-ui/core/Popover";
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2
+  },
+  dialogWidth: {
+    borderRadius: 3,
+    background: "#f7f7f7",
+    border: "1px solid #ccc",
+    boxShadow: "0 1px 3px rgba(200,200,200,0.7)",
+    padding: 0,
+    minWidth: 190,
+    maxHeight: 300,
+    fontSize: 14
+  },
+  dialogContent: {
+    borderTop: "1px solid #e2e2e2",
+    background: "#fff",
+    overflowY: "scroll",
+    maxHeight: "80vh",
+    textAlign: "left"
+  },
+  dialogMenu: {
+    borderTop: "1px solid #e2e2e2",
+    padding: "8px 16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    color: "#2b6dad !important"
+  },
+  listStyle: {
+    textDecoration: "none",
+    "&:hover": {
+      background: "#eaf4ff"
+    }
   }
 });
 
@@ -37,18 +70,49 @@ class AnswerCard extends React.Component {
       answer: {},
       openQuill: false,
       editorHtml: "",
-      totalAnswer: ""
+      totalAnswer: "",
+      followAnswer: true,
+      followerCount: 0,
+      showMenu: false,
+      anchorEl: null
     };
     this.GiveAnswer = this.GiveAnswer.bind(this);
   }
   GiveAnswer = () => {
-    this.setState({ openQuill: !this.state.openQuill });
+    this.setState({ openQuill: !this.state.openQuill, showMenu: false });
   };
   passAnswer = () => {
     this.setState({ openQuill: !this.state.openQuill });
   };
   followAnswer = () => {
-    this.setState({ openQuill: !this.state.openQuill });
+    var followerCount = 0;
+    if (!this.state.followAnswer) {
+      followerCount = this.state.followerCount + 1;
+      axios
+        .put(
+          `/user/followQuestion/${this.props.user._id}/${
+            this.props.question._id
+          }`
+        )
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err.data));
+    } else {
+      followerCount =
+        this.state.followerCount > 0 ? this.state.followerCount - 1 : 0;
+      axios
+        .put(
+          `/user/followQuestion/${this.props.user._id}/${
+            this.props.question._id
+          }`
+        )
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err.data));
+    }
+
+    this.setState({
+      followAnswer: !this.state.followAnswer,
+      followerCount: followerCount
+    });
   };
   handleClose = () => {
     this.setState({ openQuill: false });
@@ -58,23 +122,79 @@ class AnswerCard extends React.Component {
       editorHtml: html
     });
   };
+
+  componentDidMount() {
+    var followerCount = 0;
+    var followAnswer = false;
+
+    if (
+      this.props.question.followersUserList !== undefined &&
+      this.props.question.followersUserList.length
+    ) {
+      followerCount = this.props.question.followersUserList.length;
+      if (this.props.question.followersUserList.includes(this.props.user._id)) {
+        followAnswer = true;
+      }
+    }
+    this.setState({
+      followAnswer: followAnswer,
+      followerCount: followerCount
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    var followerCount = 0;
+    var followAnswer = false;
+
+    if (
+      nextProps.question.followersUserList !== undefined &&
+      nextProps.question.followersUserList.length
+    ) {
+      followerCount = nextProps.question.followersUserList.length;
+      if (nextProps.question.followersUserList.includes(nextProps.user._id)) {
+        followAnswer = true;
+      }
+    }
+    this.setState({
+      followAnswer: followAnswer,
+      followerCount: followerCount
+    });
+  }
+
+  handleMenu = event => {
+    console.log("Hello");
+    console.log(event.currentTarget.id);
+    console.log(document.getElementById(event.currentTarget.id).offsetTop);
+
+    this.setState({
+      showMenu: true,
+      anchorEl: event.currentTarget
+    });
+  };
+
+  handleMenuClose = () => {
+    console.log("closed");
+    this.setState({
+      showMenu: false,
+      anchorEl: null
+    });
+  };
   render() {
     const { classes } = this.props;
     const { question } = this.props;
-
-    const { answer } = this.state;
+    console.log(question._id);
+    const { answer } = this.props;
     var answerComp;
+    const position = {
+      left: 1115,
+      top: 386
+    };
     var totalAnswerCount;
-    if (question.answerList.length> 0)
-      {
-        totalAnswerCount = question.answerList.length;
-        totalAnswerCount= totalAnswerCount + " Answers";
-      }
+    if (question.answerList.length > 0) {
+      totalAnswerCount = question.answerList.length;
+      totalAnswerCount = totalAnswerCount + " Answers";
+    } else totalAnswerCount = "No Answer yet";
 
-    else totalAnswerCount = "No Answer yet";
-
-
-    console.log(totalAnswerCount);
     if (!isEmpty(answer)) {
       var username = "";
       if (answer.isAnonymous) {
@@ -132,13 +252,11 @@ class AnswerCard extends React.Component {
       answerComp = (
         <React.Fragment>
           <Grid item className="ans-main-content">
-            <ReadMoreReact
-              text={totalAnswerCount}
-              min={80}
-              ideal={100}
-              max={200}
-              showLessButton={true}
-            />
+            <Link to={"/" + question._id} style={{ color: "#000000" }}>
+              <Typography variant="subtitle1" component="p">
+                {totalAnswerCount}
+              </Typography>
+            </Link>
           </Grid>
           <Grid
             container
@@ -273,58 +391,117 @@ class AnswerCard extends React.Component {
                   onClick={() => this.followAnswer()}
                   style={{ cursor: "pointer" }}
                 >
-                  <span class="ui_button_icon" aria-hidden="true">
-                    <svg
-                      width="24px"
-                      height="24px"
-                      viewBox="0 0 24 24"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xlink="http://www.w3.org/1999/xlink"
-                    >
-                      <g
-                        stroke="none"
-                        fill="none"
-                        fill-rule="evenodd"
-                        stroke-linecap="round"
-                      >
-                        <g
-                          id="follow"
-                          class="icon_svg-stroke"
-                          stroke="#666"
-                          stroke-width="1.5"
+                  {this.state.followAnswer ? (
+                    <React.Fragment>
+                      <span class="ui_button_icon" aria-hidden="true">
+                        <svg
+                          width="24px"
+                          height="24px"
+                          viewBox="0 0 24 24"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          xlink="http://www.w3.org/1999/xlink"
                         >
-                          <path
-                            d="M14.5,19 C14.5,13.3369229 11.1630771,10 5.5,10 M19.5,19 C19.5,10.1907689 14.3092311,5 5.5,5"
-                            id="lines"
-                          />
-                          <circle
-                            id="circle"
-                            cx="7.5"
-                            cy="17"
-                            r="2"
-                            class="icon_svg-fill"
+                          <g
+                            stroke="none"
                             fill="none"
-                          />
-                        </g>
-                      </g>
-                    </svg>
-                  </span>
-                  <span>Follow</span>
-                  <span class="bullet"> · </span>
-                  <span
-                    class="ui_button_count_inner"
-                    id="__w2_wikv5yOF93_count"
-                  >
-                    1
-                  </span>
+                            fill-rule="evenodd"
+                            stroke-linecap="round"
+                          >
+                            <g
+                              id="follow"
+                              class="icon_svg-stroke"
+                              stroke="#666"
+                              stroke-width="1.5"
+                            >
+                              <path
+                                d="M14.5,19 C14.5,13.3369229 11.1630771,10 5.5,10 M19.5,19 C19.5,10.1907689 14.3092311,5 5.5,5"
+                                id="lines"
+                              />
+                              <circle
+                                id="circle"
+                                cx="7.5"
+                                cy="17"
+                                r="2"
+                                class="icon_svg-fill"
+                                fill="none"
+                              />
+                            </g>
+                          </g>
+                        </svg>
+                      </span>
+                      <span style={{ color: "#329bff" }}>
+                        <span>Follow</span>
+                        <span class="bullet"> · </span>
+                        <span
+                          class="ui_button_count_inner"
+                          id="__w2_wikv5yOF93_count"
+                        >
+                          {this.state.followerCount}
+                        </span>
+                      </span>
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <span class="ui_button_icon" aria-hidden="true">
+                        <svg
+                          width="24px"
+                          height="24px"
+                          viewBox="0 0 24 24"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          xlink="http://www.w3.org/1999/xlink"
+                        >
+                          <g
+                            stroke="none"
+                            fill="none"
+                            fill-rule="evenodd"
+                            stroke-linecap="round"
+                          >
+                            <g
+                              id="follow"
+                              class="icon_svg-stroke"
+                              stroke="#666"
+                              stroke-width="1.5"
+                            >
+                              <path
+                                d="M14.5,19 C14.5,13.3369229 11.1630771,10 5.5,10 M19.5,19 C19.5,10.1907689 14.3092311,5 5.5,5"
+                                id="lines"
+                              />
+                              <circle
+                                id="circle"
+                                cx="7.5"
+                                cy="17"
+                                r="2"
+                                class="icon_svg-fill"
+                                fill="none"
+                              />
+                            </g>
+                          </g>
+                        </svg>
+                      </span>
+                      <span>Follow</span>
+                      <span class="bullet"> · </span>
+                      <span
+                        class="ui_button_count_inner"
+                        id="__w2_wikv5yOF93_count"
+                      >
+                        {this.state.followerCount}
+                      </span>{" "}
+                    </React.Fragment>
+                  )}
                 </div>
               </Grid>
 
               <Grid item xs={5} />
 
               <Grid item xs={1}>
-                <span class="ui_button_icon" aria-hidden="true">
+                <span
+                  id="menuid"
+                  class="ui_button_icon"
+                  aria-hidden="true"
+                  onClick={this.handleMenu}
+                >
                   <svg
                     width="24px"
                     height="24px"
@@ -332,6 +509,7 @@ class AnswerCard extends React.Component {
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
                     xlink="http://www.w3.org/1999/xlink"
+                    style={{ cursor: "pointer" }}
                   >
                     <g
                       id="overflow"
@@ -348,6 +526,54 @@ class AnswerCard extends React.Component {
               </Grid>
             </Grid>
           </Grid>
+          <Popover
+            id="simple-popper-1"
+            open={Boolean(this.state.showMenu)}
+            anchorEl={this.state.anchorEl}
+            onClose={this.handleMenuClose}
+            anchorReference={position}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left"
+            }}
+            anchorPosition={{
+              left: 1115,
+              top: 1212
+            }}
+            // onFocus={this.abc}
+          >
+            {/* style={{ opacity: this.state.searchValue && this.state.searchValue !== '' ? 0 : 1 }} */}
+            <div className={classes.dialogWidth}>
+              <div
+                className={classes.dialogContent}
+                style={{ overflow: "hidden" }}
+              >
+                <ul
+                  style={{
+                    listStyle: "none",
+                    marginBottom: "0rem",
+                    paddingLeft: 0
+                  }}
+                >
+                  <li className={classes.listStyle}>
+                    <div
+                      className={classes.dialogMenu}
+                      style={{ borderTop: "none", cursor: "pointer" }}
+                      onClick={() => this.GiveAnswer()}
+                    >
+                      Answer Anonymously
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Popover>
+          {console.log(this)}
+          {/* {document.getElementById("search").focus()} */}
         </React.Fragment>
       );
     }
