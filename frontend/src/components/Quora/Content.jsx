@@ -32,13 +32,12 @@ class Content extends Component {
       topic: "",
       userDetails: {},
       contentDetails: [],
-      bgColorType: 'All Types'
+      bgColorType: "All Types"
     };
   }
 
   componentDidMount = () => {
-    const userID = this.props.userDetails._id;
-    this.props.getContentDetails(userID);
+    this.props.getContentDetails(this.props.userDetails._id);
     this.setState({
       contentDetails: this.props.contentDetails.contents
     });
@@ -53,26 +52,26 @@ class Content extends Component {
       case "All Types":
         header = "Your Content";
         typeInRes = "ALL_TYPES";
-        bgColorType = "All Types"
+        bgColorType = "All Types";
 
         break;
 
       case "Questions Asked":
         header = "Your Questions";
         typeInRes = "CREATE_QUESTION";
-        bgColorType = "Questions Asked"
+        bgColorType = "Questions Asked";
         break;
 
       case "Questions Followed":
         header = "Your Followed Questions";
         typeInRes = "FOLLOWED_QUESTION";
-        bgColorType = "Questions Followed"
+        bgColorType = "Questions Followed";
         break;
 
       case "Answers":
         header = "Your Answers";
         typeInRes = "CREATE_ANSWER";
-        bgColorType = "Answers"
+        bgColorType = "Answers";
         break;
     }
 
@@ -300,7 +299,9 @@ class Content extends Component {
                             padding: "1% 4%",
                             cursor: "pointer",
                             backgroundColor:
-                              this.state.bgColorType === type ? "#e6e6e6" : "#fff"
+                              this.state.bgColorType === type
+                                ? "#e6e6e6"
+                                : "#fff"
                           }}
                           onClick={() => this.handleTypeChange(type)}
                         >
