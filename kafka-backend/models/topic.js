@@ -2,16 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const TopicSchema = new Schema({
-    topic: {
+    allTopic: [{
         type: String,
-        required: [true, "First Name is required"]
-    },
-    questionList: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "question"
-        }
-    ]
+        required: [true, "Topic is required"]
+    }]
 });
 
 const Topic = mongoose.model("topic", TopicSchema);

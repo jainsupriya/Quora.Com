@@ -145,7 +145,11 @@ function handle_request(msg, callback) {
             break;
         case "get/userWith/FollowersUserList/:userId":
             User.find({ _id: msg.reqBody.userId })
-                .populate("followersUserList")
+                .select('followersUserList')
+                .populate({ 
+                    path: 'followersUserList',
+                    select: 'profileImg lname fname',
+                })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
