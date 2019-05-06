@@ -95,6 +95,36 @@ export const getProfileByUserId = (userId) => dispatch => {
     .catch(err => console.log(err));
 };
 
+// set profile name
+export const setFollower = (userId,followerId) => dispatch => {
+  axios
+  .put(
+    `/user/followUser/${userId}/${followerId}`
+  )
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// set profile name
+export const removeFollower = (userId,followerId) => dispatch => {
+  axios
+  .put(
+    `/user/unFollowUser/${userId}/${followerId}`
+  )
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
 export const updateImage = (fd, history) => dispatch => {
   axios.put("/file/updateProfileImg", fd).then(res => {
     dispatch({
