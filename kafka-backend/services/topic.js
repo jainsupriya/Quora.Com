@@ -60,7 +60,7 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/topics/search/:searchQuery":
-            Topic.find({topic: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+            Topic.find({topic: { $regex : msg.reqBody.searchQuery }})
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);

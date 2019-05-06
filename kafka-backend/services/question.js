@@ -136,7 +136,7 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/questions/searchByQuestion/:searchQuery":
-            Question.find({question: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+            Question.find({question: { $regex : msg.reqBody.searchQuery }})
                 .populate('answerList')                
                 .populate('questionOwner')                
                 .then((result, err) => {
@@ -152,7 +152,7 @@ function handle_request(msg, callback) {
             break;
         case "get/questions/searchByTopic/:searchQuery":
             Question
-                .find({topicList: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+                .find({topicList: { $regex : msg.reqBody.searchQuery }})
                 .populate({ 
                     path: 'answerList',
                     populate: [
@@ -181,7 +181,7 @@ function handle_request(msg, callback) {
         case "get/questions/searchTopic/:searchQuery":
 
             Question
-                .find({topicList: { $regex : msg.reqBody.searchQuery, $options : 'i' }})
+                .find({topicList: { $regex : msg.reqBody.searchQuery}})
                 .populate({ 
                     path: 'answerList',
                     populate: [
