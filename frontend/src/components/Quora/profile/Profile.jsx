@@ -31,6 +31,8 @@ import DialogPhoto from "../layout/DialogPhoto";
 import DialogProfileCredential from "../layout/DialogProfileCredential";
 import ActionBar from "./ActionBar";
 
+import axios from "axios";
+
 //import actions
 import { getProfileByUserId } from "../../../redux/actions/profileActions";
 
@@ -117,6 +119,7 @@ class Profile extends React.Component {
       id: "",
       profileCredential: "",
       profileImage: "",
+      viewCount:0,
       isChanged: false
     };
 
@@ -134,6 +137,16 @@ class Profile extends React.Component {
     if (this.props.match.params.id) {
       await this.props.getProfileByUserId(this.props.match.params.id);
     }
+
+    axios.put(`/user/incView/`+this.props.match.params.id)
+    .then(response =>{
+        if(response.status === 200){
+            console.log(response.data);
+            this.setState({
+                viewCount: response.data.profileViews.length
+            });
+        }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
