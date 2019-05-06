@@ -201,7 +201,8 @@ class Home extends React.Component {
           </Grid>
           <Grid item xs={2} />
         </Grid>
-        {this.props.questions.length &&
+        {this.props.questions !== undefined &&
+          this.props.questions.length &&
           this.state.visible < this.props.questions.length && (
             <button onClick={this.loadMore} type="button" className="load-more">
               Load more
