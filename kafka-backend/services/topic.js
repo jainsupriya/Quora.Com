@@ -47,12 +47,12 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/topics":
-            Topic.find({})
+            Topic.findById("5cd084810892c945c23869ae")
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        myCallback(null, result, callback);
+                        myCallback(null, result.allTopic, callback);
                     }
                 })
                 .catch(err => {
