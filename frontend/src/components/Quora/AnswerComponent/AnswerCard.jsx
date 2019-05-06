@@ -148,22 +148,23 @@ class AnswerCard extends React.Component {
   componentWillReceiveProps(nextProps) {
     var followerCount = 0;
     var followAnswer = false;
-
-    if (
-      nextProps.user.questionFollowingList !== undefined &&
-      nextProps.user.questionFollowingList.length
-    ) {
-      followerCount = nextProps.user.questionFollowingList.length;
+    if (this.props.user != nextProps.user) {
       if (
-        nextProps.user.questionFollowingList.includes(nextProps.question._id)
+        nextProps.user.questionFollowingList !== undefined &&
+        nextProps.user.questionFollowingList.length
       ) {
-        followAnswer = true;
+        followerCount = nextProps.user.questionFollowingList.length;
+        if (
+          nextProps.user.questionFollowingList.includes(nextProps.question._id)
+        ) {
+          followAnswer = true;
+        }
       }
+      this.setState({
+        followAnswer: followAnswer,
+        followerCount: followerCount
+      });
     }
-    this.setState({
-      followAnswer: followAnswer,
-      followerCount: followerCount
-    });
   }
 
   handleMenu = event => {
