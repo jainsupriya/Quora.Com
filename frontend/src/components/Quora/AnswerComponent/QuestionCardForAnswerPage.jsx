@@ -111,7 +111,6 @@ class QuestionCardForAnswerPage extends React.Component {
 
   render() {
     const { question, user } = this.props;
-    console.log(this.props.answer)
     var comp = "";
     var upvotecomp = "";
     var upvoteCount = 0;
@@ -220,28 +219,45 @@ class QuestionCardForAnswerPage extends React.Component {
                 <span className="reason-txt">Answer · Recommended for you</span>
               </Grid>
               <React.Fragment>
+                 { this.props.question && <Typography variant="h6">{this.props.question}</Typography>}
                 <Grid
                   container
                   direction="row"
                   justify="flex-start"
                   alignItems="flex-start"
                 >
+                
                   <Grid item>
-                    <Avatar
+                    {this.props.user && <Avatar
                       alt={
-                        this.props.answerOwner !== undefined
-                          ?  this.props.answerOwner.fname +
+                        this.props.user !== undefined
+                          ?  this.props.user.fname +
                             " " +
-                            this.props.answerOwner.lname
+                            this.props.user.lname
                           : "Anonymous User"
                       }
                       src={
-                        this.props.answerOwner !== undefined
-                          ?  this.props.answerOwner.profileImg
+                        this.props.user !== undefined
+                          ?  this.props.user.profileImg
                           : ""
                       }
                       className="avatar"
-                    />
+                    />}
+                    {!this.props.user && <Avatar
+                    alt={
+                      this.props.answerOwner !== undefined
+                        ?  this.props.answerOwner.fname +
+                          " " +
+                          this.props.answerOwner.lname
+                        : "Anonymous User"
+                    }
+                    src={
+                      this.props.answerOwner !== undefined
+                        ?  this.props.answerOwner.profileImg
+                        : ""
+                    }
+                    className="avatar"
+                  />}
                   </Grid>
                   <Grid item>
                     <Grid
@@ -251,13 +267,20 @@ class QuestionCardForAnswerPage extends React.Component {
                       alignItems="flex-start"
                       className="m-margin-up-down"
                     >
-                      <Grid item className="black-clr">
+                      {this.props.user && <Grid item className="black-clr">
+                        { this.props.user !== undefined
+                          ?  this.props.user.fname +
+                            " " +
+                            this.props.user.lname
+                          : "Anonymous User"}
+                      </Grid>}
+                      {!this.props.user && <Grid item className="black-clr">
                         { this.props.answerOwner !== undefined
                           ?  this.props.answerOwner.fname +
                             " " +
                             this.props.answerOwner.lname
                           : "Anonymous User"}
-                      </Grid>
+                      </Grid>}
                       <Grid item className="fnt-13">
                         {"Answered"}{" "}
                         {moment(

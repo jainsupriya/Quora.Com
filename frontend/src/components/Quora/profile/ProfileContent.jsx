@@ -270,21 +270,6 @@ class ProfileContent extends Component {
     const { classes } = this.props;
     var QuestionComp;
 
-    /*if (this.props.userDetails && this.props.userDetails.myQuestionList.length > 0) {
-      QuestionComp = this.props.userDetails.myQuestionList.slice(0, this.state.visible)
-        .map(question => {
-          return (
-            <QuestionCard
-              question={question}
-            />
-          );
-        });
-    } else {
-      QuestionComp = <React.Fragment>No Data Found</React.Fragment>;
-    }*/
-
-    // const contentDetails = this.props.contentDetails.contents;
-
     return (
       <div>
         {/* <AppBar className="m-bg-color" position="sticky">
@@ -378,11 +363,14 @@ class ProfileContent extends Component {
                                        
                                         <AnswerCardForAnswerPage question={this.state.contentDetails[index]
                                           .createdQuestion.question}  answerList =  {this.state.contentDetails[index]
-                                            .createdQuestion.answerList}/>
+                                            .createdQuestion.answerList} 
+                                            myanswer= "true"/>
                                     
                                     ) 
                                   case "CREATE_ANSWER":
                                     return  ( <QuestionCardForAnswerPage
+                                        question= {this.state.contentDetails[index]
+                                          .createdAnswer.questionId.question}
                                         answer={this.state.contentDetails[index]
                                           .createdAnswer.answer}
                                         upvoteCount = {this.state.contentDetails[index]
