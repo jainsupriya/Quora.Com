@@ -44,11 +44,11 @@ function handle_request(msg, callback) {
                 console.log(queryString)
                 connection.query(queryString, (err, rows, fields) => {
                     if (err || rows.length <= 0) {
-                        console.log(err)
-                        let err= {
+                        // console.log(err)
+                        let err1 = {
                             msg: "Email or Password is incorrect."
                         }
-                        myCallback(err, null, callback);
+                        myCallback(err1, null, callback);
                     }else{
                         let passMatch = false
                         try {
