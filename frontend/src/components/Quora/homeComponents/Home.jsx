@@ -15,6 +15,9 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import Loading from "../../commons/Loading";
+
+import Pusher from 'pusher-js';
+
 import {
   addQuestion,
   getUserDetails,
@@ -77,6 +80,17 @@ class Home extends React.Component {
 
   render() {
     var QuestionComp;
+
+    // var pusher = new Pusher('67f71ccfff5990b594ee', {
+    //   cluster: 'us3',
+    //   forceTLS: true
+    // });
+
+    // var channel = pusher.subscribe('quora');
+    // channel.bind('post-answer', function(data) {
+    //   console.log(JSON.stringify(data));
+    // });
+
     var userTopicList =
       this.props.userDetails !== undefined &&
       this.props.userDetails.interestedTopicList !== undefined &&
