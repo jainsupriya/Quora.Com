@@ -505,9 +505,12 @@ class MyProfile extends React.Component {
                                   <span id="w4a2NguV53">
                                     <span id="__w2_w4a2NguV54_link">
                                       <span className="user">
-                                        {this.state.fname +
-                                          "    " +
-                                          this.state.lname}
+                                        {this.state.fname !== undefined &&
+                                        this.state.lname !== undefined
+                                          ? this.state.fname +
+                                            "    " +
+                                            this.state.lname
+                                          : "Add your full name"}
                                       </span>
                                     </span>
                                   </span>
@@ -549,9 +552,9 @@ class MyProfile extends React.Component {
                   justify="space-between"
                   alignItems="center"
                 />
-                <Content
-                  user={userDetails !== undefined ? userDetails._id : ""}
-                />
+                {userDetails !== undefined ? (
+                  <Content user={userDetails._id} />
+                ) : null}
               </Grid>
 
               <Grid item xs={3} className="fix-pos">
@@ -813,7 +816,7 @@ class MyProfile extends React.Component {
 MyProfile.propTypes = {
   classes: PropTypes.object.isRequired,
   userDetails: PropTypes.object,
-  setProfileName: PropTypes.func.isRequired
+  setProfileName: PropTypes.func
 };
 
 const mapStateToProps = state => ({

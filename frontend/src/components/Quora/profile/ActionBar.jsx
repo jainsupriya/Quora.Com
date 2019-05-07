@@ -112,12 +112,10 @@ class ActionBar extends Component {
 
     if (nextProps.user !== undefined && nextProps.follower !== undefined) {
       console.log(nextProps.user);
-    console.log(nextProps.follower);
+      console.log(nextProps.follower);
       if (nextProps.user.followersUserList !== undefined) {
-        console.log(nextProps.user.followersUserList.length)
-        if (
-          nextProps.user.followersUserList.includes(nextProps.follower._id)
-        ) {
+        console.log(nextProps.user.followersUserList.length);
+        if (nextProps.user.followersUserList.includes(nextProps.follower._id)) {
           isfollow = true;
         }
         followerCountInc = nextProps.user.followersUserList.length;
@@ -144,16 +142,18 @@ class ActionBar extends Component {
           });
         })
         .catch(err => console.log(err.data));
-    } else if (this.state.isFollow && this.state.followerCount != 0) {
+    } else if (this.state.isFollow && this.state.followerCount > 0) {
       // this.props.removeFollower(this.props.user._id,this.props.follower._id)
       axios
         .put(
           `/user/unFollowUser/${this.props.user._id}/${this.props.follower._id}`
         )
-        .then(res => {
+        
+        .then(res  => {
           console.log(res.data);
           this.setState({
-            followerCount: this.state.followerCount - 1,
+            followerCount:
+              this.state.followerCount > 0 ? (this.state.followerCount - 1) : 0,
             isFollow: !this.state.isFollow
           });
         })
@@ -228,7 +228,7 @@ class ActionBar extends Component {
                 </svg>
               </span>
               <Link to="#">
-              <span>Notify Me</span>
+                <span>Notify Me</span>
               </Link>
             </div>
           </Grid>

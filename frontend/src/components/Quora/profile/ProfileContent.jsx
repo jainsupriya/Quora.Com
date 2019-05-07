@@ -15,7 +15,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import { getContentDetails } from "../../../redux/actions/contentAction";
-import { getUserDetails } from "../../../redux/actions/homeAction";
+import {
+  getAskedQuestion,
+  getFollowedQuestion,
+  getUserAnswer,
+  getFollowers,
+  getFollowing
+} from "../../../redux/actions/profileActions";
 import _ from "lodash";
 import QuestionCardForAnswerPage from "../AnswerComponent/QuestionCardForAnswerPage";
 import AnswerCardForAnswerPage from "../AnswerComponent/AnswerCardForAnswerPage";
@@ -33,12 +39,17 @@ class ProfileContent extends Component {
       topic: "",
       userDetails: {},
       contentDetails: [],
-      bgColorType: "All Types"
+      bgColorType: "All Types",
+      questionAsked: [],
+      questionfollowed: [],
+      answer: [],
+      follower: [],
+      following: []
     };
   }
 
   componentDidMount = () => {
-    this.props.getContentDetails(this.props.userDetails._id);
+    this.props.getContentDetails(this.props.user);
     this.setState({
       contentDetails: this.props.contentDetails.contents
     });
@@ -61,30 +72,38 @@ class ProfileContent extends Component {
         header = "Your Questions";
         typeInRes = "CREATE_QUESTION";
         bgColorType = "Questions Asked";
+        this.props.getAskedQuestion(this.props.user);
+
         break;
 
       case "Questions Followed":
         header = "Your Followed Questions";
         typeInRes = "FOLLOWED_QUESTION";
         bgColorType = "Questions Followed";
+        this.props.getFollowedQuestion(this.props.user);
         break;
 
       case "Answers":
         header = "Your Answers";
         typeInRes = "CREATE_ANSWER";
         bgColorType = "Answers";
+        this.props.getUserAnswer(this.props.user);
         break;
 
       case "Followers":
         header = "Followers";
         typeInRes = "CREATE_ANSWER";
         bgColorType = "Followers";
+        this.props.getFollowers(this.props.user);
+
         break;
 
       case "Following":
         header = "Following";
         typeInRes = "CREATE_ANSWER";
         bgColorType = "Following";
+        this.props.getFollowing(this.props.user);
+
         break;
     }
 
@@ -267,6 +286,7 @@ class ProfileContent extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log(this.props);
     var QuestionComp;
 
     return (
@@ -429,14 +449,19 @@ class ProfileContent extends Component {
 
 ProfileContent.propTypes = {
   classes: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object,
+  getAskedQuestion: PropTypes.func,
+  getFollowedQuestion: PropTypes.func,
+  getFollowedQuestion: PropTypes.func,
+  getFollowers: PropTypes.func,
+  getFollowing: PropTypes.func
 };
 
 const mapStateToProps = state => ({
   // auth: state.auth,
   // userState: state.userState,
   // errors: state.errors,
-  userDetails: state.homeState.userDetails,
+  //userDetails: state.homeState.userDetails,
   profile: state.profile,
   auth: state.auth,
   contentDetails: state.contents
@@ -444,5 +469,12 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getContentDetails, getUserDetails }
+  {
+    getContentDetails,
+    getAskedQuestion,
+    getFollowedQuestion,
+    getUserAnswer,
+    getFollowers,
+    getFollowing
+  }
 )(withStyles(styles)(withRouter(ProfileContent)));

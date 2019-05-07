@@ -81,7 +81,9 @@ class DialogProfileCredential extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ profileCredential: nextProps.profileCredential });
+    if (nextProps.profileCredential !== undefined) {
+      this.setState({ profileCredential: nextProps.profileCredential });
+    }
   }
 
   onChange(e) {

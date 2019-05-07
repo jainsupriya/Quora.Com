@@ -26,9 +26,7 @@ import Feed from "../layout/feed";
 import Content from "./ProfileContent";
 import QuestionCard from "../layout/QuestionCard";
 import NavHeader from "../header/navHeader";
-import DialogPersonal from "../layout/DialogPersonal";
-import DialogPhoto from "../layout/DialogPhoto";
-import DialogProfileCredential from "../layout/DialogProfileCredential";
+
 import ActionBar from "./ActionBar";
 
 import axios from "axios";
@@ -119,7 +117,7 @@ class Profile extends React.Component {
       id: "",
       profileCredential: "",
       profileImage: "",
-      viewCount:0,
+      viewCount: 0,
       isChanged: false
     };
 
@@ -131,24 +129,25 @@ class Profile extends React.Component {
   }
 
   async componentDidMount() {
-
+    console.log(this.props.match.params.id);
+    console.log("here");
 
     if (this.props.match.params.id) {
       await this.props.getProfileByUserId(this.props.match.params.id);
     }
 
-    axios.put(`/user/incView/`+this.props.match.params.id)
-    .then(response =>{
-        if(response.status === 200){
-            this.setState({
-                viewCount: response.data.profileViews.length
-            });
-        }
+    axios.put(`/user/incView/` + this.props.match.params.id).then(response => {
+      if (response.status === 200) {
+        console.log(response.data);
+        this.setState({
+          viewCount: response.data.profileViews.length
+        });
+      }
     });
   }
 
   componentWillReceiveProps(nextProps) {
- 
+    console.log(nextProps);
     if (nextProps.state.userDetails.profileCredential !== undefined) {
       this.setState({
         profileCredential: nextProps.state.userDetails.profileCredential
@@ -160,7 +159,7 @@ class Profile extends React.Component {
     }
 
     if (nextProps.state.userDetails.profileImg !== undefined) {
-   
+      console.log("componentWillReceiveProps");
       this.setState({
         profileImage: nextProps.state.userDetails.profileImg,
         isChanged: nextProps.state.userDetails.isChanged
@@ -176,11 +175,12 @@ class Profile extends React.Component {
     let temp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     const { classes } = this.props;
 
+    console.log(this.props);
 
     const userDetails = this.props.profile.profile[0];
     const follower = this.props.state.userDetails;
 
-    
+    console.log(userDetails);
 
     return (
       <div>
@@ -271,10 +271,9 @@ class Profile extends React.Component {
                         </div>
                         <div />
                         <div />
-                        <ActionBar
-                           user={userDetails !== undefined ? userDetails : ""}
-                           follower={follower !== undefined ? follower : ""}
-                        />
+                        {userDetails !== undefined && follower !== undefined ? (
+                          <ActionBar user={userDetails} follower={follower} />
+                        ) : null}
                       </div>
                     </div>
                   </Grid>
@@ -546,9 +545,9 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
   classes: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired,
-  getProfileByUserId: PropTypes.func.isRequired
+  userDetails: PropTypes.object,
+  profile: PropTypes.object,
+  getProfileByUserId: PropTypes.func
 };
 
 const mapStateToProps = state => ({
