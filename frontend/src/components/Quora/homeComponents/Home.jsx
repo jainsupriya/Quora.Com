@@ -73,9 +73,9 @@ class Home extends React.Component {
   }
 
   // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.questions != this.props.questions) {
+  //   if (nextProps.userDetails != this.props.userDetails) {
   //     console.log("changed::" + JSON.stringify(nextProps.questions));
-  //     this.props.getUserDetails(nextProps.auth.user._id);
+
   //   }
   // }
 

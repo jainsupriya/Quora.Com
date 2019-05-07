@@ -37,47 +37,66 @@ class QuestionCard extends React.Component {
       answer: "No answer",
       isUpvoted: false,
       upvoteCount: 0,
-      addedComment: "New Comment added",
+      addedComment: "",
       showComments: false,
       readMore: false,
       isBookmarked: false,
-      commentList: []
+      commentList: [],
+      visible: 2
     };
+    this.loadMore = this.loadMore.bind(this);
+  }
+  loadMore() {
+    this.setState(prev => {
+      return { visible: prev.visible + 2 };
+    });
   }
   showComments = () => {
     this.setState({ showComments: !this.state.showComments });
   };
   readMoreText = () => {
     this.setState({ readMore: true });
-  
+
     if (this.props.question !== undefined) {
-      console.log(this.props.question.answerList[0]._id)
-      axios.put(`/answer/view/` + this.props.question.answerList[0]._id).then(response => {
-        if (response.status === 200) {
-          console.log(response.data);
-        
-          this.setState({
-            view:this.state.view+1
-          });
-        }
-      });
+      console.log(this.props.question.answerList[0]._id);
+      axios
+        .put(`/answer/view/` + this.props.question.answerList[0]._id)
+        .then(response => {
+          if (response.status === 200) {
+            console.log(response.data);
+
+            this.setState({
+              view: this.state.view + 1
+            });
+          }
+        });
     }
   };
   readMoreTextClose = () => {
     this.setState({ readMore: false });
   };
   componentDidMount() {
-    
     var upvoteCount = 0;
     var isUpvoted = false;
     var isBookmarked = false;
-    var commentList = [];
-  
+
     if (
       this.props.question.answerList !== undefined &&
       this.props.question.answerList.length
     ) {
-      commentList = this.props.question.answerList[0].commentList;
+      axios
+        .get(`/answerWithCommentList/${this.props.question.answerList[0]._id}`)
+        .then(response => {
+          if (response.status === 200) {
+            this.setState({
+              commentList: response.data[0].commentList
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      // commentList = this.props.question.answerList[0].commentList;
       if (
         this.props.user.bookmarkedAnswerList !== undefined &&
         this.props.user.bookmarkedAnswerList.length &&
@@ -105,8 +124,7 @@ class QuestionCard extends React.Component {
     this.setState({
       isUpvoted: isUpvoted,
       upvoteCount: upvoteCount,
-      isBookmarked: isBookmarked,
-      commentList: commentList
+      isBookmarked: isBookmarked
     });
   }
 
@@ -120,7 +138,19 @@ class QuestionCard extends React.Component {
         nextProps.question.answerList !== undefined &&
         nextProps.question.answerList.length
       ) {
-        commentList = nextProps.question.answerList[0].commentList;
+        axios
+          .get(`/answerWithCommentList/${nextProps.question.answerList[0]._id}`)
+          .then(response => {
+            if (response.status === 200) {
+              this.setState({
+                commentList: response.data[0].commentList
+              });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        // commentList = nextProps.question.answerList[0].commentList;
         if (
           nextProps.user.bookmarkedAnswerList !== undefined &&
           nextProps.user.bookmarkedAnswerList.length &&
@@ -303,7 +333,9 @@ class QuestionCard extends React.Component {
               </Grid>
               <Grid item>
                 <Link to={"/" + question._id} style={{ color: "#000000" }}>
-                  <span className="question-txt"><Typography variant="title">{question.question}</Typography></span>
+                  <span className="question-txt">
+                    <Typography variant="title">{question.question}</Typography>
+                  </span>
                 </Link>
               </Grid>
 
@@ -564,64 +596,96 @@ class QuestionCard extends React.Component {
                     />
                   </Grid>
                   <Grid item>
-                    <Button
-                      variant="contained"
-                      className="btn-margin"
-                      onClick={() => {
-                        this.handleAddComment(answer._id);
-                      }}
-                    >
-                      Add Comment
-                    </Button>
+                    {typeof this.state.addedComment === "string" &&
+                    this.state.addedComment.trim().length === 0 ? (
+                      <Button
+                        disabled
+                        variant="contained"
+                        className="btn-margin"
+                      >
+                        {" "}
+                        Add Comment
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        className="btn-margin"
+                        onClick={() => {
+                          this.handleAddComment(answer._id);
+                        }}
+                      >
+                        {" "}
+                        Add Comment
+                      </Button>
+                    )}
                   </Grid>
                   {this.state.showComments
                     ? this.state.commentList.length
-                      ? this.state.commentList.map(comment => {
-                          return (
-                            <Grid
-                              container
-                              direction="row"
-                              justify="flex-start"
-                              alignItems="flex-start"
-                              // className="m-margin-up-down"
-                            >
-                              <Grid item>
-                                <Avatar
-                                  alt={this.props.user.fname}
-                                  src={this.props.user.profileImg}
-                                  className="avatar"
-                                />
-                              </Grid>
-                              <Grid item>
-                                <Grid
-                                  container
-                                  direction="column"
-                                  justify="flex-start"
-                                  alignItems="flex-start"
-                                  className="m-margin-up-down"
-                                >
-                                  <Grid item className="black-clr">
-                                    {" "}
-                                    {this.props.user.fname +
-                                      " " +
-                                      this.props.user.lname}
+                      ? this.state.commentList
+                          .sort(
+                            (comment1, comment2) =>
+                              new Date(comment2.postedTime) -
+                              new Date(comment1.postedTime)
+                          )
+                          .slice(0, this.state.visible)
+                          .map(comment => {
+                            return (
+                              <Grid
+                                container
+                                direction="row"
+                                justify="flex-start"
+                                alignItems="flex-start"
+                                // className="m-margin-up-down"
+                              >
+                                <Grid item>
+                                  <Avatar
+                                    alt={this.props.user.fname}
+                                    src={this.props.user.profileImg}
+                                    className="avatar"
+                                  />
+                                </Grid>
+                                <Grid item>
+                                  <Grid
+                                    container
+                                    direction="column"
+                                    justify="flex-start"
+                                    alignItems="flex-start"
+                                    className="m-margin-up-down"
+                                  >
+                                    <Grid item className="black-clr">
+                                      {" "}
+                                      {this.props.user.fname +
+                                        " " +
+                                        this.props.user.lname}
+                                    </Grid>
+                                    <Grid item className="fnt-13">
+                                      {comment.postedTime !== undefined
+                                        ? moment(
+                                            new Date(comment.postedTime),
+                                            "MMMM Do YYYY, h:mm:ss a"
+                                          ).fromNow()
+                                        : "Just now"}
+                                    </Grid>
+                                    {comment.comment}
                                   </Grid>
-                                  <Grid item className="fnt-13">
-                                    {comment.postedTime !== undefined
-                                      ? moment(
-                                          new Date(comment.postedTime),
-                                          "MMMM Do YYYY, h:mm:ss a"
-                                        ).fromNow()
-                                      : "Just now"}
-                                  </Grid>
-                                  {comment.comment}
                                 </Grid>
                               </Grid>
-                            </Grid>
-                          );
-                        })
+                            );
+                          })
                       : ""
                     : ""}
+                  {this.state.showComments &&
+                    this.state.commentList !== undefined &&
+                    this.state.commentList.length &&
+                    this.state.visible < this.state.commentList.length && (
+                      <button
+                        onClick={this.loadMore}
+                        type="button"
+                        className="load-more"
+                      >
+                        Load more
+                      </button>
+                    )}
                 </Grid>
               </React.Fragment>
             </Grid>

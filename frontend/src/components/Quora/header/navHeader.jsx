@@ -125,7 +125,7 @@ class NavHeader extends Component {
     const userID = this.props.auth.user._id;
     console.log(userID);
     this.props.getFollowingUsers(userID);
-    this.props.getUserDetails(this.props.auth.user._id);
+    this.props.getUserDetails(userID);
   };
 
   searchForTopicOrPeople(event) {
@@ -322,10 +322,10 @@ class NavHeader extends Component {
                     <Grid item>
                       <Avatar
                         alt={
-                          this.props.userDetails.fname +
-                          this.props.userDetails.lname
+                          this.props.auth.user.fname +
+                          this.props.auth.user.lname
                         }
-                        src={this.props.userDetails.profileImg}
+                        src={this.props.auth.user.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -369,10 +369,10 @@ class NavHeader extends Component {
                     <Grid item>
                       <Avatar
                         alt={
-                          this.props.userDetails.fname +
-                          this.props.userDetails.lname
+                          this.props.auth.user.fname +
+                          this.props.auth.user.lname
                         }
-                        src={this.props.userDetails.profileImg}
+                        src={this.props.auth.user.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -778,10 +778,8 @@ class NavHeader extends Component {
                 className={classes.showCursor}
               >
                 <Avatar
-                  alt={
-                    this.props.userDetails.fname + this.props.userDetails.lname
-                  }
-                  src={this.props.userDetails.profileImg}
+                  alt={this.props.auth.user.fname + this.props.auth.user.lname}
+                  src={this.props.auth.user.profileImg}
                   className="avatar"
                 />
               </div>

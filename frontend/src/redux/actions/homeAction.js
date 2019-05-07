@@ -37,14 +37,14 @@ export const getUserDetails = userId => dispatch => {
         .catch(err =>
           dispatch({
             type: GET_ERRORS,
-            payload: err.data
+            payload: err !== undefined ? err.data : {}
           })
         );
     })
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.data
+        payload: err !== undefined ? err.data : {}
       })
     );
 };
@@ -60,7 +60,7 @@ export const getTopicQuestions = topic => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.data
+        payload: err !== undefined ? err.data : {}
       })
     );
 };
@@ -77,7 +77,7 @@ export const getQuestions = topic => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.data
+        payload: err !== undefined ? err.data : {}
       })
     );
 };
@@ -112,7 +112,7 @@ export const addQuestion = questionData => dispatch => {
                 .catch(err =>
                   dispatch({
                     type: GET_ERRORS,
-                    payload: err.data
+                    payload: err !== undefined ? err.data : {}
                   })
                 );
             } else {
@@ -130,7 +130,7 @@ export const addQuestion = questionData => dispatch => {
                 .catch(err =>
                   dispatch({
                     type: GET_ERRORS,
-                    payload: err.data
+                    payload: err !== undefined ? err.data : {}
                   })
                 );
             }
@@ -138,7 +138,7 @@ export const addQuestion = questionData => dispatch => {
           .catch(err =>
             dispatch({
               type: GET_ERRORS,
-              payload: err.data
+              payload: err !== undefined ? err.data : {}
             })
           );
       } else {
@@ -151,7 +151,7 @@ export const addQuestion = questionData => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.data
+        payload: err !== undefined ? err.data : {}
       })
     );
 };
@@ -169,7 +169,7 @@ export const getAnswersForQuestion = questionId => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.data
+        payload: err !== undefined ? err.data : {}
       })
     );
 };
