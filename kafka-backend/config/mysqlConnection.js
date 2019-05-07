@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 var db = {};
 db.pool = mysql.createPool({
-  connectionLimit: "100",
+  connectionLimit: "1000",
   port: "3306",
   host: "quora.cmgpt7pa9mg7.us-west-1.rds.amazonaws.com",
   user: "quora",
