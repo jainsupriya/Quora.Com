@@ -180,3 +180,22 @@ export const getAnswersForQuestion = questionId => dispatch => {
       })
     );
 };
+
+export const getUserDetailsOnly = userId => dispatch => {
+  console.log("ruchika here");
+  axios
+    .get(`/user/${userId}`)
+    .then(res => {
+      var data = res.data[0];
+      dispatch({
+        type: GET_USER_DETAILS,
+        payload: data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err !== undefined && err.data !== undefined ? err.data : {}
+      })
+    );
+};

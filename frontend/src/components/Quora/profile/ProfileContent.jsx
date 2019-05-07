@@ -295,7 +295,8 @@ class ProfileContent extends Component {
     const { classes } = this.props;
     
     var QuestionComp;
-    var questionAskedMap = this.props.profile.askedQuestion.map(item => {
+    var questionAskedMap =  this.props.profile.askedQuestion.length != 0 
+    ?this.props.profile.askedQuestion.map(item => {
       console.log(item);
       return (
         <AnswerCardForAnswerPage
@@ -305,8 +306,9 @@ class ProfileContent extends Component {
           question_id={item.createdQuestion._id}
         />
       );
-    });
-    var questionAnswerMap = Object.keys(this.props.profile.userAnswer).map(
+    }):null;
+    var questionAnswerMap = (this.props.profile.userAnswer.length != 0 )
+    ?Object.keys(this.props.profile.userAnswer).map(
       index => {
         return (
           <QuestionCardForAnswerPage
@@ -330,8 +332,9 @@ class ProfileContent extends Component {
           />
         );
       }
-    );
-    var questionFollowedMap = Object.keys(
+    ):"";
+    var questionFollowedMap = ((this.props.profile.followedQuestion.length != 0 )
+    ?Object.keys(
       this.props.profile.followedQuestion
     ).map(index => {
       return (
@@ -352,7 +355,7 @@ class ProfileContent extends Component {
           </div>
         </div>
       );
-    });
+    }):"");
     var followerMap =
       (this.props.profile.follower.length != 0 )
         ? Object.keys(this.props.profile.follower[0].followersUserList).map(

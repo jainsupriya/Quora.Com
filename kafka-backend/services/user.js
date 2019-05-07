@@ -231,7 +231,16 @@ function handle_request(msg, callback) {
             break;
         case "get/userWith/BookmarkAnswerList/:userId":
             User.find({ _id: msg.reqBody.userId })
-                .populate({ path: "bookmarkedAnswerList", model: Answer })
+                // .populate({ path: "bookmarkedAnswerList", model: Answer })
+                .populate({ 
+                    path: 'bookmarkedAnswerList',
+                    populate: [
+                        {
+                            path: 'questionId',
+                        }
+                    ],
+                    model: Answer,
+                })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
