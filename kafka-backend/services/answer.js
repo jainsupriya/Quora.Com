@@ -346,7 +346,58 @@ function handle_request(msg, callback) {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        myCallback(null, result, callback);
+                        Answer.findOneAndUpdate(
+                            { _id: msg.reqBody.answerId },
+                            {
+                                $addToSet: { downVotes: msg.reqBody.userId },
+                                $inc: { downVotesCount: 1 }
+                            }
+                        )
+                            .then((result1, err1) => {
+                                if (err1) {
+                                    myCallback(err1, null, callback);
+                                } else {
+                                    console.log("__________result1_________________\n", result1);
+                                    myCallback(null, result, callback);
+                                }
+                            })
+                            .catch(err1 => {
+                                myCallback(err1, null, callback);
+                            });
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "put/answer/undoDownvote/:userId/:answerId":
+            User.findOneAndUpdate(
+                { _id: msg.reqBody.userId },
+                { $pull: { downVoteAnswerList: msg.reqBody.answerId } },
+                { new: true }
+            )
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        Answer.findOneAndUpdate(
+                            { _id: msg.reqBody.answerId },
+                            {
+                                $pull: { downVotes: msg.reqBody.userId },
+                                $inc: { downVotesCount: -1 }
+                            }
+                        )
+                            .then((result1, err1) => {
+                                if (err1) {
+                                    myCallback(err1, null, callback);
+                                } else {
+                                    console.log("__________result1_________________\n", result1);
+                                    myCallback(null, result, callback);
+                                }
+                            })
+                            .catch(err1 => {
+                                myCallback(err1, null, callback);
+                            });
                     }
                 })
                 .catch(err => {

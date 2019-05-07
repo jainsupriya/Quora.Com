@@ -177,7 +177,7 @@ class Profile extends React.Component {
 
     console.log(this.props);
 
-    const userDetails = this.props.profile.profile[0];
+    const userDetails = this.props.profile.profile;
     const follower = this.props.state.userDetails;
 
     console.log(userDetails);
@@ -285,9 +285,9 @@ class Profile extends React.Component {
                   justify="space-between"
                   alignItems="center"
                 />
-                <Content
-                  user={userDetails !== undefined ? userDetails._id : ""}
-                />
+                {userDetails !== undefined ? (
+                  <Content user={userDetails._id} />
+                ) : null}
               </Grid>
 
               <Grid item xs={3} className="fix-pos">

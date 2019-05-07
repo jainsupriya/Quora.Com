@@ -393,7 +393,7 @@ class Content extends Component {
                                 case "CREATE_QUESTION":
                                   return (
                                     <a
-                                    style={{color: '#2b6dad'}}
+                                      style={{ color: "#2b6dad" }}
                                       href={
                                         "/" +
                                         this.state.contentDetails[index]
@@ -410,12 +410,12 @@ class Content extends Component {
                                 case "CREATE_ANSWER":
                                   return (
                                     <a
-                                    style={{color: '#2b6dad'}}
-                                    href={
-                                      "/" +
-                                      this.state.contentDetails[index]
-                                        .createdAnswer.questionId._id
-                                    }
+                                      style={{ color: "#2b6dad" }}
+                                      href={
+                                        "/" +
+                                        this.state.contentDetails[index]
+                                          .createdAnswer.questionId._id
+                                      }
                                     >
                                       {
                                         this.state.contentDetails[index]
@@ -427,12 +427,12 @@ class Content extends Component {
                                 case "FOLLOWED_QUESTION":
                                   return (
                                     <a
-                                    style={{color: '#2b6dad'}}
-                                    href={
-                                      "/" +
-                                      this.state.contentDetails[index]
-                                        .followedQuestion._id
-                                    }
+                                      style={{ color: "#2b6dad" }}
+                                      href={
+                                        "/" +
+                                        this.state.contentDetails[index]
+                                          .followedQuestion._id
+                                      }
                                     >
                                       {
                                         this.state.contentDetails[index]
