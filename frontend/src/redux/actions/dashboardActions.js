@@ -3,6 +3,7 @@ import {
     GET_ANSWER_VIEWS,
     GET_ANSWER_UPVOTES,
     GET_ANSWER_DOWNVOTES,
+    GET_ANSWER_BOOKMARKS,
     GET_ERRORS
 } from "./types";
 
@@ -53,6 +54,26 @@ export const getAnswersByDownvotes  = userId => dispatch => {
         console.log(res);
         dispatch({
             type: GET_ANSWER_DOWNVOTES,
+            payload: res.data
+          })
+        }      
+    )
+    .catch(err =>
+        console.log(err)
+    //   dispatch({
+    //     type: GET_ERRORS,
+    //     payload: err.data
+    //   })
+    );
+};
+
+export const getAnswersByBookmarks  = userId => dispatch => {
+  axios
+    .get(`/answers/orderByBookmarks/${userId}`)
+    .then(res => {
+        console.log(res);
+        dispatch({
+            type: GET_ANSWER_BOOKMARKS,
             payload: res.data
           })
         }      
