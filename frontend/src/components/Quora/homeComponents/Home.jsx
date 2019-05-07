@@ -138,6 +138,7 @@ class Home extends React.Component {
             >
               <Grid item xs={2} className="fix-pos">
                 <div style={{ position: "fixed", width: "11%" }}>
+                  <h3>Topics</h3>
                   {userTopicList !== undefined
                     ? userTopicList.map(topic => {
                         return (

@@ -251,6 +251,11 @@ AnswerRoutes.put("/answer/downvote/:userId/:answerId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        client.hset(
+            "get/user/",
+            req.params.userId,
+            JSON.stringify(results.data)
+        );
     });
 });
 
@@ -266,6 +271,11 @@ AnswerRoutes.put("/answer/undoDownvote/:userId/:answerId", (req, res, next) => {
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
+        client.hset(
+            "get/user/",
+            req.params.userId,
+            JSON.stringify(results.data)
+        );
     });
 });
 

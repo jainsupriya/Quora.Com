@@ -115,7 +115,8 @@ class NavHeader extends Component {
       searchValue: "",
       showMsgs: false,
       dialogContent: "",
-      check: ""
+      check: "",
+      left : window.innerWidth*0.65
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.searchForTopicOrPeople = this.searchForTopicOrPeople.bind(this);
@@ -212,6 +213,7 @@ class NavHeader extends Component {
   };
 
   handleAvatarClick = event => {
+    console.log(event.currentTarget);
     this.setState({
       openProfileMenu: event.currentTarget
     });
@@ -419,7 +421,7 @@ class NavHeader extends Component {
         <Popover
           id="simple-popper"
           open={open2}
-          anchorEl={openProfileMenu}
+          anchorEl={this.state.openProfileMenu}
           onClose={this.handleProfileMenuClose}
           anchorReference="anchorPosition"
           anchorOrigin={{
@@ -431,7 +433,7 @@ class NavHeader extends Component {
             horizontal: "left"
           }}
           anchorPosition={{
-            left: 1315,
+            left: this.state.left,
             top: 68
           }}
         >
@@ -787,15 +789,16 @@ class NavHeader extends Component {
               </div>
               {/* onFocus={this.showPopover} */}
               <div
-                onClick={this.handleAvatarClick}
                 className={classes.showCursor}
               >
                 <Avatar
+                  id="avatar"
                   alt={
                     this.props.auth.user.fname + this.props.auth.user.lname
                   }
                   src={this.props.auth.user.profileImg}
                   className="avatar"
+                  onClick={this.handleAvatarClick}
                 />
               </div>
               <button
