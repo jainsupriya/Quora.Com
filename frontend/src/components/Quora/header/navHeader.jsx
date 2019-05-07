@@ -21,8 +21,8 @@ import { logoutUser } from "../../../redux/actions/authActions";
 import { getFollowingUsers } from "../../../redux/actions/messageAction";
 import axios from "axios";
 import MessageDialog from "../Message/MessageDialog";
-
-import Dialog from '@material-ui/core/Dialog';
+import { getUserDetails } from "../../../redux/actions/homeAction";
+import Dialog from "@material-ui/core/Dialog";
 
 const styles = theme => ({
   notificationDialog: {
@@ -37,7 +37,7 @@ const styles = theme => ({
     // overflowY: 'scroll'
     "&:before": {
       content: "",
-      position: 'absolute',
+      position: "absolute",
       top: -20,
       right: 5,
       borderColor: "rgba(204,204,204,0)",
@@ -114,22 +114,23 @@ class NavHeader extends Component {
       openSearchDialog: false,
       searchValue: "",
       showMsgs: false,
-      dialogContent: '',
-      check: ''
+      dialogContent: "",
+      check: ""
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.searchForTopicOrPeople = this.searchForTopicOrPeople.bind(this);
   }
 
   componentDidMount = () => {
-    const userID = this.props.auth.user._id;  
-    console.log(userID);  
+    const userID = this.props.auth.user._id;
+    console.log(userID);
     this.props.getFollowingUsers(userID);
-  }
+    this.props.getUserDetails(this.props.auth.user._id);
+  };
 
   searchForTopicOrPeople(event) {
     const { name, value } = event.target;
-    event.target.focus()
+    event.target.focus();
 
     // document.getElementById("search").focus()
 
@@ -144,27 +145,20 @@ class NavHeader extends Component {
       });
       axios.get(`/topics/search/` + value).then(response => {
         if (response.status === 200) {
-
           this.setState({
             products: response.data
           });
         }
       });
-    }
-    else
-    {
+    } else {
       this.setState({
         openSearchDialog: null
       });
-    // document.getElementById("search").focus()
-
+      // document.getElementById("search").focus()
     }
     // document.getElementById("search").focus()
 
-    
-    document.getElementById("search").focus()
-
-
+    document.getElementById("search").focus();
   }
 
   handleAddQuestion = (question, topic) => {
@@ -221,15 +215,12 @@ class NavHeader extends Component {
   };
 
   handleSearchDialogClose = () => {
-   
     this.setState({
       openSearchDialog: false
     });
   };
 
   showPopover = event => {
-   
-
     this.setState({
       openSearchDialog: event.currentTarget
     });
@@ -240,30 +231,29 @@ class NavHeader extends Component {
   };
 
   abc = () => {
-
     document.getElementById("simple-popper-1").blur();
     document.getElementById("search").focus();
-  }
-  
+  };
+
   handleMessageDialog = () => {
-    console.log("Hello")
+    console.log("Hello");
     this.setState({
-      showMsgs : true,
+      showMsgs: true
       // dialogContent : <MessageDialog open={true} />
-    })
-  }
+    });
+  };
 
   handleCloseMessages = () => {
     this.setState({
-      showMsgs : false
-    })
-  }
+      showMsgs: false
+    });
+  };
   render() {
     const { openNotification, openProfileMenu, openSearchDialog } = this.state;
     const open1 = Boolean(openNotification);
     const open2 = Boolean(openProfileMenu);
     const open3 = Boolean(openSearchDialog);
- 
+
     const { classes, auth } = this.props;
 
     const notificationList = {
@@ -331,8 +321,11 @@ class NavHeader extends Component {
                   >
                     <Grid item>
                       <Avatar
-                        alt={auth.user.fname + auth.user.lname}
-                        src={auth.user.profileImg}
+                        alt={
+                          this.props.userDetails.fname +
+                          this.props.userDetails.lname
+                        }
+                        src={this.props.userDetails.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -375,8 +368,11 @@ class NavHeader extends Component {
                   >
                     <Grid item>
                       <Avatar
-                        alt={auth.user.fname + auth.user.lname}
-                        src={auth.user.profileImg}
+                        alt={
+                          this.props.userDetails.fname +
+                          this.props.userDetails.lname
+                        }
+                        src={this.props.userDetails.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -455,7 +451,7 @@ class NavHeader extends Component {
                   <div
                     className={classes.profileMenu}
                     onClick={this.handleMessageDialog}
-                    style={{cursor: 'pointer'}}
+                    style={{ cursor: "pointer" }}
                   >
                     Messages
                   </div>
@@ -545,8 +541,11 @@ class NavHeader extends Component {
         {notifications}
         {profilePopover}
         {console.log(this.state.dialogContent)}
-       
-        <MessageDialog open={this.state.showMsgs} handleCloseMessages={this.handleCloseMessages}/>
+
+        <MessageDialog
+          open={this.state.showMsgs}
+          handleCloseMessages={this.handleCloseMessages}
+        />
 
         {/* <dialog style={{this.state.check ==}}>
           {this.state.check}
@@ -717,66 +716,67 @@ class NavHeader extends Component {
                 onChange={this.searchForTopicOrPeople}
               />
               <div id="smpl">
-              <div>
-        <Popover
-          id="simple-popper-1"
-          open={open3}
-          anchorEl={document.getElementById("search")}
-          onClose={this.handleSearchDialogClose}
-          anchorReference="anchorPosition"
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left"
-          }}
-          anchorPosition={{
-            left: 1115,
-            top: 68
-          }}
-          // onFocus={this.abc}
-        >
-          {/* style={{ opacity: this.state.searchValue && this.state.searchValue !== '' ? 0 : 1 }} */}
-          <div className={classes.profileDialogWidth}>
-            <div
-              className={classes.notificationContent}
-              style={{ overflow: "hidden" }}
-            >
-              <ul
-                style={{
-                  listStyle: "none",
-                  marginBottom: "0rem",
-                  paddingLeft: 0
-                }}
-              >
-                <li className={classes.listStyle}>
-                  <a
-                    className={classes.profileMenu}
-                    style={{ borderTop: "none" }}
-                    href="/myprofile"
+                <div>
+                  <Popover
+                    id="simple-popper-1"
+                    open={open3}
+                    anchorEl={document.getElementById("search")}
+                    onClose={this.handleSearchDialogClose}
+                    anchorReference="anchorPosition"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center"
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left"
+                    }}
+                    anchorPosition={{
+                      left: 1115,
+                      top: 68
+                    }}
+                    // onFocus={this.abc}
                   >
-                    Profile
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </Popover>
-        {console.log(this)}
-        {/* {document.getElementById("search").focus()} */}
-      </div>
-
+                    {/* style={{ opacity: this.state.searchValue && this.state.searchValue !== '' ? 0 : 1 }} */}
+                    <div className={classes.profileDialogWidth}>
+                      <div
+                        className={classes.notificationContent}
+                        style={{ overflow: "hidden" }}
+                      >
+                        <ul
+                          style={{
+                            listStyle: "none",
+                            marginBottom: "0rem",
+                            paddingLeft: 0
+                          }}
+                        >
+                          <li className={classes.listStyle}>
+                            <a
+                              className={classes.profileMenu}
+                              style={{ borderTop: "none" }}
+                              href="/myprofile"
+                            >
+                              Profile
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </Popover>
+                  {console.log(this)}
+                  {/* {document.getElementById("search").focus()} */}
                 </div>
+              </div>
               {/* onFocus={this.showPopover} */}
               <div
                 onClick={this.handleAvatarClick}
                 className={classes.showCursor}
               >
                 <Avatar
-                  alt={auth.user.fname + auth.user.lname}
-                  src={auth.user.profileImg}
+                  alt={
+                    this.props.userDetails.fname + this.props.userDetails.lname
+                  }
+                  src={this.props.userDetails.profileImg}
                   className="avatar"
                 />
               </div>
@@ -804,10 +804,10 @@ NavHeader.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   followingList: state.message.followingList,
-  // userDetails: state.homeState.userDetails
+  userDetails: state.homeState.userDetails
 });
 
 export default connect(
   mapStateToProps,
-{ addQuestion, logoutUser, getFollowingUsers }
+  { addQuestion, logoutUser, getFollowingUsers, getUserDetails }
 )(withStyles(styles)(withRouter(NavHeader)));

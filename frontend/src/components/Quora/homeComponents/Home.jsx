@@ -51,7 +51,7 @@ class Home extends React.Component {
     var questionData = {
       question: question,
       questionOwner: this.props.auth.user._id,
-      interestedTopicList: []
+      topicList: topic
     };
 
     this.props.addQuestion(questionData);
@@ -162,7 +162,7 @@ class Home extends React.Component {
               </Grid>
               <Grid item xs={8} className="m-padding-left-right-15">
                 <AskQuestionCard
-                  user={this.props.auth.user}
+                  user={this.props.userDetails}
                   handleClickOpen={() => this.handleClickOpen()}
                 />
                 {QuestionComp}
