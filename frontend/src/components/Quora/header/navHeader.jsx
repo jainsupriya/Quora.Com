@@ -188,6 +188,15 @@ class NavHeader extends Component {
     this.setState({ openAddQuestion: false });
   };
 
+  
+  handleDeactivate = () => {
+    axios.delete(`/user/`+ this.props.auth.user.sqlUserId).then(response => {
+      if (response.status === 200) {
+        this.props.history.push("/login")
+      }
+    });
+  };
+
   navigationClick = selectedItem => {
     this.setState({
       navSelectedItem: selectedItem
@@ -466,8 +475,8 @@ class NavHeader extends Component {
                     Search
                   </a>
                 </li>    
-                <li className={classes.listStyle}>
-                  <a className={classes.profileMenu} href="/search">
+                <li className={classes.listStyle}  onClick={this.handleDeactivate}>
+                  <a className={classes.profileMenu}>
                     Deactivate User
                   </a>
                 </li>    

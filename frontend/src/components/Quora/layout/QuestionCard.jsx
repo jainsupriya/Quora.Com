@@ -54,6 +54,12 @@ class QuestionCard extends React.Component {
   showComments = () => {
     this.setState({ showComments: !this.state.showComments });
   };
+  handleDownload = () => {
+    axios.delete(`/user/`).then(response => {
+      if (response.status === 200) {
+      }
+    });
+  };
   readMoreText = () => {
     this.setState({ readMore: true });
 
@@ -474,7 +480,7 @@ class QuestionCard extends React.Component {
                     <span className="m-padding-left-right-15">{`2`}</span>
                   </Grid>
                   <Grid item>
-                    <span className="m-padding-left-right-15">
+                    <span className="m-padding-left-right-15" onClick={this.handleDownload}>
                       <svg
                         width="24px"
                         height="24px"
