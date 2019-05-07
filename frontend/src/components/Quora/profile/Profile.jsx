@@ -177,7 +177,7 @@ class Profile extends React.Component {
 
     console.log(this.props);
 
-    const userDetails = this.props.profile.profile[0];
+    const userDetails = this.props.profile.profile;
     const follower = this.props.state.userDetails;
 
     console.log(userDetails);
