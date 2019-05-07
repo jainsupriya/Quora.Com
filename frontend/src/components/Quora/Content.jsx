@@ -37,7 +37,8 @@ class Content extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getContentDetails(this.props.userDetails._id);
+    const userID = this.props.userDetails._id;
+    this.props.getContentDetails(userID);
     this.setState({
       contentDetails: this.props.contentDetails.contents
     });
@@ -386,16 +387,14 @@ class Content extends Component {
                       <div>
                         <div style={{ padding: "2% 0" }}>
                           <div className="questionNav">
-                            <a >
+                            <a>
                               {(() => {
                                 switch (
                                   this.state.contentDetails[index].activityType
                                 ) {
                                   case "CREATE_QUESTION":
-                                    return( 
-                                      this.state.contentDetails[index]
-                                      .createdQuestion.question)
-
+                                    return this.state.contentDetails[index]
+                                      .createdQuestion.question;
                                   case "CREATE_ANSWER":
                                     return this.state.contentDetails[index]
                                       .createdAnswer.questionId.question;

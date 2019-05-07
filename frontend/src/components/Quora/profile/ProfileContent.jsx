@@ -9,6 +9,7 @@ import {
 import { Provider, connect } from "react-redux";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Avatar from "@material-ui/core/Avatar";
 //import NavHeader from "./header/navHeader";
 import AppBar from "@material-ui/core/AppBar";
 //import Home from "./homeComponents/Home";
@@ -40,7 +41,7 @@ class ProfileContent extends Component {
       userDetails: {},
       contentDetails: [],
       bgColorType: "All Types",
-      questionAsked: [],
+      askedQuestion: [],
       questionfollowed: [],
       answer: [],
       follower: [],
@@ -111,7 +112,10 @@ class ProfileContent extends Component {
       {
         type: typeInRes,
         header: header,
-        bgColorType: bgColorType
+        bgColorType: bgColorType,
+        askedQuestion: this.props.profile.askedQuestion,
+        answer: this.props.profile.userAnswer,
+        questionfollowed: this.props.profile.followedQuestion
       },
       () => this.updateContent()
     );
@@ -147,6 +151,7 @@ class ProfileContent extends Component {
   updateContent = () => {
     // console.log("In2", this);
     let contentDetails = this.props.contentDetails.contents;
+    let askedQuestion = this.props.profile.askedQuestion;
     const type = this.state.type;
     const year = this.state.selectedYear;
     const topic = this.state.topic;
@@ -264,7 +269,8 @@ class ProfileContent extends Component {
     }
     // console.log(tempDetails);
     this.setState({
-      contentDetails: tempDetails
+      contentDetails: tempDetails,
+      askedQuestion: askedQuestion
     });
   };
 
@@ -359,76 +365,222 @@ class ProfileContent extends Component {
                 </div>
 
                 <div>
-                  {Object.keys(this.state.contentDetails).map(index => {
-                    return (
-                      <div>
-                        <div style={{ padding: "2% 0" }}>
-                          <div className="questionNav">
-                            <a>
-                              {(() => {
-                                switch (
-                                  this.state.contentDetails[index].activityType
+                  <div>
+                    <div style={{ padding: "2% 0" }}>
+                      <div className="questionNav">
+                        <a>
+                          {(() => {
+                            switch (this.state.header) {
+                              case "Your Questions":
+                                if (
+                                  this.props.profile.askedQuestion !== undefined
                                 ) {
-                                  case "CREATE_QUESTION":
+                                  Object.keys(
+                                    this.props.profile.askedQuestion
+                                  ).map(index => {
                                     return (
                                       <AnswerCardForAnswerPage
                                         question={
-                                          this.state.contentDetails[index]
-                                            .createdQuestion.question
+                                          this.props.profile.askedQuestion[
+                                            index
+                                          ].createdQuestion.question
                                         }
                                         answerList={
-                                          this.state.contentDetails[index]
-                                            .createdQuestion.answerList
+                                          this.props.profile.askedQuestion[
+                                            index
+                                          ].createdQuestion.answerList
                                         }
                                         myanswer="true"
                                         question_id={
-                                          this.state.contentDetails[index]
-                                            .createdQuestion._id
+                                          this.props.profile.askedQuestion[
+                                            index
+                                          ].createdQuestion._id
                                         }
                                       />
                                     );
-                                  case "CREATE_ANSWER":
+                                  });
+                                }
+                                break;
+                              case "Your Answers":
+                                if (
+                                  this.props.profile.userAnswer !== undefined
+                                ) {
+                                  Object.keys(
+                                    this.props.profile.userAnswer
+                                  ).map(index => {
                                     return (
                                       <QuestionCardForAnswerPage
                                         question={
-                                          this.state.contentDetails[index]
+                                          this.props.profile.userAnswer[index]
                                             .createdAnswer.questionId.question
                                         }
                                         answer={
-                                          this.state.contentDetails[index]
+                                          this.props.profile.userAnswer[index]
                                             .createdAnswer.answer
                                         }
                                         upvoteCount={
-                                          this.state.contentDetails[index]
+                                          this.props.profile.userAnswer[index]
                                             .createdAnswer.upVotes
                                         }
                                         user={this.props.auth.user}
                                         answerOwner={
-                                          this.state.contentDetails[index]
+                                          this.props.profile.userAnswer[index]
                                             .createdAnswer.answerOwner
                                         }
                                         postedTime={
-                                          this.state.contentDetails[index]
+                                          this.props.profile.userAnswer[index]
                                             .createdAnswer.postedTime
                                         }
                                         views={
-                                          this.state.contentDetails[index]
+                                          this.props.profile.userAnswer[index]
                                             .createdAnswer.views
                                         }
                                         myanswer="true"
                                       />
                                     );
-                                  case "FOLLOWED_QUESTION":
-                                    return this.state.contentDetails[index]
-                                      .followedQuestion.question;
+                                  });
                                 }
-                              })()}
-                            </a>
-                          </div>
-                        </div>
+                                break;
+                              case "Your Followed Questions":
+                                if (
+                                  this.props.profile.followedQuestion !=
+                                    undefined ||
+                                  this.props.profile.followedQuestion != []
+                                ) {
+                                  Object.keys(
+                                    this.props.profile.followedQuestion
+                                  ).map(index => {
+                                    return (
+                                      <AnswerCardForAnswerPage
+                                        question={
+                                          this.props.profile.followedQuestion[
+                                            index
+                                          ].createdQuestion.question
+                                        }
+                                        answerList={
+                                          this.props.profile.followedQuestion[
+                                            index
+                                          ].createdQuestion.answerList
+                                        }
+                                        myanswer="true"
+                                        question_id={
+                                          this.props.profile.followedQuestion[
+                                            index
+                                          ].createdQuestion._id
+                                        }
+                                      />
+                                    );
+                                  });
+                                }
+                                break;
+                              case "Followers":
+                                if (this.props.profile.follower !== undefined) {
+                                  Object.keys(
+                                    this.props.profile.follower[0]
+                                      .followersUserList
+                                  ).map(index => {
+                                    return (
+                                      <div>
+                                        <div style={{ padding: "2% 0" }}>
+                                          <div className="questionNav">
+                                            <Avatar
+                                              alt={
+                                                this.props.profile.follower[0]
+                                                  .followersUserList[index]
+                                              }
+                                              src={
+                                                this.props.profile.follower[0]
+                                                  .followersUserList[index]
+                                                  .profileImg
+                                              }
+                                              className="avatar"
+                                            />
+                                            <a
+                                              href={`/profile/${
+                                                this.props.profile.follower[0]
+                                                  .followersUserList[index]._id
+                                              }`}
+                                            >
+                                              {this.props.profile.follower[0]
+                                                .followersUserList[index]
+                                                .fname +
+                                                "  " +
+                                                this.props.profile.follower[0]
+                                                  .followersUserList[index]
+                                                  .lname}
+                                            </a>
+                                          </div>
+                                          <div
+                                            className="secondaryText"
+                                            style={{
+                                              padding: "1% 0 0"
+                                            }}
+                                          />
+                                        </div>
+                                        <Divider />
+                                      </div>
+                                    );
+                                  });
+                                }
+                                break;
+                              case "Following":
+                                if (
+                                  this.props.profile.following !== undefined
+                                ) {
+                                  Object.keys(
+                                    this.props.profile.following[0]
+                                      .followingUserList
+                                  ).map(index => {
+                                    return (
+                                      <div>
+                                        <div style={{ padding: "2% 0" }}>
+                                          <div className="questionNav">
+                                            <Avatar
+                                              alt={
+                                                this.props.profile.following[0]
+                                                  .followingUserList[index]
+                                              }
+                                              src={
+                                                this.props.profile.following[0]
+                                                  .followingUserList[index]
+                                                  .profileImg
+                                              }
+                                              className="avatar"
+                                            />
+                                            <a
+                                              href={`/profile/${
+                                                this.props.profile.following[0]
+                                                  .followingUserList[index]._id
+                                              }`}
+                                            >
+                                              {this.props.profile.following[0]
+                                                .followingUserList[index]
+                                                .fname +
+                                                "  " +
+                                                this.props.profile.following[0]
+                                                  .followingUserList[index]
+                                                  .lname}
+                                            </a>
+                                          </div>
+                                          <div
+                                            className="secondaryText"
+                                            style={{
+                                              padding: "1% 0 0"
+                                            }}
+                                          />
+                                        </div>
+                                        <Divider />
+                                      </div>
+                                    );
+                                  });
+                                }
+                                break;
+                            }
+                          })()}
+                        </a>
                       </div>
-                    );
-                  })}
+                    </div>
+                  </div>
                 </div>
               </Grid>
 
