@@ -14,12 +14,12 @@ export const getChatHistory = (u1,u2) => dispatch => {
     axios
         .get("/messages/"+u1+"/"+u2)
         .then(res => {
-            if (res.data.msg === "Success") {
+            // if (res.data.msg === "Success") {
                 dispatch({
                     type: SET_MESSAGE_HISTORY,
                     payload: res.data
                 });
-            }
+            // }
         })
         .catch(err => {
             console.log(err);
@@ -50,14 +50,14 @@ export const sendMessage = (u1,u2,content) => dispatch => {
         let sendData = {
             sender: u1,
             receiver: u2,
-            content: content
+            msgBody: content
         };
         axios
-            .post(BASE_URL + "message", sendData)
+            .post("/message", sendData)
             .then(res => {
-                if (res.data.msg === "Success") {
+                // if (res.data.msg === "Success") {
                     dispatch(getChatHistory(u1,u2));
-                }
+                // }
             })
             .catch(err => {
                 console.log(err);

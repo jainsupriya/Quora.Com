@@ -79,9 +79,10 @@ class MessageDialog extends React.Component {
     open: false,
     followingUsers: [],
     openChat: false,
-    receiverID: '',
-    receiverImage: '',
-    receiverName: ''
+    receiverID: "",
+    receiverImage: "",
+    receiverName: "",
+    chatHistory: ""
   };
 
   componentWillReceiveProps(props) {
@@ -91,45 +92,52 @@ class MessageDialog extends React.Component {
     // console.log(props.followingList);
 
     this.setState({
-      open: props.open,
-      openChat: false
+      open: props.open
     });
   }
 
-  componentWillUnmount() {}
 
-  //   handleClose = () => {
-  //     console.log("Hello");
-  //       this.setState({
-  //         open: false
-  //     })
-  //   };
-
-  openChatWindow = e => (id, profileImage, name) => {
+  openChatWindow = (e, receiverId, receiverFname, receiverLname, receiverImage) => {
     // e.preventDefault();
-    console.log(id);
+    console.log(e);
+    console.log(receiverId);
+    console.log(receiverFname);
+    console.log(receiverLname);
+
+    const userId = this.props.auth.user._id;
+    console.log(userId);
+    this.props.getChatHistory(userId, receiverId);
     this.setState({
       openChat: true,
-      
+      receiverID: receiverId,
+      receiverName: receiverFname + " " + receiverLname,
+      receiverImage: receiverImage
     });
   };
 
   closeChatWindow = () => {
     this.setState({
       openChat: false,
-      receiverID: '',
-      receiverImage: '',
-      receiverName: ''
+      receiverID: "",
+      receiverImage: "",
+      receiverName: "",
     });
   };
+
+  localsendMessage=()=>{
+    this.props.sendMessage(this.props.auth.user._id,this.state.receiverID,document.getElementById("messageContent").value)
+    // this.props.sendMessage(this.props.match.params.u1,this.props.match.params.u2,document.getElementById("messageContent").value)
+    document.getElementById("messageContent").value = "";
+}
+
   render() {
     const { classes } = this.props;
     // const u1 = this.props.match.params.u1;
     // const u2 = this.props.match.params.u2;
     // console.log(this.props.state)
-    console.log(this.props.followingList);
+    let messagehistory = this.props.messagehistory;
     const followingList = this.props.followingList;
-    console.log(this.state.receiverID)
+    console.log(this.state.receiverID);
     return (
       <div>
         <Dialog
@@ -158,10 +166,9 @@ class MessageDialog extends React.Component {
               <ul
                 style={{ listStyle: "none", paddingLeft: 0, marginBottom: 0 }}
               >
-                {/* {console.log(this.state.followingUsers)} */}
                 {Object.keys(followingList).map(index => {
                   return (
-                    <li style={{ borderBottom: "1px solid #e2e2e2" }}>
+                    <li key={index} style={{ borderBottom: "1px solid #e2e2e2" }}>
                       <Grid
                         container
                         direction="row"
@@ -193,14 +200,15 @@ class MessageDialog extends React.Component {
                         </Grid>
                         <Grid item xs={3} style={{ padding: "3%" }}>
                           <Button
+                            id={followingList[index]._id}
                             className={classes.msgButton}
-                            onClick={() =>
+                            onClick={e =>
                               this.openChatWindow(
+                                e,
                                 followingList[index]._id,
-                                followingList[index].profileImg,
-                                followingList[index].fname +
-                                  " " +
-                                  followingList[index].lname
+                                followingList[index].fname,
+                                followingList[index].lname,
+                                followingList[index].profileImg
                               )
                             }
                           >
@@ -211,37 +219,6 @@ class MessageDialog extends React.Component {
                     </li>
                   );
                 })}
-
-                {/* <li style={{ borderBottom: "1px solid #e2e2e2" }}>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="flex-start"
-                  >
-                    <Grid item xs={1} style={{ padding: "1%" }}>
-                      <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
-                    </Grid>
-                    <Grid
-                      item
-                      xs={8}
-                      style={{ padding: "2%", fontWeight: 500, fontSize: 18 }}
-                    >
-                      <Typography variant="h6" component="h6">
-                        {" "}
-                        Mayank Padshala{" "}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3} style={{ padding: "3%" }}>
-                      <Button
-                        className={classes.msgButton}
-                        onClick={this.openChatWindow}
-                      >
-                        Message
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </li> */}
               </ul>
             </div>
           </div>
@@ -287,13 +264,13 @@ class MessageDialog extends React.Component {
                 justify="flex-start"
                 alignItems="center"
               >
-                <Avatar alt="Remy Sharp" src="1.jpg" className="m-bigAvatar" />
+                <Avatar alt="Remy Sharp" src={this.state.receiverImage} className="m-bigAvatar" />
                 <Typography variant="h5" component="h3">
-                  Namrata Kasar
+                  {this.state.receiverName}
                 </Typography>
                 <div
                   className={classes.modalClose}
-                  onClick={this.closeChatWindow}
+                  onClick={() => this.closeChatWindow()}
                   style={{ cursor: "pointer" }}
                 >
                   <CloseIcon />
@@ -302,170 +279,23 @@ class MessageDialog extends React.Component {
             </div>
 
             <div className="m-chat-bg col-lg-12">
-              {/* {this.props.state.messagehistory.map((item, key) => {
-                        return ( */}
-              <div
-                // key={key}
-                className={
-                  "m-chat-left"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-right"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-left"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-right"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-left"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-right"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-left"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-right"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-left"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              <div
-                // key={key}
-                className={
-                  "m-chat-right"
-                  // this.props.userState.userId == item.sender
-                  // u1 == item.sender
-                  // ? "m-chat-right"
-                  // : "m-chat-left"
-                }
-              >
-                <Typography variant="h5" component="h3">
-                  {/* {item.content} */}
-                  Hello
-                </Typography>
-                <Typography component="p">{/* {item.timeStamp} */}</Typography>
-              </div>
-              {/* );
-                    })} */}
+              {messagehistory.map((item, key) => {
+                return (
+                  <div
+                    key={key}
+                    className={
+                      this.props.auth.user._id === item.sender
+                        ? "m-chat-right"
+                        : "m-chat-left"
+                    }
+                  >
+                    <Typography variant="h5" component="h3">
+                      {item.msgBody}
+                    </Typography>
+                    <Typography component="p">{item.timeStamp}</Typography>
+                  </div>
+                );
+              })}
             </div>
 
             <div className="m-chat-write">
@@ -503,10 +333,11 @@ MessageDialog.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   state: state.chatState,
   userState: state.userState,
   followingList: state.message.followingList,
-  userDetails: state.homeState.userDetails
+  messagehistory: state.message.messagehistory
 });
 
 export default connect(
