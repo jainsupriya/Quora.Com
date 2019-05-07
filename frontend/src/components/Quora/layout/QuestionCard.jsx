@@ -25,6 +25,14 @@ import iReact from "read-more-react";
 import isEmpty from "../../../validator/is-empty";
 import moment from "moment";
 import axios from "axios";
+import { connect } from "react-redux";
+import {
+  addQuestion,
+  getUserDetails,
+  getTopicQuestions,
+  getQuestions,
+  getAnswersForQuestion,
+} from "../../../redux/actions/homeAction";
 
 import { Link } from "react-router-dom";
 import AnswerCard from "../AnswerComponent/AnswerCard";
@@ -42,7 +50,8 @@ class QuestionCard extends React.Component {
       readMore: false,
       isBookmarked: false,
       commentList: [],
-      visible: 2
+      visible: 2,
+      downvote:false
     };
     this.loadMore = this.loadMore.bind(this);
   }
@@ -54,6 +63,21 @@ class QuestionCard extends React.Component {
   showComments = () => {
     this.setState({ showComments: !this.state.showComments });
   };
+  handleDownload = () => {
+    axios.put(`/answer/downvote/${this.props.auth.user._id}/${this.props.question.answerList[0]._id}`).then(response => {
+      if (response.status === 200) {
+        this.setState({downvote:true})
+      }
+    });
+  };
+  handleUndoDownVote=()=>{
+    console.log(this.props.auth.user._id+ " " + this.props.question.answerList[0]._id)
+    axios.put(`/answer/undoDownvote/${this.props.auth.user._id}/${this.props.question.answerList[0]._id}`).then(response => {
+      if (response.status === 200) {
+        this.setState({downvote:false})
+      }
+    });
+  }
   readMoreText = () => {
     this.setState({ readMore: true });
 
@@ -245,12 +269,12 @@ class QuestionCard extends React.Component {
   render() {
     const { question } = this.props;
     const { isUpvoted, upvoteCount } = this.state;
-
     var comp = "";
     var upvotecomp = "";
     var answer = {};
 
     if (question.answerList !== undefined && question.answerList.length) {
+
       answer = question.answerList[0];
       if (isUpvoted) {
         upvotecomp = (
@@ -395,7 +419,7 @@ class QuestionCard extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                  {!this.state.readMore && (
+                  {!this.state.readMore && (!this.props.auth.user.downVoteAnswerList.includes(question.answerList[0]._id) || this.state.downvote===false) && (
                     <Typography
                       variant="subtitle"
                       style={{
@@ -410,15 +434,18 @@ class QuestionCard extends React.Component {
                       {answer.answer !== undefined ? Parser(answer.answer) : ""}
                     </Typography>
                   )}
-                  {this.state.readMore && (
+                  {this.state.readMore && (!this.props.auth.user.downVoteAnswerList.includes(question.answerList[0]._id) || this.state.downvote===false) && 
                     <Typography
                       variant="subtitle1"
                       onClick={() => this.readMoreTextClose()}
                     >
                       {answer.answer !== undefined ? Parser(answer.answer) : ""}
                     </Typography>
-                  )}
+                  }
                 </Grid>
+                { (this.state.downvote=== true && this.props.auth.user.downVoteAnswerList.includes(question.answerList[0]._id)) &&
+                  <a onClick={this.handleUndoDownVote}>Undo Downvote </a> 
+                }
                 <Grid item className="votes">
                   {answer.views} {`views · View Upvoters`}
                 </Grid>
@@ -474,7 +501,7 @@ class QuestionCard extends React.Component {
                     <span className="m-padding-left-right-15">{`2`}</span>
                   </Grid>
                   <Grid item>
-                    <span className="m-padding-left-right-15">
+                    <span className="m-padding-left-right-15" onClick={this.handleDownload}>
                       <svg
                         width="24px"
                         height="24px"
@@ -702,4 +729,16 @@ class QuestionCard extends React.Component {
   }
 }
 
-export default withStyles(styles)(QuestionCard);
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors,
+  userDetails: state.homeState.userDetails,
+  questions: state.homeState.questions,
+  answerforquestions: state.homeState.answerforquestions,
+
+});
+
+export default connect(
+  mapStateToProps,
+  { addQuestion, getUserDetails, getTopicQuestions, getQuestions, getAnswersForQuestion }
+)(withStyles(styles)(QuestionCard));

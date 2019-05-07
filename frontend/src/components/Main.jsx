@@ -53,7 +53,8 @@ class Main extends Component {
               <PrivateRoute path="/profile/:id" component={Profile} />
               <PrivateRoute path="/message" component={Message} />
               <PrivateRoute path="/answer" component={QuestionAnswer} />
-              <PrivateRoute path="/Search" component={Search} />              
+              <PrivateRoute path="/Search" component={Search} />   
+              <PrivateRoute path="/deactivate" component={Login} />               
               <PrivateRoute path="/:id" component={Answers} />
               <Route render={() => <h3>Page not Found</h3>} />
             </Switch>

@@ -4,6 +4,16 @@ const Question = require("../models/question");
 const Content = require("../models/content");
 const Activity = require("../models/activity");
 
+var Pusher = require('pusher');
+
+var pusher = new Pusher({
+  appId: '776224',
+  key: '67f71ccfff5990b594ee',
+  secret: 'ec808fa31e3693ea10c5',
+  cluster: 'us3',
+  encrypted: true
+});
+
 myCallback = (err, result, callback) => {
     if (err) {
         console.log("__________err_________________\n", err);
@@ -76,6 +86,16 @@ function handle_request(msg, callback) {
                                                                 "__________result1_________________\n",
                                                                 result1
                                                             );
+                                                            User.find()
+                                                            .then((res) => {
+                                                                res.map((resul) => {
+                                                                    if(resul._id === result1.questionOwner){
+                                                                        pusher.trigger('quora', 'post-answer', {
+                                                                            "message": result1.questionOwner + "Should be notified"
+                                                                          });
+                                                                    }
+                                                                })
+                                                            })
                                                             console.log(
                                                                 "__________result2_________________\n",
                                                                 result2

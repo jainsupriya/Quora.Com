@@ -45,7 +45,8 @@ import Moment from "moment";
 import {
   getAnswersByViews,
   getAnswersByUpvotes,
-  getAnswersByDownvotes
+  getAnswersByDownvotes,
+  getAnswersByBookmarks
 } from "../../redux/actions/dashboardActions";
 
 
@@ -166,6 +167,7 @@ class Dashboard extends React.Component {
     this.props.getAnswersByViews(userId);
     this.props.getAnswersByUpvotes(userId);
     this.props.getAnswersByDownvotes(userId);
+    this.props.getAnswersByBookmarks(userId);
 
     console.log(this.props.userDetails.profileViews);
     this.getDateArray();
@@ -210,6 +212,7 @@ class Dashboard extends React.Component {
     let msgForViews = ''
     let msgForUpvotes = ''
     let msgForDownvotes = ''
+    let msgForBookmarks = ''
 
     let answerViews = this.props.answerByViewDetails.answersByViews;
 
@@ -278,7 +281,23 @@ class Dashboard extends React.Component {
     // {
 
     // }
-    
+
+    console.log(this.props.answerByViewDetails.answerByBookmarks);
+
+    let answerBookmarks = this.props.answerByViewDetails.answerByBookmarks;
+    if(answerBookmarks.length != 0)
+    {
+      answerBookmarks = _.reverse(_.sortBy(answerBookmarks, item => item.bookmarkCount));
+      answerBookmarks = _.take(answerBookmarks);
+      if(answerBookmarks[0].bookmarkCount == 0)
+      {
+        msgForBookmarks = "Nobody bookmarked your answers :)";
+      }
+    }
+    else
+    {
+      msgForBookmarks = "You haven't posted any answer yet!!!!";
+    }
 
     const mainListItems = (
       <List>
@@ -286,13 +305,7 @@ class Dashboard extends React.Component {
           <ListItemIcon style={{color : '#a94442'}}>
             <DashboardIcon />
           </ListItemIcon>
-          <ListItemText primary="Show By View" />
-        </ListItem>
-        <ListItem button onClick={() => this.handleMenuChange("byBokkmarked")}>
-          <ListItemIcon style={{color : '#a94442'}}>
-            <BarChartIcon />
-          </ListItemIcon>
-          <ListItemText primary="Bookmarked Answers" />
+          <ListItemText primary="Answers View" />
         </ListItem>
         <ListItem
           button
@@ -479,30 +492,50 @@ class Dashboard extends React.Component {
               </Paper>
             </Grid>
 
-            {/* <Grid item xs={7}>
-              <Paper>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="left">Answer</TableCell>
-                      <TableCell align="left">Answers</TableCell>
-                      <TableCell align="left">Views</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {temp.map(n => (
-                      <TableRow key={n.id}>
-                        <TableCell align="left">{n.questionId}</TableCell>
-                        <TableCell align="left">{Parser(n.answer)}</TableCell>
-                        <TableCell align="left">{n.views}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Paper>
-            </Grid> */}
+            
           </Grid>
-          <div className={classes.tableContainer}>{/* <SimpleTable /> */}</div>
+
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="flex-start"
+          >
+            <Grid item xs={4} style={{ padding: "1%" }}>
+              <Paper>
+                <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
+                  Bookmarked Answers
+                </Typography>
+                <PieChart data={answerBookmarks} type="bookmarks" />
+                <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
+                  {msgForBookmarks}
+                </Typography>
+                <div style={{ padding: "4%" }}>
+                  <Paper style={{display : answerBookmarks.length == 0 ? 'none' : 'block'}}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="left">Answer</TableCell>
+                          <TableCell align="left">Views</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {answerBookmarks.map((n, index) => (
+                          <TableRow key={n.id}>
+                            <TableCell align="left"><a href={"/"+n.questionId}>{"Answer " + (++index)}</a></TableCell>
+                            <TableCell align="left">{n.bookmarkCount}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Paper>
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={4} style={{ padding: "1%" }}></Grid>
+            <Grid item xs={4} style={{ padding: "1%" }}></Grid>
+            
+          </Grid>
         </main>
 
         <main
@@ -544,5 +577,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAnswersByViews, getAnswersByUpvotes, getAnswersByDownvotes }
+  { getAnswersByViews, getAnswersByUpvotes, getAnswersByDownvotes, getAnswersByBookmarks }
 )(withStyles(styles)(Dashboard));

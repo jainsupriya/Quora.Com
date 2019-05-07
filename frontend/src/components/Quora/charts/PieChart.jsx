@@ -8,20 +8,19 @@ export const PieChart = props => {
   let pie;
   if (props.type === "views") {
     pie = d3.pie().value(d => d.views)(props.data);
-  } 
-  else if (props.type === "upvotes") {
+  } else if (props.type === "upvotes") {
     console.log(props.data);
     pie = d3.pie().value(d => d.upVotes.length)(props.data);
   } else if (props.type === "downvotes") {
     pie = d3.pie().value(d => d.downVotesCount)(props.data);
+  } else if (props.type === "bookmarks") {
+    pie = d3.pie().value(d => d.bookmarkCount)(props.data);
   }
-
-  
 
   return (
     <svg height={height} width={width}>
       <g transform={`translate(${width / 2} ${height / 2})`}>
-        <Slice pie={pie} data={props.data} type={props.type}/>
+        <Slice pie={pie} data={props.data} type={props.type} />
       </g>
     </svg>
   );
@@ -49,9 +48,17 @@ const Slice = props => {
               case "views":
                 return "Answer " + (index + 1) + " : " + data[index].views;
               case "upvotes":
-                return "Answer " + (index + 1) + " : " + data[index].upVotes.length;
+                return (
+                  "Answer " + (index + 1) + " : " + data[index].upVotes.length
+                );
               case "downvotes":
-                return "Answer " + (index + 1) + " : " + data[index].downVotesCount;
+                return (
+                  "Answer " + (index + 1) + " : " + data[index].downVotesCount
+                );
+              case "bookmarks":
+                return (
+                  "Answer " + (index + 1) + " : " + data[index].bookmarkCount
+                );
             }
           })()}
         </title>

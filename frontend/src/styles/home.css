@@ -1,4 +1,3 @@
-
 .root {
   flex-grow: 1;
 }
@@ -100,6 +99,15 @@
 .feed-bg-2 {
   background-image: url(https://qsfl2.fs.quoracdn.net/-3-images.icons.mobile_feed_switcher.feed_3x.png-26-94e21de5c18cba55.png);
   background-color: #666;
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  position: relative;
+}
+
+.feed-bookmark-1 {
+  background-image: url(https://qsf.fs.quoracdn.net/-3-images.icons.mobile_feed_switcher.bookmark_3x.png-26-fd5bb1ef5737065f.png);
+  background-color: #b92b27;
   width: 25px;
   height: 25px;
   background-size: cover;
@@ -214,7 +222,7 @@
   padding: 2% 5%;
 }
 
-a{
+a {
   cursor: pointer;
 }
 
@@ -227,18 +235,17 @@ a{
   color: #949494;
 }
 
-
-.load-more{
+.load-more {
   display: block;
   border: 0;
   margin: 1em auto;
-  padding: .75em 1em;
+  padding: 0.75em 1em;
   font-size: 1em;
   background-color: #c34d41;
   color: #fff;
   font-weight: 500;
   text-transform: uppercase;
 
-  cursor: pointer  ;
-  outline: 1px solid rgba(255, 255, 255, .5)
+  cursor: pointer;
+  outline: 1px solid rgba(255, 255, 255, 0.5);
 }

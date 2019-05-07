@@ -1,8 +1,14 @@
-import { GET_ANSWER_VIEWS, GET_ANSWER_UPVOTES,GET_ANSWER_DOWNVOTES } from "../actions/types";
+import {
+  GET_ANSWER_VIEWS,
+  GET_ANSWER_UPVOTES,
+  GET_ANSWER_DOWNVOTES,
+  GET_ANSWER_BOOKMARKS
+} from "../actions/types";
 const initialState = {
   answersByViews: [],
   answersByUpvotes: [],
-  answerByDownVotes: []
+  answerByDownVotes: [],
+  answerByBookmarks: []
 };
 
 export default function(state = initialState, action) {
@@ -23,6 +29,13 @@ export default function(state = initialState, action) {
         ...state,
         answerByDownVotes: action.payload
       };
+
+    case GET_ANSWER_BOOKMARKS:
+      return {
+        ...state,
+        answerByBookmarks: action.payload
+      };
+      ;
     default:
       return state;
   }
