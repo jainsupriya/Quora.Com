@@ -13,7 +13,7 @@ export const PieChart = props => {
     console.log(props.data);
     pie = d3.pie().value(d => d.upVotes.length)(props.data);
   } else if (props.type === "downvotes") {
-    pie = d3.pie().value(d => d.views)(props.data);
+    pie = d3.pie().value(d => d.downVotesCount)(props.data);
   }
 
   
@@ -51,7 +51,7 @@ const Slice = props => {
               case "upvotes":
                 return data[index].questionId + ": " + data[index].upVotes.length;
               case "downvotes":
-                return data[index].questionId + ": " + data[index].views;
+                return data[index].questionId + ": " + data[index].downVotesCount;
             }
           })()}
         </title>

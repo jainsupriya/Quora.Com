@@ -44,7 +44,8 @@ import Moment from "moment";
 
 import {
   getAnswersByViews,
-  getAnswersByUpvotes
+  getAnswersByUpvotes,
+  getAnswersByDownvotes
 } from "../../redux/actions/dashboardActions";
 
 
@@ -160,8 +161,11 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount = () => {
-    this.props.getAnswersByViews();
-    this.props.getAnswersByUpvotes();
+    let userId = this.props.auth.user._id;
+    this.props.getAnswersByViews(userId);
+    this.props.getAnswersByUpvotes(userId);
+    this.props.getAnswersByDownvotes(userId);
+
     console.log(this.props.userDetails.profileViews);
     this.getDateArray();
   };
@@ -213,6 +217,15 @@ class Dashboard extends React.Component {
       _.sortBy(answerUpvotes, item => item.upVotes.length)
     );
     answerUpvotes = _.take(answerUpvotes, 10);
+    console.log(_.maxBy(answerUpvotes, "upVotesCount"))
+
+    let answerDownVotes = this.props.answerByViewDetails.answerByDownVotes;
+    answerDownVotes = _.take(answerDownVotes, 5);
+    if(_.maxBy(answerDownVotes, "downVotesCount").downVotesCount == 0)
+    {
+      answerDownVotes.push({"downVotesCount" : 1, "questionId" : '' })
+    }
+    
 
     const mainListItems = (
       <List>
@@ -333,7 +346,7 @@ class Dashboard extends React.Component {
                       <TableBody>
                         {temp.map((n, index) => (
                           <TableRow key={n.id}>
-                            <TableCell align="left">{"Answer " + (++index)}</TableCell>
+                            <TableCell align="left"><a href={"/"+n.questionId}>{"Answer " + (++index)}</a></TableCell>
                             <TableCell align="left">{n.views}</TableCell>
                           </TableRow>
                         ))}
@@ -362,7 +375,7 @@ class Dashboard extends React.Component {
                       <TableBody>
                         {answerUpvotes.map((n, index) => (
                           <TableRow key={index}>
-                            <TableCell align="left">{"Answer " + (++index)}</TableCell>
+                            <TableCell align="left"><a href={"/"+n.questionId}>{"Answer " + (++index)}</a></TableCell>
                             <TableCell align="left">
                               {n.upVotes.length}
                             </TableCell>
@@ -380,7 +393,7 @@ class Dashboard extends React.Component {
                 <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
                   Top 5 Answers with Downvotes
                 </Typography>
-                <PieChart data={temp} type="downvotes" />
+                <PieChart data={answerDownVotes} type="downvotes" />
                 <div style={{ padding: "4%" }}>
                   <Paper>
                     <Table>
@@ -391,10 +404,10 @@ class Dashboard extends React.Component {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {temp.map((n, index) => (
+                        {answerDownVotes.map((n, index) => (
                           <TableRow key={index}>
-                            <TableCell align="left">{"Answer " + (++index)}</TableCell>
-                            <TableCell align="left">{n.views}</TableCell>
+                            <TableCell align="left"><a href={"/"+n.questionId}>{"Answer " + (++index)}</a></TableCell>
+                            <TableCell align="left">{n.downVotesCount}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -462,11 +475,12 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   answerByViewDetails: state.dashboard,
   userDetails: state.homeState.userDetails
 });
 
 export default connect(
   mapStateToProps,
-  { getAnswersByViews, getAnswersByUpvotes }
+  { getAnswersByViews, getAnswersByUpvotes, getAnswersByDownvotes }
 )(withStyles(styles)(Dashboard));

@@ -1,7 +1,8 @@
-import { GET_ANSWER_VIEWS, GET_ANSWER_UPVOTES } from "../actions/types";
+import { GET_ANSWER_VIEWS, GET_ANSWER_UPVOTES,GET_ANSWER_DOWNVOTES } from "../actions/types";
 const initialState = {
   answersByViews: [],
-  answersByUpvotes: []
+  answersByUpvotes: [],
+  answerByDownVotes: []
 };
 
 export default function(state = initialState, action) {
@@ -17,6 +18,11 @@ export default function(state = initialState, action) {
         answersByUpvotes: action.payload
       };
 
+    case GET_ANSWER_DOWNVOTES:
+      return {
+        ...state,
+        answerByDownVotes: action.payload
+      };
     default:
       return state;
   }
