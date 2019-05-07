@@ -85,7 +85,7 @@ class DialogPhoto extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file:""
+      file: ""
     };
   }
 
@@ -97,10 +97,10 @@ class DialogPhoto extends Component {
   };
 
   updateUserImage = event => {
-   // console.log(this.props.state.userDetails._id);
-   this.setState({
-     file:"yes"
-   })
+    // console.log(this.props.state.userDetails._id);
+    this.setState({
+      file: "yes"
+    });
     if (event.target.files.length === 1) {
       console.log(event.target.files);
       let img = event.target.files[0];
@@ -114,7 +114,8 @@ class DialogPhoto extends Component {
       fd.append("filename", filename);
       fd.append("file", event.target.files[0]);
 
-      this.props.updateImage(fd,this.props.history);
+      this.props.updateImage(fd, this.props.history);
+      this.props.onClose();
     }
   };
 
@@ -218,7 +219,7 @@ class DialogPhoto extends Component {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.onClose} color="primary">
+            <Button onClick={this.props.onClose} color="secondary">
               Cancel
             </Button>
             <Button onClick={this.updateImage} color="primary">
