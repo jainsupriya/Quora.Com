@@ -44,11 +44,7 @@ export const getUserDetails = userId => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-<<<<<<< HEAD
         payload: err !== undefined ? err.data : {}
-=======
-        payload: err.response !== undefined ? err.response.data : {}
->>>>>>> origin/Namrata
       })
     );
 };
