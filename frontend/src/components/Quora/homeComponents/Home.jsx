@@ -18,6 +18,7 @@ import Loading from "../../commons/Loading";
 
 import Pusher from 'pusher-js';
 
+
 import BookmarkFeed from "../layout/BookmarkFeed";
 import {
   addQuestion,
@@ -89,15 +90,19 @@ class Home extends React.Component {
   render() {
     var QuestionComp;
 
-    // var pusher = new Pusher('67f71ccfff5990b594ee', {
-    //   cluster: 'us3',
-    //   forceTLS: true
-    // });
+    
+  // Enable pusher logging - don't include this in production
+  Pusher.logToConsole = true;
 
-    // var channel = pusher.subscribe('quora');
-    // channel.bind('post-answer', function(data) {
-    //   console.log(JSON.stringify(data));
-    // });
+    var pusher = new Pusher('67f71ccfff5990b594ee', {
+      cluster: 'us3',
+      forceTLS: true
+    });
+
+    var channel = pusher.subscribe('quora');
+    channel.bind('post-answer', function(data) {
+      console.log(JSON.stringify(data));
+    });
 
     var userTopicList =
       this.props.userDetails !== undefined &&
