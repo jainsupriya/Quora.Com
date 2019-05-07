@@ -55,7 +55,6 @@ class Home extends React.Component {
     };
 
     this.props.addQuestion(questionData);
-    this.setState({ openAddQuestion: false });
   };
 
   handleClickOpen = () => {
@@ -166,7 +165,6 @@ class Home extends React.Component {
                   Improve Your Feed
                   <Divider />
                   {/* {for (let index = 0; index < 10; index++) {
-
                                         
                                     }} */}
                   <Grid

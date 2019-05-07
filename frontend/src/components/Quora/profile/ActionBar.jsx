@@ -141,23 +141,23 @@ class ActionBar extends Component {
             isFollow: !this.state.isFollow
           });
         })
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     } else if (this.state.isFollow && this.state.followerCount > 0) {
       // this.props.removeFollower(this.props.user._id,this.props.follower._id)
       axios
         .put(
           `/user/unFollowUser/${this.props.user._id}/${this.props.follower._id}`
         )
-        
-        .then(res  => {
+
+        .then(res => {
           console.log(res.data);
           this.setState({
             followerCount:
-              this.state.followerCount > 0 ? (this.state.followerCount - 1) : 0,
+              this.state.followerCount > 0 ? this.state.followerCount - 1 : 0,
             isFollow: !this.state.isFollow
           });
         })
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     }
   };
 

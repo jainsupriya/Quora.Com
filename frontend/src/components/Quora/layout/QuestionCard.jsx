@@ -190,13 +190,13 @@ class QuestionCard extends React.Component {
       axios
         .put(`/answer/upvoteInc/${this.props.user._id}/${answerOwnerId}`)
         .then(res => console.log(res.data))
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     } else {
       upvoteCount = this.state.upvoteCount > 0 ? this.state.upvoteCount - 1 : 0;
       axios
         .put(`/answer/upvoteDec/${this.props.user._id}/${answerOwnerId}`)
         .then(res => console.log(res.data))
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     }
 
     this.setState({
@@ -210,12 +210,12 @@ class QuestionCard extends React.Component {
       axios
         .put(`/user/bookmarkAnswer/${this.props.user._id}/${answerId}`)
         .then(res => console.log(res.data))
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     } else {
       axios
         .put(`/user/unBookmarkAnswer/${this.props.user._id}/${answerId}`)
         .then(res => console.log(res.data))
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     }
 
     this.setState({
@@ -233,7 +233,7 @@ class QuestionCard extends React.Component {
     axios
       .post("/comment", commentData)
       .then(res => console.log())
-      .catch(err => console.log(err.data));
+      .catch(err => console.log(err));
 
     commentList.push(commentData);
     this.setState({
