@@ -101,8 +101,7 @@ class Search extends React.Component {
         searchValue: value
       });
       console.log(value)
-      if(this.state.searchItem=== "Topic")
-      {
+
         if(value=== "")
         this.setState({
           topics :''        
@@ -119,7 +118,7 @@ class Search extends React.Component {
               }
           });
           }
-      }
+      
      
   }
 
