@@ -109,7 +109,7 @@ class Search extends React.Component {
     {
         if(value=== "")
         this.setState({
-          topic :''        
+          topics :''        
          });  
          else
          {
@@ -118,7 +118,7 @@ class Search extends React.Component {
                   var searchResult = (response.data).filter((topic)=>{
                       return topic.indexOf(value) > -1; });
                   this.setState({
-                    topic :searchResult        
+                    topics :searchResult        
                   });         
                   console.log(searchResult)
               }
