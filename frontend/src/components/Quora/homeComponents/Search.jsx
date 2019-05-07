@@ -45,6 +45,8 @@ class Search extends React.Component {
       data:{},
       searchValue: "",
       topics:{},
+      people:{},
+      questions:{},
       dropdownOpen: false,
       searchItem :''
     
@@ -69,7 +71,9 @@ class Search extends React.Component {
   }
 
   handleClick(item){
-   this.setState({searchItem:item})
+    console.log("hi")
+   this.setState({searchItem:item});
+   this.toggle() ;
   }
   
   handleAddQuestion = (question, topic) => {
@@ -100,11 +104,12 @@ class Search extends React.Component {
     this.setState({
         searchValue: value
       });
-      console.log(value)
-
+      
+    if(this.state.searchItem==="Topic")
+    {
         if(value=== "")
         this.setState({
-          topics :''        
+          topic :''        
          });  
          else
          {
@@ -113,13 +118,53 @@ class Search extends React.Component {
                   var searchResult = (response.data).filter((topic)=>{
                       return topic.indexOf(value) > -1; });
                   this.setState({
-                      topics :searchResult        
+                    topic :searchResult        
                   });         
+                  console.log(searchResult)
               }
           });
           }
-      
-     
+    }
+    if(this.state.searchItem==="People")
+    {
+        if(value=== "")
+        this.setState({
+          people :''        
+         });  
+         else
+         {
+          axios.get(`/users/`).then(response => {
+              if (response.status === 200) {
+                  var mongodata = response.data.mongo;
+                  var searchResult = mongodata.filter((user)=>{
+                      return user.fname.indexOf(value) > -1; });
+                  this.setState({
+                      people :searchResult        
+                  });        
+              }
+          });
+          }
+    }   
+    if(this.state.searchItem==="Question")
+    {
+        if(value=== "")
+        this.setState({
+          questions:''        
+         });  
+         else
+         {
+          axios.get(`/questions/`).then(response => {
+              if (response.status === 200) {
+                  var searchResult = (response.data).filter((question)=>{
+                      return (question.question).indexOf(value) > -1; });
+                  this.setState({
+                    questions :searchResult        
+                  });         
+                  console.log(searchResult)
+              }
+          });
+          }
+    }     
   }
 
   /*async componentDidMount() {
@@ -152,7 +197,9 @@ class Search extends React.Component {
 
  
     var topics;
-    console.log(this.state.topics);
+    var questions;
+    var users;
+
     if (this.state.topics && this.state.topics.length > 0) {
         topics = this.state.topics
         .map(topic => {
@@ -164,6 +211,42 @@ class Search extends React.Component {
                 <a >
                     {topic}
                 </a>
+                </div>
+            </div>
+            <Divider />
+            </div>
+          );
+        });
+    } 
+    if (this.state.questions && this.state.questions.length > 0) {
+        questions = this.state.questions
+        .map(question => {
+          return (
+            <div>
+             <Divider />
+            <div style={{ padding: "2% 0" }}>
+                <div className="questionNav">
+                <Link to={"/" + question._id} >
+                    {question.question}
+               </Link>
+                </div>
+            </div>
+            <Divider />
+            </div>
+          );
+        });
+    } 
+    if (this.state.people && this.state.people.length > 0) {
+        users = this.state.people
+        .map(user => {
+          return (
+            <div>
+             <Divider />
+            <div style={{ padding: "2% 0" }}>
+                <div className="questionNav">
+                <Link to={"/profile/" + user._id} >
+                    {user.fname} {user.lname}
+               </Link>
                 </div>
             </div>
             <Divider />
@@ -223,7 +306,10 @@ class Search extends React.Component {
                 onChange={this.searchForTopicOrPeople}
                 style={{width:800, height:40}}
               />
-                {topics}
+                {this.state.searchItem==="Topic" &&  topics}
+                {this.state.searchItem==="Question" &&  questions}
+                {this.state.searchItem==="People" &&  users}
+                
               </Grid>
 
               <Grid item xs={2} className="fix-pos">
