@@ -25,6 +25,14 @@ import iReact from "read-more-react";
 import isEmpty from "../../../validator/is-empty";
 import moment from "moment";
 import axios from "axios";
+import { connect } from "react-redux";
+import {
+  addQuestion,
+  getUserDetails,
+  getTopicQuestions,
+  getQuestions,
+  getAnswersForQuestion,
+} from "../../../redux/actions/homeAction";
 
 import { Link } from "react-router-dom";
 import AnswerCard from "../AnswerComponent/AnswerCard";
@@ -55,8 +63,11 @@ class QuestionCard extends React.Component {
     this.setState({ showComments: !this.state.showComments });
   };
   handleDownload = () => {
-    axios.delete(`/user/`).then(response => {
+    console.log(this.props.auth.user._id)
+    console.log(this.props.question.answerList[0]._id)
+    axios.put(`/answer/downvote/${this.props.auth.user._id}/${this.props.question.answerList[0]._id}`).then(response => {
       if (response.status === 200) {
+        console.log(response.status )
       }
     });
   };
@@ -257,6 +268,12 @@ class QuestionCard extends React.Component {
     var answer = {};
 
     if (question.answerList !== undefined && question.answerList.length) {
+      console.log(this.props.auth.user._id)
+      console.log(question.answerList[0].downVotes)
+      if(question.answerList[0].downVotes.includes(this.props.auth.user._id))
+      {
+        console.log("true")
+      }
       answer = question.answerList[0];
       if (isUpvoted) {
         upvotecomp = (
@@ -708,4 +725,16 @@ class QuestionCard extends React.Component {
   }
 }
 
-export default withStyles(styles)(QuestionCard);
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors,
+  userDetails: state.homeState.userDetails,
+  questions: state.homeState.questions,
+  answerforquestions: state.homeState.answerforquestions,
+
+});
+
+export default connect(
+  mapStateToProps,
+  { addQuestion, getUserDetails, getTopicQuestions, getQuestions, getAnswersForQuestion }
+)(withStyles(styles)(QuestionCard));
