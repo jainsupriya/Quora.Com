@@ -5,15 +5,15 @@ const TOPIC = "answer";
 const redis = require("redis");
 
 // Create Redis Client
-let client = redis.createClient();
-// var client = redis.createClient(
-//   6379,
-//   "redisforquora.gtvq8d.0001.usw1.cache.amazonaws.com",
-//   {
-//     no_ready_check: true
-//   }
-// );
-
+// let client = redis.createClient();
+var client = redis.createClient(
+    6379,
+    "redisforquora.gtvq8d.0001.usw1.cache.amazonaws.com",
+    {
+      no_ready_check: true
+    }
+  );
+  
 client.on("connect", function() {
     console.log("Connected to Redis...");
 });
@@ -40,11 +40,7 @@ var pusher = new Pusher({
 
 AnswerRoutes.post("/answer", (req, res, next) => {
     
-    if(req.body.answerowner === "5ccdd8dabdae7817b83431e"){
-        pusher.trigger('quora', 'post-answer', {
-            "message": req.body
-          });
-    }
+    
     console.log(
         "===================================================================================================================================================="
     );
@@ -54,6 +50,12 @@ AnswerRoutes.post("/answer", (req, res, next) => {
         reqBody: req.body
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        console.log(results.data);
+        if(req.body.answerowner === "5ccdd8dabdae7817b83431e"){
+            pusher.trigger('quora', 'post-answer', {
+                "message": req.body
+              });
+        }
         res.status(results.status).send(results.data);
     });
 });
