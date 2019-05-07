@@ -305,13 +305,7 @@ class Dashboard extends React.Component {
           <ListItemIcon style={{color : '#a94442'}}>
             <DashboardIcon />
           </ListItemIcon>
-          <ListItemText primary="Show By View" />
-        </ListItem>
-        <ListItem button onClick={() => this.handleMenuChange("byBokkmarked")}>
-          <ListItemIcon style={{color : '#a94442'}}>
-            <BarChartIcon />
-          </ListItemIcon>
-          <ListItemText primary="Bookmarked Answers" />
+          <ListItemText primary="Answers View" />
         </ListItem>
         <ListItem
           button
