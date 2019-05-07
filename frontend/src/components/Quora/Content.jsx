@@ -32,7 +32,8 @@ class Content extends Component {
       topic: "",
       userDetails: {},
       contentDetails: [],
-      bgColorType: "All Types"
+      bgColorType: "All Types",
+      showMsg: ""
     };
   }
 
@@ -40,7 +41,8 @@ class Content extends Component {
     const userID = this.props.userDetails._id;
     this.props.getContentDetails(userID);
     this.setState({
-      contentDetails: this.props.contentDetails.contents
+      contentDetails: this.props.contentDetails.contents,
+      showMsg: "Please Select Filters!!"
     });
   };
 
@@ -120,9 +122,6 @@ class Content extends Component {
     const year = this.state.selectedYear;
     const topic = this.state.topic;
     var tempDetails = _.filter(contentDetails, function(item) {
-      console.log(type);
-      console.log(year);
-      console.log(topic);
       if (type == "ALL_TYPES") {
         if (year == "All Time") {
           if (topic == "") {
@@ -233,12 +232,12 @@ class Content extends Component {
     }
     console.log(tempDetails);
     this.setState({
-      contentDetails: tempDetails
+      contentDetails: tempDetails,
+      showMsg: ""
     });
   };
 
   showInfo = type => {
-    console.log(type);
     let resultValue = "";
     switch (type) {
       case "CREATE_ANSWER":
@@ -257,7 +256,6 @@ class Content extends Component {
     const { classes } = this.props;
 
     // const contentDetails = this.props.contentDetails.contents;
-
     return (
       <div>
         <AppBar className="m-bg-color" position="sticky">
@@ -272,6 +270,9 @@ class Content extends Component {
         >
           <Grid item xs={2} />
           <Grid item xs={8}>
+            <div style={{ textAlign: "center", color: "#2b6dad" }}>
+              {this.state.showMsg}
+            </div>
             <Grid
               container
               direction="row"
@@ -375,7 +376,6 @@ class Content extends Component {
                   <div style={{ padding: "0 0 2%" }}>{this.state.header}</div>
                 </div>
                 <Divider />
-
                 <div
                 // style={{
                 //   display:
@@ -387,23 +387,62 @@ class Content extends Component {
                       <div>
                         <div style={{ padding: "2% 0" }}>
                           <div className="questionNav">
-                            <a>
-                              {(() => {
-                                switch (
-                                  this.state.contentDetails[index].activityType
-                                ) {
-                                  case "CREATE_QUESTION":
-                                    return this.state.contentDetails[index]
-                                      .createdQuestion.question;
-                                  case "CREATE_ANSWER":
-                                    return this.state.contentDetails[index]
-                                      .createdAnswer.questionId.question;
-                                  case "FOLLOWED_QUESTION":
-                                    return this.state.contentDetails[index]
-                                      .followedQuestion.question;
-                                }
-                              })()}
-                            </a>
+                            {(() => {
+                              switch (
+                                this.state.contentDetails[index].activityType
+                              ) {
+                                case "CREATE_QUESTION":
+                                  return (
+                                    <a
+                                      style={{ color: "#2b6dad" }}
+                                      href={
+                                        "/" +
+                                        this.state.contentDetails[index]
+                                          .createdQuestion._id
+                                      }
+                                    >
+                                      {
+                                        this.state.contentDetails[index]
+                                          .createdQuestion.question
+                                      }
+                                    </a>
+                                  );
+
+                                case "CREATE_ANSWER":
+                                  return (
+                                    <a
+                                      style={{ color: "#2b6dad" }}
+                                      href={
+                                        "/" +
+                                        this.state.contentDetails[index]
+                                          .createdAnswer.questionId._id
+                                      }
+                                    >
+                                      {
+                                        this.state.contentDetails[index]
+                                          .createdAnswer.questionId.question
+                                      }
+                                    </a>
+                                  );
+
+                                case "FOLLOWED_QUESTION":
+                                  return (
+                                    <a
+                                      style={{ color: "#2b6dad" }}
+                                      href={
+                                        "/" +
+                                        this.state.contentDetails[index]
+                                          .followedQuestion._id
+                                      }
+                                    >
+                                      {
+                                        this.state.contentDetails[index]
+                                          .followedQuestion.question
+                                      }
+                                    </a>
+                                  );
+                              }
+                            })()}
                           </div>
                           <div
                             className="secondaryText"

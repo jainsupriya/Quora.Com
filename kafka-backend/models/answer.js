@@ -46,6 +46,16 @@ const AnswerSchema = new Schema({
         type: Number,
         default: 0
     },
+    downVotes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user"
+        }
+    ],
+    downVotesCount: {
+        type: Number,
+        default: 0
+    },
     commentList: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -55,7 +65,11 @@ const AnswerSchema = new Schema({
     postedTime: {
         type: Date,
         default: Date.now()
-    }
+    },
+    bookmarkCount: {
+        type: Number,
+        default: 0
+    },
 });
 
 const Answer = mongoose.model("answer", AnswerSchema);

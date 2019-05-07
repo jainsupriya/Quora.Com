@@ -44,7 +44,10 @@ export const loginUser = userData => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response !== undefined ? err.response.data : {}
+        payload:
+          err.response !== undefined && err.response.data !== undefined
+            ? err.response.data
+            : {}
       })
     );
 };

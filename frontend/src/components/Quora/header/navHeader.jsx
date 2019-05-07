@@ -125,7 +125,7 @@ class NavHeader extends Component {
     const userID = this.props.auth.user._id;
     console.log(userID);
     this.props.getFollowingUsers(userID);
-    this.props.getUserDetails(this.props.auth.user._id);
+    this.props.getUserDetails(userID);
   };
 
   searchForTopicOrPeople(event) {
@@ -322,10 +322,10 @@ class NavHeader extends Component {
                     <Grid item>
                       <Avatar
                         alt={
-                          this.props.userDetails.fname +
-                          this.props.userDetails.lname
+                          this.props.auth.user.fname +
+                          this.props.auth.user.lname
                         }
-                        src={this.props.userDetails.profileImg}
+                        src={this.props.auth.user.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -369,10 +369,10 @@ class NavHeader extends Component {
                     <Grid item>
                       <Avatar
                         alt={
-                          this.props.userDetails.fname +
-                          this.props.userDetails.lname
+                          this.props.auth.user.fname +
+                          this.props.auth.user.lname
                         }
-                        src={this.props.userDetails.profileImg}
+                        src={this.props.auth.user.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -461,6 +461,11 @@ class NavHeader extends Component {
                     Your Content
                   </a>
                 </li>
+                <li className={classes.listStyle}>
+                  <a className={classes.profileMenu} href="/search">
+                    Search
+                  </a>
+                </li>      
                 <li className={classes.listStyle}>
                   <a className={classes.profileMenu} href="/dashboard">
                     Dashboard
@@ -774,9 +779,9 @@ class NavHeader extends Component {
               >
                 <Avatar
                   alt={
-                    this.props.userDetails.fname + this.props.userDetails.lname
+                    this.props.auth.user.fname + this.props.auth.user.lname
                   }
-                  src={this.props.userDetails.profileImg}
+                  src={this.props.auth.user.profileImg}
                   className="avatar"
                 />
               </div>

@@ -20,7 +20,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-
+import SimpleReactValidator from "simple-react-validator";
 import { setProfilePersonal } from "../../../redux/actions/profileActions";
 
 const styles = theme => ({
@@ -92,6 +92,19 @@ class DialogPersonal extends Component {
       zipCode: ""
     };
     this.onChange = this.onChange.bind(this);
+    this.validator = new SimpleReactValidator({
+      validators: {
+        zipCode: {
+          message: "Zipcode is not valid",
+          rule: (val, params, validator) => {
+            return validator.helpers.testRegex(
+              val,
+              /(^\d{5}$)|(^\d{5}-\d{4}$)/
+            );
+          }
+        }
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -134,24 +147,29 @@ class DialogPersonal extends Component {
 
   handleSave = e => {
     e.preventDefault();
-    // console.log(this.props.state.userDetails._id);
-    const profileData = {
-      mobile: this.state.mobile,
-      dob: this.state.dob,
-      aboutMe: this.state.aboutMe,
-      gender: this.state.gender,
-      city: this.state.city,
-      state: this.state.state,
-      zipCode: this.state.zipCode
-    };
-    console.log(profileData);
-    console.log(this.props.state.userDetails._id);
+    if (this.validator.allValid()) {
+      // console.log(this.props.state.userDetails._id);
+      const profileData = {
+        mobile: this.state.mobile,
+        dob: this.state.dob,
+        aboutMe: this.state.aboutMe,
+        gender: this.state.gender,
+        city: this.state.city,
+        state: this.state.state,
+        zipCode: this.state.zipCode
+      };
+      console.log(profileData);
+      console.log(this.props.state.userDetails._id);
 
-    this.props.setProfilePersonal(
-      this.props.state.userDetails._id,
-      profileData
-    );
-    this.props.onClose();
+      this.props.setProfilePersonal(
+        this.props.state.userDetails._id,
+        profileData
+      );
+      this.props.onClose();
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
   };
   render() {
     const { classes } = this.props;
@@ -266,6 +284,11 @@ class DialogPersonal extends Component {
                       id="__w2_wUZE3W2P32_position"
                       style={{ width: "100%" }}
                     />
+                    {this.validator.message(
+                      "mobile",
+                      this.state.mobile,
+                      "numeric|size:10"
+                    )}
                   </Grid>
                 </Grid>
 
@@ -359,7 +382,7 @@ class DialogPersonal extends Component {
                     </label>
                   </Grid>
                   <Grid item xs={7}>
-                    <input
+                    <select
                       class="text input_field"
                       type="text"
                       placeholder="Male/Female"
@@ -372,7 +395,10 @@ class DialogPersonal extends Component {
                       w2cid="wUZE3W2P32"
                       id="__w2_wUZE3W2P32_position"
                       style={{ width: "100%" }}
-                    />
+                    >
+                      <option value="female">Female</option>
+                      <option value="Male">Male</option>
+                    </select>
                   </Grid>
                 </Grid>
 
@@ -431,7 +457,7 @@ class DialogPersonal extends Component {
                     </label>
                   </Grid>
                   <Grid item xs={7}>
-                    <input
+                    <select
                       class="text input_field"
                       type="text"
                       placeholder="State"
@@ -443,8 +469,60 @@ class DialogPersonal extends Component {
                       data-group="js-editable"
                       w2cid="wUZE3W2P32"
                       id="__w2_wUZE3W2P32_position"
-                      style={{ width: "100%" }}
-                    />
+                      style={{ width: "100%", height: "50%" }}
+                    >
+                      <option value="AL">Alabama</option>
+                      <option value="AK">Alaska</option>
+                      <option value="AZ">Arizona</option>
+                      <option value="AR">Arkansas</option>
+                      <option value="CA">California</option>
+                      <option value="CO">Colorado</option>
+                      <option value="CT">Connecticut</option>
+                      <option value="DE">Delaware</option>
+                      <option value="DC">District Of Columbia</option>
+                      <option value="FL">Florida</option>
+                      <option value="GA">Georgia</option>
+                      <option value="HI">Hawaii</option>
+                      <option value="ID">Idaho</option>
+                      <option value="IL">Illinois</option>
+                      <option value="IN">Indiana</option>
+                      <option value="IA">Iowa</option>
+                      <option value="KS">Kansas</option>
+                      <option value="KY">Kentucky</option>
+                      <option value="LA">Louisiana</option>
+                      <option value="ME">Maine</option>
+                      <option value="MD">Maryland</option>
+                      <option value="MA">Massachusetts</option>
+                      <option value="MI">Michigan</option>
+                      <option value="MN">Minnesota</option>
+                      <option value="MS">Mississippi</option>
+                      <option value="MO">Missouri</option>
+                      <option value="MT">Montana</option>
+                      <option value="NE">Nebraska</option>
+                      <option value="NV">Nevada</option>
+                      <option value="NH">New Hampshire</option>
+                      <option value="NJ">New Jersey</option>
+                      <option value="NM">New Mexico</option>
+                      <option value="NY">New York</option>
+                      <option value="NC">North Carolina</option>
+                      <option value="ND">North Dakota</option>
+                      <option value="OH">Ohio</option>
+                      <option value="OK">Oklahoma</option>
+                      <option value="OR">Oregon</option>
+                      <option value="PA">Pennsylvania</option>
+                      <option value="RI">Rhode Island</option>
+                      <option value="SC">South Carolina</option>
+                      <option value="SD">South Dakota</option>
+                      <option value="TN">Tennessee</option>
+                      <option value="TX">Texas</option>
+                      <option value="UT">Utah</option>
+                      <option value="VT">Vermont</option>
+                      <option value="VA">Virginia</option>
+                      <option value="WA">Washington</option>
+                      <option value="WV">West Virginia</option>
+                      <option value="WI">Wisconsin</option>
+                      <option value="WY">Wyoming</option>
+                    </select>
                   </Grid>
                 </Grid>
                 <Grid
@@ -469,7 +547,7 @@ class DialogPersonal extends Component {
                     <input
                       class="text input_field"
                       type="text"
-                      placeholder="Zip code"
+                      placeholder="xxxx-xxxx or xxxx"
                       value={this.state.zipCode}
                       onChange={this.onChange}
                       name="zipCode"
@@ -480,6 +558,11 @@ class DialogPersonal extends Component {
                       id="__w2_wUZE3W2P32_position"
                       style={{ width: "100%" }}
                     />
+                    {this.validator.message(
+                      "zipCode",
+                      this.state.zipCode,
+                      "zipCode"
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

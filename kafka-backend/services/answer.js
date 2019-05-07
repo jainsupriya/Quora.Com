@@ -160,9 +160,41 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
             break;
+        case "get/answers/orderByViews/:userId":
+            Answer
+                .find({answerOwner:msg.reqBody.userId},{answer:0})
+                .sort({ views: -1 })
+                .limit(10)
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
         case "get/answers/orderByViews":
             Answer.find()
                 .sort({ views: -1 })
+                .limit(10)
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "get/answers/orderByUpVotes/:userId":
+            Answer.find({answerOwner:msg.reqBody.userId},{answer:0})
+                .sort({ upVotesCount: -1 })
+                .limit(10)
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -175,8 +207,25 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/answers/orderByUpVotes":
-            Answer.find()
-                .sort({ upVotesCount: -1 })
+            Answer
+                .find()
+                .sort({ downVotesCount: -1 })
+                .limit(5)
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "get/answers/orderByDownVotes/:userId":
+            Answer
+                .find({answerOwner:msg.reqBody.userId},{answer:0})
+                .sort({ downVotes: -1 })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -189,8 +238,24 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/answers/orderByDownVotes":
-            Answer.find()
+            Answer
+                .find()
                 .sort({ downVotes: -1 })
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
+            break;
+        case "get/answers/orderByBookmarks/:userId":
+            Answer
+                .find({answerOwner:msg.reqBody.userId},{answer:0})
+                .sort({ bookmarkCount: -1 })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);

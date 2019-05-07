@@ -19,8 +19,8 @@ export function AskQuestionCard(props) {
             <Grid item xs={1}>
               <Link to="/myprofile">
                 <Avatar
-                  alt={user.fname}
-                  src={user.profileImg}
+                  alt={user !== undefined ? user.fname : ""}
+                  src={user !== undefined ? user.profileImg : ""}
                   style={{ width: 50, height: 50 }}
                   className="avatar"
                 />
