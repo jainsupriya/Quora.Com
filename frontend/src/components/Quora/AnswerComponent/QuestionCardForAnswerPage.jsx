@@ -35,7 +35,8 @@ class QuestionCardForAnswerPage extends React.Component {
       upvoteCount: 0,
       comment: "New Comment added",
       showComment: false,
-      readMore: false
+      readMore: false,
+      views: ''
     };
   }
   readMoreText = () => {
@@ -44,9 +45,9 @@ class QuestionCardForAnswerPage extends React.Component {
     if (this.props.answer !== undefined) {
       axios.put(`/answer/view/` + this.props.answer_id).then(response => {
         if (response.status === 200) {
-          console.log(response.data);
+        
           this.setState({
-            products: response.data
+            views: this.state.views+1
           });
         }
       });
@@ -60,7 +61,7 @@ class QuestionCardForAnswerPage extends React.Component {
     var upvoteCount = 0;
     var isUpvoted = false;
 
-
+    this.setState({views: this.props.views})
     if (this.props.answerList !== undefined && this.props.answerList.length) {
       if (
         this.props.answerList[0].upVotes !== undefined &&
@@ -306,7 +307,7 @@ class QuestionCardForAnswerPage extends React.Component {
                 </Grid>
 
                 <Grid item className="votes">
-                  {this.props.views} {`views`}
+                  {this.state.views} {`views`}
                 </Grid>
                 <Grid
                   container
