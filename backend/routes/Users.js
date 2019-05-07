@@ -129,37 +129,37 @@ UserRoutes.get("/users/searchByUsername/:usernameQuery", (req, res, next) => {
     );
     console.log("/get/users/searchByUsername/:usernameQuery");
 
-    client.hget("get/users/searchByUsername/", req.params.usernameQuery, function(err, reply) {
-        if (err) {
-            console.log(err);
-            res.status(422).send(err);
-        } else {
-            client.hlen("get/users/searchByUsername/",(err,length)=>{
-                if(length>=redisHmapMax){
-                    client.hkeys("get/users/searchByUsername/",(err,keys)=>{
-                        console.log(keys[0])
-                        client.hdel("get/users/searchByUsername/",keys[0])
-                    })
-                }
-            })
-            if (reply) {
-                res.status(200).send(JSON.parse(reply));
-            } else {
+    // client.hget("get/users/searchByUsername/", req.params.usernameQuery, function(err, reply) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(422).send(err);
+    //     } else {
+    //         client.hlen("get/users/searchByUsername/",(err,length)=>{
+    //             if(length>=redisHmapMax){
+    //                 client.hkeys("get/users/searchByUsername/",(err,keys)=>{
+    //                     console.log(keys[0])
+    //                     client.hdel("get/users/searchByUsername/",keys[0])
+    //                 })
+    //             }
+    //         })
+    //         if (reply) {
+    //             res.status(200).send(JSON.parse(reply));
+    //         } else {
                 var reqMsg = {
                     api: "get/users/searchByUsername/:usernameQuery",
                     reqBody: { usernameQuery: req.params.usernameQuery }
                 };
                 kafka.make_request(TOPIC, reqMsg, function(err, results) {
                     res.status(results.status).send(results.data);
-                    client.hset(
-                        "get/users/searchByUsername/",
-                        req.params.usernameQuery,
-                        JSON.stringify(results.data)
-                    );
+                    // client.hset(
+                    //     "get/users/searchByUsername/",
+                    //     req.params.usernameQuery,
+                    //     JSON.stringify(results.data)
+                    // );
                 });
-            }
-        }
-    });
+    //         }
+    //     }
+    // });
 });
 
 UserRoutes.get("/users", (req, res, next) => {
@@ -182,22 +182,22 @@ UserRoutes.get("/userWith/QuestionFollowingList/:userId", (req, res, next) => {
         "===================================================================================================================================================="
     );
     console.log("/get/userWith/QuestionFollowingList/:userId");
-    client.hget("get/userWith/QuestionFollowingList/", req.params.userId, function(err, reply) {
-        if (err) {
-            console.log(err);
-            res.status(422).send(err);
-        } else {
-            client.hlen("get/userWith/QuestionFollowingList/",(err,length)=>{
-                if(length>=redisHmapMax){
-                    client.hkeys("get/userWith/QuestionFollowingList/",(err,keys)=>{
-                        console.log(keys[0])
-                        client.hdel("get/userWith/QuestionFollowingList/",keys[0])
-                    })
-                }
-            })
-            if (reply) {
-                res.status(200).send(JSON.parse(reply));
-            } else {
+    // client.hget("get/userWith/QuestionFollowingList/", req.params.userId, function(err, reply) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(422).send(err);
+    //     } else {
+    //         client.hlen("get/userWith/QuestionFollowingList/",(err,length)=>{
+    //             if(length>=redisHmapMax){
+    //                 client.hkeys("get/userWith/QuestionFollowingList/",(err,keys)=>{
+    //                     console.log(keys[0])
+    //                     client.hdel("get/userWith/QuestionFollowingList/",keys[0])
+    //                 })
+    //             }
+    //         })
+    //         if (reply) {
+    //             res.status(200).send(JSON.parse(reply));
+    //         } else {
                 var reqMsg = {
                     api: "get/userWith/QuestionFollowingList/:userId",
                     reqBody: { userId: req.params.userId }
@@ -210,9 +210,48 @@ UserRoutes.get("/userWith/QuestionFollowingList/:userId", (req, res, next) => {
                         JSON.stringify(results.data)
                     );
                 });
-            }
-        }
-    });
+            // }
+        // }
+    // });
+});
+
+// get users with question following list
+UserRoutes.get("/userWith/myQuestionList/:userId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/userWith/myQuestionList/:userId");
+    // client.hget("get/userWith/myQuestionList/", req.params.userId, function(err, reply) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(422).send(err);
+    //     } else {
+    //         client.hlen("get/userWith/myQuestionList/",(err,length)=>{
+    //             if(length>=redisHmapMax){
+    //                 client.hkeys("get/userWith/myQuestionList/",(err,keys)=>{
+    //                     console.log(keys[0])
+    //                     client.hdel("get/userWith/myQuestionList/",keys[0])
+    //                 })
+    //             }
+    //         })
+            // if (reply) {
+            //     res.status(200).send(JSON.parse(reply));
+            // } else {
+                var reqMsg = {
+                    api: "get/userWith/myQuestionList/:userId",
+                    reqBody: { userId: req.params.userId }
+                };
+                kafka.make_request(TOPIC, reqMsg, function(err, results) {
+                    res.status(results.status).send(results.data);
+                    // client.hset(
+                    //     "get/userWith/myQuestionList/",
+                    //     req.params.userId,
+                    //     JSON.stringify(results.data)
+                    // );
+                });
+            // }
+        // }
+    // });
 });
 
 // get users with question following list

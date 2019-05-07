@@ -107,7 +107,20 @@ function handle_request(msg, callback) {
                 .catch(err => {
                     myCallback(err, null, callback);
                 });
-
+            break;
+        case "get/userWith/myQuestionList/:userId":
+            User.find({_id:msg.reqBody.userId})
+                .populate("myQuestionList")
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        myCallback(null, result, callback);
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
             break;
         case "get/usersWith/QuestionFollowingList":
             User.find({})
@@ -122,7 +135,6 @@ function handle_request(msg, callback) {
                 .catch(err => {
                     myCallback(err, null, callback);
                 });
-
             break;
         case "get/userWith/FollowingUserList/:userId":
             User.find({ _id: msg.reqBody.userId })
