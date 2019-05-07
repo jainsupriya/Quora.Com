@@ -26,6 +26,7 @@ export default function(state = initialState, action) {
         profile: action.payload
       };
     case GET_FOLLOWER:
+    console.log(action.payload)
       return {
         ...state,
         follower: action.payload

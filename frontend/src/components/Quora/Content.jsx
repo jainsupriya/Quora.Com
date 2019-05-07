@@ -38,7 +38,8 @@ class Content extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getContentDetails(this.props.userDetails._id);
+    const userID = this.props.userDetails._id;
+    this.props.getContentDetails(userID);
     this.setState({
       contentDetails: this.props.contentDetails.contents,
       showMsg: "Please Select Filters!!"
@@ -393,7 +394,7 @@ class Content extends Component {
                                 case "CREATE_QUESTION":
                                   return (
                                     <a
-                                    style={{color: '#2b6dad'}}
+                                      style={{ color: "#2b6dad" }}
                                       href={
                                         "/" +
                                         this.state.contentDetails[index]
@@ -410,12 +411,12 @@ class Content extends Component {
                                 case "CREATE_ANSWER":
                                   return (
                                     <a
-                                    style={{color: '#2b6dad'}}
-                                    href={
-                                      "/" +
-                                      this.state.contentDetails[index]
-                                        .createdAnswer.questionId._id
-                                    }
+                                      style={{ color: "#2b6dad" }}
+                                      href={
+                                        "/" +
+                                        this.state.contentDetails[index]
+                                          .createdAnswer.questionId._id
+                                      }
                                     >
                                       {
                                         this.state.contentDetails[index]
@@ -427,12 +428,12 @@ class Content extends Component {
                                 case "FOLLOWED_QUESTION":
                                   return (
                                     <a
-                                    style={{color: '#2b6dad'}}
-                                    href={
-                                      "/" +
-                                      this.state.contentDetails[index]
-                                        .followedQuestion._id
-                                    }
+                                      style={{ color: "#2b6dad" }}
+                                      href={
+                                        "/" +
+                                        this.state.contentDetails[index]
+                                          .followedQuestion._id
+                                      }
                                     >
                                       {
                                         this.state.contentDetails[index]
