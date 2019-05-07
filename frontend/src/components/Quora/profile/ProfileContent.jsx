@@ -73,6 +73,7 @@ class ProfileContent extends Component {
         header = "Your Questions";
         typeInRes = "CREATE_QUESTION";
         bgColorType = "Questions Asked";
+        console.log(this.props.user);
         this.props.getAskedQuestion(this.props.user);
 
         break;
