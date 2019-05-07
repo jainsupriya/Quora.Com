@@ -169,7 +169,7 @@ export const getAnswersForQuestion = questionId => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err !== undefined ? err.data : {}
+        payload: err !== undefined && err.data !== undefined ? err.data : {}
       })
     );
 };
