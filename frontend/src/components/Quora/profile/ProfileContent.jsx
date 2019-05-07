@@ -354,7 +354,7 @@ class ProfileContent extends Component {
       );
     });
     var followerMap =
-      this.props.profile.follower.size !== 0
+      (this.props.profile.follower.length != 0 )
         ? Object.keys(this.props.profile.follower[0].followersUserList).map(
             index => {
               return (
@@ -402,7 +402,8 @@ class ProfileContent extends Component {
             }
           )
         : "";
-    var followingMap = Object.keys(
+    var followingMap = (this.props.profile.follower.length != 0 )
+    ?Object.keys(
       this.props.profile.following[0].followingUserList
     ).map(index => {
       return (
@@ -439,7 +440,7 @@ class ProfileContent extends Component {
           <Divider />
         </div>
       );
-    });
+    }):"";
 
     return (
       
