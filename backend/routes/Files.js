@@ -32,7 +32,8 @@ const storage = multerS3({
         console.log("+++++++++++++++++++++++++++++++++")
         console.log(req.body)
         console.log("+++++++++++++++++++++++++++++++++")
-      cb(null, "ProfilePic/"+req.body.filename)
+      cb(null, "ProfilePic/"+req.body.userId+file.originalname)
+    //   cb(null, "ProfilePic/"+req.body.filename)
     //   cb(null, file.originalname)
     }
   })
