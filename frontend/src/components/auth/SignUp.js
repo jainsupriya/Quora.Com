@@ -100,7 +100,7 @@ export class SignUp extends Component {
   };
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+    this.setState({ [name]: event.target.checked, errors: {} });
   };
 
   onSubmit = e => {
@@ -117,6 +117,9 @@ export class SignUp extends Component {
       };
       this.props.registerUser(user, this.props.history);
     } else {
+      this.setState({
+        errors: {}
+      });
       this.validator.showMessages();
       this.forceUpdate();
     }
@@ -241,6 +244,11 @@ export class SignUp extends Component {
                     this.state.email,
                     "required|email"
                   )}
+                  <div className="srv-validation-message">
+                    {this.state.errors !== undefined
+                      ? this.state.errors.msg
+                      : ""}
+                  </div>
                 </div>
               </div>
 

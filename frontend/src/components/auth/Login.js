@@ -61,7 +61,7 @@ export class Login extends Component {
   }
 
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value, errors: {} });
   };
 
   onSubmit = e => {
@@ -73,6 +73,9 @@ export class Login extends Component {
       };
       this.props.loginUser(user);
     } else {
+      this.setState({
+        errors: {}
+      });
       this.validator.showMessages();
       this.forceUpdate();
     }
@@ -147,6 +150,9 @@ export class Login extends Component {
                 value="Login"
                 onClick={this.onSubmit}
               />
+              <div className="srv-validation-message">
+                {this.state.errors !== undefined ? this.state.errors.msg : ""}
+              </div>
             </div>
             <div className="v1" />
             <div className="right">
