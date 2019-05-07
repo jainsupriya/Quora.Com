@@ -462,6 +462,11 @@ class NavHeader extends Component {
                   </a>
                 </li>
                 <li className={classes.listStyle}>
+                  <a className={classes.profileMenu} href="/search">
+                    Search
+                  </a>
+                </li>      
+                <li className={classes.listStyle}>
                   <a className={classes.profileMenu} href="/dashboard">
                     Dashboard
                   </a>
