@@ -124,7 +124,7 @@ class Editor extends React.Component {
             placeholder={this.props.placeholder}
            />
           <Button variant="contained" className="btn-margin" style={{marginLeft: 10}} onClick={this.handleSubmit}> 
-            Add Comment
+            Answer
           </Button>
           <Button variant="secondary" className="btn-margin" style={{marginLeft: 10}} onClick={this.handleClose}> 
             Cancel
