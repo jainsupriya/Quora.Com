@@ -10,6 +10,7 @@ export const PieChart = props => {
     pie = d3.pie().value(d => d.views)(props.data);
   } 
   else if (props.type === "upvotes") {
+    console.log(props.data);
     pie = d3.pie().value(d => d.upVotes.length)(props.data);
     for(let i = 0 ; i < 10; i++)
     {

@@ -1,6 +1,7 @@
 import {
     SET_MESSAGE_HISTORY,
-    SET_RECEIVER_DATA
+    SET_RECEIVER_DATA,
+    GET_FOLLOWING_LIST
 } from "../actions/types";
 import axios from "axios";
 import { store } from "../store";
@@ -64,3 +65,22 @@ export const sendMessage = (u1,u2,content) => dispatch => {
     }
 };
 
+export const getFollowingUsers = userId => dispatch => {
+    axios
+      .get(`/userWith/FollowingUserList/${userId}`)
+      .then(res => {
+          console.log(res);
+          dispatch({
+              type: GET_FOLLOWING_LIST,
+              payload: res.data[0].followingUserList
+            })
+          }      
+      )
+      .catch(err =>
+          console.log(err)
+      //   dispatch({
+      //     type: GET_ERRORS,
+      //     payload: err.data
+      //   })
+      );
+  };

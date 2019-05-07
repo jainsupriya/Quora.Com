@@ -14,5 +14,6 @@ export default combineReducers({
   profile: profileReducer,
   errors: errorReducer,
   contents: contentReducer,
-  dashboard: dashboardReducer
+  dashboard: dashboardReducer,
+  message: messageReducer
 });

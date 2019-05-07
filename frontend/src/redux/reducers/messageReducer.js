@@ -1,9 +1,14 @@
-import { SET_MESSAGE_HISTORY, SET_RECEIVER_DATA } from "../actions/types";
+import {
+  SET_MESSAGE_HISTORY,
+  SET_RECEIVER_DATA,
+  GET_FOLLOWING_LIST
+} from "../actions/types";
 
 const initialState = {
   messagehistory: [],
   receiverData: {},
-  isPolling: false
+  isPolling: false,
+  followingList: ''
 };
 
 export default function(state = initialState, action) {
@@ -17,6 +22,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         receiverData: action.payload
+      };
+
+    case GET_FOLLOWING_LIST:
+      console.log(action.payload);
+      return {
+        ...state,
+        followingList: action.payload
       };
     default:
       return state;

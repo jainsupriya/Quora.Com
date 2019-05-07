@@ -5,7 +5,7 @@ import {
   GET_QUESTION,
   GET_ANSWERS_FOR_QUESTIONS,
   GET_USER_DETAILS_QUESTIONS,
-  GET_USER_DETAILS
+  GET_USER_DETAILS,
 } from "./types";
 
 export const getUserDetails = userId => dispatch => {

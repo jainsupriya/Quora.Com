@@ -17,7 +17,8 @@ import SendIcon from "@material-ui/icons/Send";
 import {
   getChatHistory,
   getReceiverData,
-  sendMessage
+  sendMessage,
+  getFollowingUsers
 } from "../../../redux/actions/messageAction";
 
 const styles = theme => ({
@@ -75,13 +76,19 @@ const styles = theme => ({
 
 class MessageDialog extends React.Component {
   state = {
-    open: false
+    open: false,
+    followingUsers: [],
+    openChat: false,
+    receiverID: '',
+    receiverImage: '',
+    receiverName: ''
   };
 
-  componentDidMount() {}
   componentWillReceiveProps(props) {
     console.log("Hello12");
-    console.log(props);
+
+    // const userID = this.props.userDetails._id;
+    // console.log(props.followingList);
 
     this.setState({
       open: props.open,
@@ -98,21 +105,31 @@ class MessageDialog extends React.Component {
   //     })
   //   };
 
-  openChatWindow = () => {
+  openChatWindow = e => (id, profileImage, name) => {
+    // e.preventDefault();
+    console.log(id);
     this.setState({
-      openChat: true
+      openChat: true,
+      
     });
   };
 
   closeChatWindow = () => {
     this.setState({
-      openChat: false
+      openChat: false,
+      receiverID: '',
+      receiverImage: '',
+      receiverName: ''
     });
   };
   render() {
     const { classes } = this.props;
     // const u1 = this.props.match.params.u1;
     // const u2 = this.props.match.params.u2;
+    // console.log(this.props.state)
+    console.log(this.props.followingList);
+    const followingList = this.props.followingList;
+    console.log(this.state.receiverID)
     return (
       <div>
         <Dialog
@@ -141,38 +158,61 @@ class MessageDialog extends React.Component {
               <ul
                 style={{ listStyle: "none", paddingLeft: 0, marginBottom: 0 }}
               >
-                <li style={{ borderBottom: "1px solid #e2e2e2" }}>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="flex-start"
-                  >
-                    <Grid item xs={1} style={{ padding: "1%" }}>
-                      <Avatar alt="Remy Sharp" src="1.jpg" className="avatar" />
-                    </Grid>
-                    <Grid
-                      item
-                      xs={8}
-                      style={{ padding: "2%", fontWeight: 500, fontSize: 18 }}
-                    >
-                      <Typography variant="h6" component="h6">
-                        {" "}
-                        Mayank Padshala{" "}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3} style={{ padding: "3%" }}>
-                      <Button
-                        className={classes.msgButton}
-                        onClick={this.openChatWindow}
+                {/* {console.log(this.state.followingUsers)} */}
+                {Object.keys(followingList).map(index => {
+                  return (
+                    <li style={{ borderBottom: "1px solid #e2e2e2" }}>
+                      <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        alignItems="flex-start"
                       >
-                        Message
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </li>
+                        <Grid item xs={1} style={{ padding: "1%" }}>
+                          <Avatar
+                            alt="Remy Sharp"
+                            src={followingList[index].profileImg}
+                            className="avatar"
+                          />
+                        </Grid>
+                        <Grid
+                          item
+                          xs={8}
+                          style={{
+                            padding: "2%",
+                            fontWeight: 500,
+                            fontSize: 18
+                          }}
+                        >
+                          <Typography variant="h6" component="h6">
+                            {" "}
+                            {followingList[index].fname +
+                              " " +
+                              followingList[index].lname}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={3} style={{ padding: "3%" }}>
+                          <Button
+                            className={classes.msgButton}
+                            onClick={() =>
+                              this.openChatWindow(
+                                followingList[index]._id,
+                                followingList[index].profileImg,
+                                followingList[index].fname +
+                                  " " +
+                                  followingList[index].lname
+                              )
+                            }
+                          >
+                            Message
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </li>
+                  );
+                })}
 
-                <li style={{ borderBottom: "1px solid #e2e2e2" }}>
+                {/* <li style={{ borderBottom: "1px solid #e2e2e2" }}>
                   <Grid
                     container
                     direction="row"
@@ -201,7 +241,7 @@ class MessageDialog extends React.Component {
                       </Button>
                     </Grid>
                   </Grid>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
@@ -246,22 +286,18 @@ class MessageDialog extends React.Component {
                 direction="row"
                 justify="flex-start"
                 alignItems="center"
-              >            
-                <Avatar
-                  alt="Remy Sharp"
-                  src="1.jpg"
-                  className="m-bigAvatar"
-                />
+              >
+                <Avatar alt="Remy Sharp" src="1.jpg" className="m-bigAvatar" />
                 <Typography variant="h5" component="h3">
                   Namrata Kasar
                 </Typography>
                 <div
-                className={classes.modalClose}
-                onClick={this.closeChatWindow}
-                style={{ cursor: "pointer" }}
-              >
-                <CloseIcon />
-              </div>
+                  className={classes.modalClose}
+                  onClick={this.closeChatWindow}
+                  style={{ cursor: "pointer" }}
+                >
+                  <CloseIcon />
+                </div>
               </Grid>
             </div>
 
@@ -468,10 +504,12 @@ MessageDialog.propTypes = {
 
 const mapStateToProps = state => ({
   state: state.chatState,
-  userState: state.userState
+  userState: state.userState,
+  followingList: state.message.followingList,
+  userDetails: state.homeState.userDetails
 });
 
 export default connect(
   mapStateToProps,
-  { getChatHistory, getReceiverData, sendMessage }
+  { getChatHistory, getReceiverData, sendMessage, getFollowingUsers }
 )(withStyles(styles)(MessageDialog));

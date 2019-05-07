@@ -18,6 +18,7 @@ import AddQuestion from "../homeComponents/AddQuestion";
 import "../../../styles/home.css";
 import { addQuestion } from "../../../redux/actions/homeAction";
 import { logoutUser } from "../../../redux/actions/authActions";
+import { getFollowingUsers } from "../../../redux/actions/messageAction";
 import axios from "axios";
 import MessageDialog from "../Message/MessageDialog";
 
@@ -113,11 +114,19 @@ class NavHeader extends Component {
       openSearchDialog: false,
       searchValue: "",
       showMsgs: false,
-      dialogContent: ''
+      dialogContent: '',
+      check: ''
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.searchForTopicOrPeople = this.searchForTopicOrPeople.bind(this);
   }
+
+  componentDidMount = () => {
+    const userID = this.props.auth.user._id;  
+    console.log(userID);  
+    this.props.getFollowingUsers(userID);
+  }
+
   searchForTopicOrPeople(event) {
     const { name, value } = event.target;
     event.target.focus()
@@ -539,6 +548,9 @@ class NavHeader extends Component {
        
         <MessageDialog open={this.state.showMsgs} handleCloseMessages={this.handleCloseMessages}/>
 
+        {/* <dialog style={{this.state.check ==}}>
+          {this.state.check}
+          </dialog> */}
         {/* <div>
             <Dialog
           onClose={this.handleCloseMessages}
@@ -790,10 +802,12 @@ NavHeader.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  followingList: state.message.followingList,
+  // userDetails: state.homeState.userDetails
 });
 
 export default connect(
   mapStateToProps,
-  { addQuestion, logoutUser }
+{ addQuestion, logoutUser, getFollowingUsers }
 )(withStyles(styles)(withRouter(NavHeader)));

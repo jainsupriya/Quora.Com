@@ -5,13 +5,13 @@ import {
   CLEAR_HOMESTATE,
   SET_USER_DETAILS,
   GET_ANSWERS_FOR_QUESTIONS,
-  GET_USER_DETAILS_QUESTIONS
+  GET_USER_DETAILS_QUESTIONS,
 } from "../actions/types";
 const initialState = {
   questions: [],
   question: {},
   userDetails: {},
-  isChanged: false
+  isChanged: false,
 };
 
 export default function(state = initialState, action) {
