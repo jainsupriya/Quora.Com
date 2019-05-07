@@ -141,7 +141,10 @@ class Dashboard extends React.Component {
   state = {
     open: true,
     showChart: "byAnswerViews",
-    profileViewsData: []
+    profileViewsData: [],
+    msgForViews : '',
+    msgForUpvotes : '',
+    msgForDownvotes : '',
   };
 
   handleDrawerOpen = () => {
@@ -153,8 +156,6 @@ class Dashboard extends React.Component {
   };
 
   handleMenuChange = name => {
-    console.log("HEllo");
-    console.log(name);
     this.setState({
       showChart: name
     });
@@ -206,25 +207,77 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
+    let msgForViews = ''
+    let msgForUpvotes = ''
+    let msgForDownvotes = ''
 
-    const answers = this.props.answerByViewDetails.answersByViews;
-    let temp = _.reverse(_.sortBy(answers, item => item.views));
-    temp = _.take(temp, 10);
+    let answerViews = this.props.answerByViewDetails.answersByViews;
+
+    if(answerViews.length != 0)
+    {
+      answerViews = _.reverse(_.sortBy(answerViews, item => item.views));
+      answerViews = _.take(answerViews, 10);
+      if(answerViews[0].views == 0)
+      {
+        msgForViews = "Nobody viewed your answers :(";
+      }
+    }
+    else
+    {
+      msgForViews = "You haven't posted any answer yet!!!!";
+    }    
 
     console.log(this.props.answerByViewDetails.answersByUpvotes);
     let answerUpvotes = this.props.answerByViewDetails.answersByUpvotes;
-    answerUpvotes = _.reverse(
-      _.sortBy(answerUpvotes, item => item.upVotes.length)
-    );
-    answerUpvotes = _.take(answerUpvotes, 10);
-    console.log(_.maxBy(answerUpvotes, "upVotesCount"))
+    if(answerUpvotes.length != 0)
+    {
+      answerUpvotes = _.reverse(_.sortBy(answerUpvotes, item => item.upVotes.length));
+      answerUpvotes = _.take(answerUpvotes, 10);
+      if(answerUpvotes[0].upVotes.length == 0)
+      {
+        msgForUpvotes = "Nobody upvoted your answers :(";
+      }
+    }
+    else
+    {
+      msgForUpvotes = "You haven't posted any answer yet!!!!";
+    }
+    // answerUpvotes = _.reverse(
+    //   _.sortBy(answerUpvotes, item => item.upVotes.length)
+    // );
+    // answerUpvotes = _.take(answerUpvotes, 10);
+    // console.log(_.maxBy(answerUpvotes, "upVotesCount"))
+    // if(_.maxBy(answerUpvotes, "upvotes").upvotes.length == 0)
+    // {
+    //   answerDownVotes.push({"downVotesCount" : 1, "questionId" : '' })
+    // }
 
     let answerDownVotes = this.props.answerByViewDetails.answerByDownVotes;
-    answerDownVotes = _.take(answerDownVotes, 5);
-    if(_.maxBy(answerDownVotes, "downVotesCount").downVotesCount == 0)
+    if(answerDownVotes.length != 0)
     {
-      answerDownVotes.push({"downVotesCount" : 1, "questionId" : '' })
+      answerDownVotes = _.reverse(_.sortBy(answerDownVotes, item => item.downVotesCount));
+      answerDownVotes = _.take(answerDownVotes, 5);
+      if(answerDownVotes[0].downVotesCount == 0)
+      {
+        msgForDownvotes = "Nobody downvoted your answers :)";
+      }
     }
+    else
+    {
+      msgForDownvotes = "You haven't posted any answer yet!!!!";
+    }
+
+    // if(answerDownVotes.length != 0)
+    // {
+    //   if(_.maxBy(answerDownVotes, "downVotesCount").downVotes.length == 0)
+    //   {
+    //     answerDownVotes.push({"downVotesCount" : 1, "questionId" : '' })
+    //   }
+    // }
+    // else
+    // {
+
+    // }
     
 
     const mainListItems = (
@@ -333,9 +386,12 @@ class Dashboard extends React.Component {
                 <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
                   Top 10 Answers with Views
                 </Typography>
-                <PieChart data={temp} type="views" />
+                <PieChart data={answerViews} type="views" />
+                <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
+                  {msgForViews}
+                </Typography>
                 <div style={{ padding: "4%" }}>
-                  <Paper>
+                  <Paper style={{display : answerViews.length == 0 ? 'none' : 'block'}}>
                     <Table>
                       <TableHead>
                         <TableRow>
@@ -344,7 +400,7 @@ class Dashboard extends React.Component {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {temp.map((n, index) => (
+                        {answerViews.map((n, index) => (
                           <TableRow key={n.id}>
                             <TableCell align="left"><a href={"/"+n.questionId}>{"Answer " + (++index)}</a></TableCell>
                             <TableCell align="left">{n.views}</TableCell>
@@ -363,8 +419,11 @@ class Dashboard extends React.Component {
                   Top 10 Answers with Upvotes
                 </Typography>
                 <PieChart data={answerUpvotes} type="upvotes" />
+                <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
+                  {msgForUpvotes}
+                </Typography>
                 <div style={{ padding: "4%" }}>
-                  <Paper>
+                  <Paper style={{display : answerUpvotes.length == 0 ? 'none' : 'block'}}>
                     <Table>
                       <TableHead>
                         <TableRow>
@@ -394,8 +453,11 @@ class Dashboard extends React.Component {
                   Top 5 Answers with Downvotes
                 </Typography>
                 <PieChart data={answerDownVotes} type="downvotes" />
+                <Typography variant="h6" gutterBottom component="h4" className={classes.chartHeader}>
+                  {msgForDownvotes}
+                </Typography>
                 <div style={{ padding: "4%" }}>
-                  <Paper>
+                  <Paper style={{display : answerDownVotes.length == 0 ? 'none' : 'block'}}>
                     <Table>
                       <TableHead>
                         <TableRow>

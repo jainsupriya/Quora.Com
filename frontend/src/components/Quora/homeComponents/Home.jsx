@@ -15,6 +15,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import Loading from "../../commons/Loading";
+import BookmarkFeed from "../layout/BookmarkFeed";
 import {
   addQuestion,
   getUserDetails,
@@ -26,6 +27,7 @@ import Feed from "../layout/feed";
 import QuestionCard from "../layout/QuestionCard";
 import { AskQuestionCard } from "../layout/AskQuestionCard";
 import AddQuestion from "./AddQuestion";
+import BookmarkedAnswers from "../layout/BookmarkedAnswers";
 const styles = theme => ({});
 
 class Home extends React.Component {
@@ -35,7 +37,8 @@ class Home extends React.Component {
       topic: "topic1",
       userDetails: {},
       openAddQuestion: false,
-      visible: 2
+      visible: 2,
+      isBookMarkedClicked: false
     };
     this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.loadMore = this.loadMore.bind(this);
@@ -73,6 +76,11 @@ class Home extends React.Component {
 
   handleTopicClick = newTopic => {
     this.props.getTopicQuestions(newTopic);
+    this.setState({ isBookMarkedClicked: false });
+  };
+
+  handleBookMarkClick = userId => {
+    this.setState({ isBookMarkedClicked: true });
   };
 
   render() {
@@ -104,6 +112,25 @@ class Home extends React.Component {
       QuestionComp = (
         <React.Fragment>
           <Loading />
+        </React.Fragment>
+      );
+    }
+    var bookMarkedComp = (
+      <React.Fragment>
+        <BookmarkedAnswers userId={this.props.auth.user._id} />
+      </React.Fragment>
+    );
+    var compToDisplay;
+    if (this.state.isBookMarkedClicked) {
+      compToDisplay = bookMarkedComp;
+    } else {
+      compToDisplay = (
+        <React.Fragment>
+          <AskQuestionCard
+            user={this.props.userDetails}
+            handleClickOpen={() => this.handleClickOpen()}
+          />
+          {QuestionComp}
         </React.Fragment>
       );
     }
@@ -151,14 +178,15 @@ class Home extends React.Component {
                         );
                       })
                     : ""}
+                  <BookmarkFeed
+                    handleBookMarkClick={() =>
+                      this.handleBookMarkClick(this.props.auth.user._id)
+                    }
+                  />
                 </div>
               </Grid>
               <Grid item xs={8} className="m-padding-left-right-15">
-                <AskQuestionCard
-                  user={this.props.userDetails}
-                  handleClickOpen={() => this.handleClickOpen()}
-                />
-                {QuestionComp}
+                {compToDisplay}
               </Grid>
 
               <Grid item xs={2} className="fix-pos">
@@ -202,6 +230,7 @@ class Home extends React.Component {
         </Grid>
         {this.props.questions !== undefined &&
           this.props.questions.length &&
+          !this.state.isBookMarkedClicked &&
           this.state.visible < this.props.questions.length && (
             <button onClick={this.loadMore} type="button" className="load-more">
               Load more

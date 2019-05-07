@@ -75,8 +75,7 @@ class AnswerCard extends React.Component {
       followerCount: 0,
       showMenu: false,
       anchorEl: null,
-      isAnonymous:false
-
+      isAnonymous: false
     };
     this.GiveAnswer = this.GiveAnswer.bind(this);
     this.setAnnonymous = this.setAnnonymous.bind(this);
@@ -85,7 +84,11 @@ class AnswerCard extends React.Component {
     this.setState({ openQuill: !this.state.openQuill, showMenu: false });
   };
   setAnnonymous = () => {
-    this.setState({ openQuill: !this.state.openQuill, showMenu: false, isAnonymous: true });
+    this.setState({
+      openQuill: !this.state.openQuill,
+      showMenu: false,
+      isAnonymous: true
+    });
   };
   passAnswer = () => {
     this.setState({ openQuill: !this.state.openQuill });
@@ -174,7 +177,6 @@ class AnswerCard extends React.Component {
   }
 
   handleMenu = event => {
-    console.log("Hello");
     console.log(event.currentTarget.id);
     console.log(document.getElementById(event.currentTarget.id).offsetTop);
 
@@ -653,7 +655,11 @@ class AnswerCard extends React.Component {
           </Grid>
 
           {this.state.openQuill && (
-            <Editor qid={question._id} toggle={this.handleClose} isAnonymous= {this.state.isAnonymous} />
+            <Editor
+              qid={question._id}
+              toggle={this.handleClose}
+              isAnonymous={this.state.isAnonymous}
+            />
           )}
         </Paper>
       </div>
