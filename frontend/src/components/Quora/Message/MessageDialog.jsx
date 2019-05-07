@@ -85,6 +85,12 @@ class MessageDialog extends React.Component {
     chatHistory: ""
   };
 
+  componentDidMount= () => {
+    const userID = this.props.auth.user._id;
+    console.log(userID);
+    this.props.getFollowingUsers(userID);
+  }
+
   componentWillReceiveProps(props) {
     console.log("Hello12");
 
