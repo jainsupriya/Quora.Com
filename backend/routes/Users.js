@@ -259,6 +259,21 @@ UserRoutes.get("/usersWith/FollowingUserList", (req, res, next) => {
     });
 });
 
+// get related user list
+UserRoutes.get("/userWith/relatedUserList/:userId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/userWith/relatedUserList/:userId");
+    var reqMsg = {
+        api: "get/userWith/relatedUserList/:userId",
+        reqBody: { userId: req.params.userId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
 // get users with following user list
 UserRoutes.get("/userWith/FollowersUserList/:userId", (req, res, next) => {
     console.log(
@@ -288,6 +303,7 @@ UserRoutes.get("/usersWith/FollowersUserList", (req, res, next) => {
         res.status(results.status).send(results.data);
     });
 });
+
 
 // get users with bookmarked answer list
 UserRoutes.get("/userWith/BookmarkAnswerList/:userId", (req, res, next) => {

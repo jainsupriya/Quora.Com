@@ -115,7 +115,11 @@ function handle_request(msg, callback) {
             break;
         case "get/userWith/FollowingUserList/:userId":
             User.find({ _id: msg.reqBody.userId })
-                .populate("followingUserList")
+                .select('followingUserList')
+                .populate({ 
+                    path: 'followingUserList',
+                    select: 'profileImg lname fname',
+                })
                 .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
@@ -142,6 +146,44 @@ function handle_request(msg, callback) {
                     myCallback(err, null, callback);
                 });
 
+            break;
+        case "get/userWith/relatedUserList/:userId":
+            User
+                .aggregate(
+                    [
+                        // {$match : true},
+                        {   
+                            // $match : { _id : "5cbe44cb5445656fa98b6f7e" },
+                            $project: { 
+                                followingUserList:1, 
+                                followersUserList: 1,
+                                _id: 1,
+                                all: { $setUnion: [ "$followingUserList", "$followersUserList" ] },
+                                // userId:{$eq:["$_id","5cbe44cb5445656fa98b6f7e"]}
+                            } 
+                        }
+                    ]
+                )
+                // .find({ _id: msg.reqBody.userId })
+                // .select('followersUserList')
+                // .populate({ 
+                //     path: 'followersUserList',
+                //     select: 'profileImg lname fname',
+                // })
+                .then((result, err) => {
+                    if (err) {
+                        myCallback(err, null, callback);
+                    } else {
+                        User.populate(result, {path: 'all'}, function(err, allRelatedUsers) {
+                            // console.log(allRelatedUsers)
+                            // Your populated translactions are inside populatedTransactions
+                            myCallback(null, allRelatedUsers, callback);
+                        });
+                    }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
+                });
             break;
         case "get/userWith/FollowersUserList/:userId":
             User.find({ _id: msg.reqBody.userId })
@@ -408,7 +450,22 @@ function handle_request(msg, callback) {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        myCallback(null, result, callback);
+                        Answer
+                            .findByIdAndUpdate(msg.reqBody.answerId,{$inc: { bookmarkCount: 1}})
+                            .then((result1, err1) => {
+                                if (err1) {
+                                    myCallback(err1, null, callback);
+                                } else {
+                                    console.log(
+                                        "__________result_________________\n",
+                                        result1
+                                    );
+                                    myCallback(null, result, callback);
+                                }
+                            })
+                            .catch(err1 => {
+                                myCallback(err1, null, callback);
+                            });
                     }
                 })
                 .catch(err => {
@@ -425,7 +482,22 @@ function handle_request(msg, callback) {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        myCallback(null, result, callback);
+                        Answer
+                            .findByIdAndUpdate(msg.reqBody.answerId,{$inc: { bookmarkCount: -1}})
+                            .then((result1, err1) => {
+                                if (err1) {
+                                    myCallback(err1, null, callback);
+                                } else {
+                                    console.log(
+                                        "__________result_________________\n",
+                                        result1
+                                    );
+                                    myCallback(null, result, callback);
+                                }
+                            })
+                            .catch(err1 => {
+                                myCallback(err1, null, callback);
+                            });
                     }
                 })
                 .catch(err => {

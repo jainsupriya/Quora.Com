@@ -84,6 +84,20 @@ AnswerRoutes.get("/answers", (req, res, next) => {
     });
 });
 
+AnswerRoutes.get("/answers/orderByViews/:userId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/answers/orderByViews/:userId");
+    var reqMsg = {
+        api: "get/answers/orderByViews/:userId",
+        reqBody: { userId: req.params.userId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
 AnswerRoutes.get("/answers/orderByViews", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
@@ -92,6 +106,20 @@ AnswerRoutes.get("/answers/orderByViews", (req, res, next) => {
     var reqMsg = {
         api: "get/answers/orderByViews",
         reqBody: null
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
+AnswerRoutes.get("/answers/orderByUpVotes/:userId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/answers/orderByUpVotes/:userId");
+    var reqMsg = {
+        api: "get/answers/orderByUpVotes/:userId",
+        reqBody: { userId: req.params.userId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
@@ -112,6 +140,20 @@ AnswerRoutes.get("/answers/orderByUpVotes", (req, res, next) => {
     });
 });
 
+AnswerRoutes.get("/answers/orderByDownVotes/:userId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/answers/orderByDownVotes/:userId");
+    var reqMsg = {
+        api: "get/answers/orderByDownVotes/:userId",
+        reqBody: { userId: req.params.userId }
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
 AnswerRoutes.get("/answers/orderByDownVotes", (req, res, next) => {
     console.log(
         "===================================================================================================================================================="
@@ -120,6 +162,20 @@ AnswerRoutes.get("/answers/orderByDownVotes", (req, res, next) => {
     var reqMsg = {
         api: "get/answers/orderByDownVotes",
         reqBody: null
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
+AnswerRoutes.get("/answers/orderByBookmarks/:userId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/get/answers/orderByBookmarks/:userId");
+    var reqMsg = {
+        api: "get/answers/orderByBookmarks/:userId",
+        reqBody: { userId: req.params.userId }
     };
     kafka.make_request(TOPIC, reqMsg, function(err, results) {
         res.status(results.status).send(results.data);
