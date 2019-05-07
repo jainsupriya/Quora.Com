@@ -128,6 +128,23 @@ class Profile extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  async componentWillMount() {
+    console.log(this.props.match.params.id);
+    console.log("here");
+
+    if (this.props.match.params.id) {
+      await this.props.getProfileByUserId(this.props.match.params.id);
+    }
+
+    axios.put(`/user/incView/` + this.props.match.params.id).then(response => {
+      if (response.status === 200) {
+        console.log(response.data);
+        this.setState({
+          viewCount: response.data.profileViews.length
+        });
+      }
+    });
+  }
   async componentDidMount() {
     console.log(this.props.match.params.id);
     console.log("here");

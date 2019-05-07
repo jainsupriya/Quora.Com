@@ -73,6 +73,7 @@ class ProfileContent extends Component {
         header = "Your Questions";
         typeInRes = "CREATE_QUESTION";
         bgColorType = "Questions Asked";
+        console.log(this.props.user);
         this.props.getAskedQuestion(this.props.user);
 
         break;
@@ -294,48 +295,160 @@ class ProfileContent extends Component {
     const { classes } = this.props;
     
     var QuestionComp;
-    var a=                         Object.keys(this.props.profile.userAnswer).map(
+    var questionAskedMap = this.props.profile.askedQuestion.map(item => {
+      console.log(item);
+      return (
+        <AnswerCardForAnswerPage
+          question={item.createdQuestion.question}
+          answerList={item.createdQuestion.answerList}
+          myanswer="true"
+          question_id={item.createdQuestion._id}
+        />
+      );
+    });
+    var questionAnswerMap = Object.keys(this.props.profile.userAnswer).map(
       index => {
-      
         return (
           <QuestionCardForAnswerPage
             question={
-              this.props.profile.userAnswer[index]
-                .createdAnswer.questionId.question
+              this.props.profile.userAnswer[index].createdAnswer.questionId
+                .question
             }
-            answer={
-              this.props.profile.userAnswer[index]
-                .createdAnswer.answer
-            }
+            answer={this.props.profile.userAnswer[index].createdAnswer.answer}
             upvoteCount={
-              this.props.profile.userAnswer[index]
-                .createdAnswer.upVotes
+              this.props.profile.userAnswer[index].createdAnswer.upVotes
             }
             user={this.props.auth.user}
             answerOwner={
-              this.props.profile.userAnswer[index]
-                .createdAnswer.answerOwner
+              this.props.profile.userAnswer[index].createdAnswer.answerOwner
             }
             postedTime={
-              this.props.profile.userAnswer[index]
-                .createdAnswer.postedTime
+              this.props.profile.userAnswer[index].createdAnswer.postedTime
             }
-            views={
-              this.props.profile.userAnswer[index]
-                .createdAnswer.views
-            }
+            views={this.props.profile.userAnswer[index].createdAnswer.views}
             myanswer="true"
           />
         );
       }
     );
+    var questionFollowedMap = Object.keys(
+      this.props.profile.followedQuestion
+    ).map(index => {
+      return (
+        <div style={{ padding: "2% 0" }}>
+          <div className="questionNav">
+            <a
+              style={{ color: "#2b6dad" }}
+              href={
+                "/" +
+                this.props.profile.followedQuestion[index].followedQuestion._id
+              }
+            >
+              {
+                this.props.profile.followedQuestion[index].followedQuestion
+                  .question
+              }
+            </a>
+          </div>
+        </div>
+      );
+    });
+    var followerMap =
+      (this.props.profile.follower.length != 0 )
+        ? Object.keys(this.props.profile.follower[0].followersUserList).map(
+            index => {
+              return (
+                <div>
+                  <div style={{ padding: "2% 0" }}>
+                    <div className="questionNav">
+                      <Avatar
+                        alt={
+                          this.props.profile.follower[0].followersUserList[
+                            index
+                          ]
+                        }
+                        src={
+                          this.props.profile.follower[0].followersUserList[
+                            index
+                          ].profileImg
+                        }
+                        className="avatar"
+                      />
+                      <a
+                        href={`/profile/${
+                          this.props.profile.follower[0].followersUserList[
+                            index
+                          ]._id
+                        }`}
+                      >
+                        {this.props.profile.follower[0].followersUserList[index]
+                          .fname +
+                          "  " +
+                          this.props.profile.follower[0].followersUserList[
+                            index
+                          ].lname}
+                      </a>
+                    </div>
+                    <div
+                      className="secondaryText"
+                      style={{
+                        padding: "1% 0 0"
+                      }}
+                    />
+                  </div>
+                  <Divider />
+                </div>
+              );
+            }
+          )
+        : "";
+    var followingMap = (this.props.profile.follower.length != 0 )
+    ?Object.keys(
+      this.props.profile.following[0].followingUserList
+    ).map(index => {
+      return (
+        <div>
+          <div style={{ padding: "2% 0" }}>
+            <div className="questionNav">
+              <Avatar
+                alt={this.props.profile.following[0].followingUserList[index]}
+                src={
+                  this.props.profile.following[0].followingUserList[index]
+                    .profileImg
+                }
+                className="avatar"
+              />
+              <a
+                href={`/profile/${
+                  this.props.profile.following[0].followingUserList[index]._id
+                }`}
+              >
+                {this.props.profile.following[0].followingUserList[index]
+                  .fname +
+                  "  " +
+                  this.props.profile.following[0].followingUserList[index]
+                    .lname}
+              </a>
+            </div>
+            <div
+              className="secondaryText"
+              style={{
+                padding: "1% 0 0"
+              }}
+            />
+          </div>
+          <Divider />
+        </div>
+      );
+    }):"";
+
     return (
       
       <div>
         {/* <AppBar className="m-bg-color" position="sticky">
           <NavHeader />
         </AppBar> */}
-        {a}
+       
         <Grid
           container
           direction="row"
@@ -405,176 +518,30 @@ class ProfileContent extends Component {
                   
                     switch (this.state.header) {
                       case "Your Questions":
-                        if (this.props.profile.askedQuestion !== undefined) {
-                          //console.log( this.props.profile.askedQuestion)
-                          Object.keys(this.props.profile.askedQuestion).map(index => {
-                         
-                          return (
-                      
-                            <AnswerCardForAnswerPage
-                              question={  this.props.profile.askedQuestion[index].createdQuestion.question}
-                              answerList={this.props.profile.askedQuestion[index].createdQuestion.answerList}
-                              myanswer="true"
-                              question_id={this.props.profile.askedQuestion[index].createdQuestion._id}
-                            />
-                          );
-                        });
-                        }
+                        return questionAskedMap;
                         break;
                       case "Your Answers":
-                        if (this.props.profile.userAnswer !== undefined) {
-                        Object.keys(this.props.profile.userAnswer).map(
-                          index => {
-                          
-                            return (
-                              <QuestionCardForAnswerPage
-                                question={
-                                  this.props.profile.userAnswer[index].createdAnswer.questionId.question
-                                }
-                                answer={
-                                  this.props.profile.userAnswer[index].createdAnswer.answer
-                                }
-                                upvoteCount={
-                                  this.props.profile.userAnswer[index].createdAnswer.upVotes
-                                }
-                                user={this.props.auth.user}
-                                answerOwner={
-                                  this.props.profile.userAnswer[index].createdAnswer.answerOwner
-                                }
-                                postedTime={
-                                  this.props.profile.userAnswer[index].createdAnswer.postedTime
-                                }
-                                views={
-                                  this.props.profile.userAnswer[index] .createdAnswer.views
-                                }
-                                myanswer="true"
-                              />
-                            );
-                          }
-                        );
-                        }
+                        // if (this.props.profile.userAnswer !== undefined) {
+                        return questionAnswerMap;
+                        // }
                         break;
                       case "Your Followed Questions":
                         // if (
                         //   this.props.profile.followedQuestion != undefined ||
                         //   this.props.profile.followedQuestion != []
                         // ) {
-                        Object.keys(this.props.profile.followedQuestion).map(
-                          index => {
-                            return (
-                              <div style={{ padding: "2% 0" }}>
-                                <div className="questionNav">
-                                  <a
-                                    style={{ color: "#2b6dad" }}
-                                    href={
-                                      "/" +
-                                      this.props.profile.followedQuestion[index]
-                                        .followedQuestion._id
-                                    }
-                                  >
-                                    {
-                                      this.props.profile.followedQuestion[index]
-                                        .followedQuestion.question
-                                    }
-                                  </a>
-                                </div>
-                              </div>
-                            );
-                          }
-                        );
+                        return questionFollowedMap;
                         // }
                         break;
                       case "Followers":
-                        if (this.props.profile.follower !== undefined) {
-                          Object.keys(
-                            this.props.profile.follower[0].followersUserList
-                          ).map(index => {
-                            return (
-                              <div>
-                                <div style={{ padding: "2% 0" }}>
-                                  <div className="questionNav">
-                                    <Avatar
-                                      alt={
-                                        this.props.profile.follower[0]
-                                          .followersUserList[index]
-                                      }
-                                      src={
-                                        this.props.profile.follower[0]
-                                          .followersUserList[index].profileImg
-                                      }
-                                      className="avatar"
-                                    />
-                                    <a
-                                      href={`/profile/${
-                                        this.props.profile.follower[0]
-                                          .followersUserList[index]._id
-                                      }`}
-                                    >
-                                      {this.props.profile.follower[0]
-                                        .followersUserList[index].fname +
-                                        "  " +
-                                        this.props.profile.follower[0]
-                                          .followersUserList[index].lname}
-                                    </a>
-                                  </div>
-                                  <div
-                                    className="secondaryText"
-                                    style={{
-                                      padding: "1% 0 0"
-                                    }}
-                                  />
-                                </div>
-                                <Divider />
-                              </div>
-                            );
-                          });
-                        }
+                        // if (this.props.profile.follower[0] !== undefined) {
+                        return followerMap;
+                        //  }
                         break;
                       case "Following":
-                        if (this.props.profile.following !== undefined) {
-                          Object.keys(
-                            this.props.profile.following[0].followingUserList
-                          ).map(index => {
-                            return (
-                              <div>
-                                <div style={{ padding: "2% 0" }}>
-                                  <div className="questionNav">
-                                    <Avatar
-                                      alt={
-                                        this.props.profile.following[0]
-                                          .followingUserList[index]
-                                      }
-                                      src={
-                                        this.props.profile.following[0]
-                                          .followingUserList[index].profileImg
-                                      }
-                                      className="avatar"
-                                    />
-                                    <a
-                                      href={`/profile/${
-                                        this.props.profile.following[0]
-                                          .followingUserList[index]._id
-                                      }`}
-                                    >
-                                      {this.props.profile.following[0]
-                                        .followingUserList[index].fname +
-                                        "  " +
-                                        this.props.profile.following[0]
-                                          .followingUserList[index].lname}
-                                    </a>
-                                  </div>
-                                  <div
-                                    className="secondaryText"
-                                    style={{
-                                      padding: "1% 0 0"
-                                    }}
-                                  />
-                                </div>
-                                <Divider />
-                              </div>
-                            );
-                          });
-                        }
+                        // if (this.props.profile.following[0] !== undefined) {
+                        return followingMap;
+                        //}
                         break;
                     }
                   })()}
