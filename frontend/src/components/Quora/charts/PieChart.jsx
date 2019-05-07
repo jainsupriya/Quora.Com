@@ -47,11 +47,11 @@ const Slice = props => {
           {(() => {
             switch (type) {
               case "views":
-                return data[index].questionId + ": " + data[index].views;
+                return "Answer " + (index + 1) + " : " + data[index].views;
               case "upvotes":
-                return data[index].questionId + ": " + data[index].upVotes.length;
+                return "Answer " + (index + 1) + " : " + data[index].upVotes.length;
               case "downvotes":
-                return data[index].questionId + ": " + data[index].downVotesCount;
+                return "Answer " + (index + 1) + " : " + data[index].downVotesCount;
             }
           })()}
         </title>
