@@ -778,7 +778,13 @@ class NavHeader extends Component {
                 className={classes.showCursor}
               >
                 <Avatar
+<<<<<<< HEAD
                   alt={this.props.auth.user.fname + this.props.auth.user.lname}
+=======
+                  alt={
+                    this.props.auth.user.fname + this.props.auth.user.lname
+                  }
+>>>>>>> origin/Namrata
                   src={this.props.auth.user.profileImg}
                   className="avatar"
                 />
