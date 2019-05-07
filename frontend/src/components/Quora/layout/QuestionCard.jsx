@@ -49,16 +49,30 @@ class QuestionCard extends React.Component {
   };
   readMoreText = () => {
     this.setState({ readMore: true });
+  
+    if (this.props.question !== undefined) {
+      console.log(this.props.question.answerList[0]._id)
+      axios.put(`/answer/view/` + this.props.question.answerList[0]._id).then(response => {
+        if (response.status === 200) {
+          console.log(response.data);
+        
+          this.setState({
+            view:this.state.view+1
+          });
+        }
+      });
+    }
   };
   readMoreTextClose = () => {
     this.setState({ readMore: false });
   };
   componentDidMount() {
+    
     var upvoteCount = 0;
     var isUpvoted = false;
     var isBookmarked = false;
     var commentList = [];
-
+  
     if (
       this.props.question.answerList !== undefined &&
       this.props.question.answerList.length

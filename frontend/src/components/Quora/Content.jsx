@@ -386,14 +386,16 @@ class Content extends Component {
                       <div>
                         <div style={{ padding: "2% 0" }}>
                           <div className="questionNav">
-                            <a>
+                            <a >
                               {(() => {
                                 switch (
                                   this.state.contentDetails[index].activityType
                                 ) {
                                   case "CREATE_QUESTION":
-                                    return this.state.contentDetails[index]
-                                      .createdQuestion.question;
+                                    return( 
+                                      this.state.contentDetails[index]
+                                      .createdQuestion.question)
+
                                   case "CREATE_ANSWER":
                                     return this.state.contentDetails[index]
                                       .createdAnswer.questionId.question;

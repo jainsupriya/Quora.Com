@@ -40,14 +40,6 @@ class QuestionCardForAnswerPage extends React.Component {
   }
   readMoreText = () => {
     this.setState({ readMore: true });
-  };
-  readMoreTextClose = () => {
-    this.setState({ readMore: false });
-  };
-  componentDidMount() {
-    console.log("answerList" + this.props.answerList);
-    var upvoteCount = 0;
-    var isUpvoted = false;
     console.log(this.props.answer._id)
     if (this.props.answer !== undefined) {
       axios.put(`/answer/view/` + this.props.answer_id).then(response => {
@@ -59,6 +51,15 @@ class QuestionCardForAnswerPage extends React.Component {
         }
       });
     }
+  };
+  readMoreTextClose = () => {
+    this.setState({ readMore: false });
+  };
+  componentDidMount() {
+    console.log("answerList" + this.props.answerList);
+    var upvoteCount = 0;
+    var isUpvoted = false;
+
 
     if (this.props.answerList !== undefined && this.props.answerList.length) {
       if (
