@@ -14,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
-
+import Loading from "../../commons/Loading";
 import {
   addQuestion,
   getUserDetails,
@@ -91,11 +91,12 @@ class Home extends React.Component {
         : [];
     if (this.props.questions && this.props.questions.length > 0) {
       QuestionComp = this.props.questions
-        
+
         .sort(
           (ques1, ques2) =>
             new Date(ques2.postedTime) - new Date(ques1.postedTime)
-        ).slice(0, this.state.visible)
+        )
+        .slice(0, this.state.visible)
         .map(question => {
           return (
             <QuestionCard
@@ -106,7 +107,11 @@ class Home extends React.Component {
           );
         });
     } else {
-      QuestionComp = <React.Fragment>No Data Found</React.Fragment>;
+      QuestionComp = (
+        <React.Fragment>
+          <Loading />
+        </React.Fragment>
+      );
     }
 
     var addQuestion = "";
