@@ -46,7 +46,7 @@ const AnswerSchema = new Schema({
         type: Number,
         default: 0
     },
-    downVotes: [
+    downVoters: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"

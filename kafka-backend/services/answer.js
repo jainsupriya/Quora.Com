@@ -349,7 +349,7 @@ function handle_request(msg, callback) {
                         Answer.findOneAndUpdate(
                             { _id: msg.reqBody.answerId },
                             {
-                                $addToSet: { downVotes: msg.reqBody.userId },
+                                $addToSet: { downVoters: msg.reqBody.userId },
                                 $inc: { downVotesCount: 1 }
                             }
                         )
@@ -383,7 +383,7 @@ function handle_request(msg, callback) {
                         Answer.findOneAndUpdate(
                             { _id: msg.reqBody.answerId },
                             {
-                                $pull: { downVotes: msg.reqBody.userId },
+                                $pull: { downVoters: msg.reqBody.userId },
                                 $inc: { downVotesCount: -1 }
                             }
                         )
