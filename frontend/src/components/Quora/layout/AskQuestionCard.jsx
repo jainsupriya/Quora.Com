@@ -35,7 +35,7 @@ export function AskQuestionCard(props) {
             >
               <div style={{ marginTop: "12px" }}>
                 <Link class="user" to="/myprofile">
-                  <h1>{user.fname + " " + user.lname}</h1>
+                  <h1>{user !== undefined ? user.fname : " "} { user !== undefined ? user.lname:" "}</h1>
                 </Link>
               </div>
             </Grid>
