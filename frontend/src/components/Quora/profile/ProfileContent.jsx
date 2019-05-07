@@ -292,15 +292,50 @@ class ProfileContent extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
+    
     var QuestionComp;
-
+    var a=                         Object.keys(this.props.profile.userAnswer).map(
+      index => {
+      
+        return (
+          <QuestionCardForAnswerPage
+            question={
+              this.props.profile.userAnswer[index]
+                .createdAnswer.questionId.question
+            }
+            answer={
+              this.props.profile.userAnswer[index]
+                .createdAnswer.answer
+            }
+            upvoteCount={
+              this.props.profile.userAnswer[index]
+                .createdAnswer.upVotes
+            }
+            user={this.props.auth.user}
+            answerOwner={
+              this.props.profile.userAnswer[index]
+                .createdAnswer.answerOwner
+            }
+            postedTime={
+              this.props.profile.userAnswer[index]
+                .createdAnswer.postedTime
+            }
+            views={
+              this.props.profile.userAnswer[index]
+                .createdAnswer.views
+            }
+            myanswer="true"
+          />
+        );
+      }
+    );
     return (
+      
       <div>
         {/* <AppBar className="m-bg-color" position="sticky">
           <NavHeader />
         </AppBar> */}
-
+        {a}
         <Grid
           container
           direction="row"
@@ -367,60 +402,57 @@ class ProfileContent extends Component {
 
                 <div>
                   {(() => {
-                    console.log(this.state.header);
+                  
                     switch (this.state.header) {
                       case "Your Questions":
-                        // if (this.props.profile.askedQuestion !== undefined) {
-                        this.props.profile.askedQuestion.map(item => {
-                          console.log(item);
+                        if (this.props.profile.askedQuestion !== undefined) {
+                          //console.log( this.props.profile.askedQuestion)
+                          Object.keys(this.props.profile.askedQuestion).map(index => {
+                         
                           return (
+                      
                             <AnswerCardForAnswerPage
-                              question={item.createdQuestion.question}
-                              answerList={item.createdQuestion.answerList}
+                              question={  this.props.profile.askedQuestion[index].createdQuestion.question}
+                              answerList={this.props.profile.askedQuestion[index].createdQuestion.answerList}
                               myanswer="true"
-                              question_id={item.createdQuestion._id}
+                              question_id={this.props.profile.askedQuestion[index].createdQuestion._id}
                             />
                           );
                         });
-                        // }
+                        }
                         break;
                       case "Your Answers":
-                        // if (this.props.profile.userAnswer !== undefined) {
+                        if (this.props.profile.userAnswer !== undefined) {
                         Object.keys(this.props.profile.userAnswer).map(
                           index => {
+                          
                             return (
                               <QuestionCardForAnswerPage
                                 question={
-                                  this.props.profile.userAnswer[index]
-                                    .createdAnswer.questionId.question
+                                  this.props.profile.userAnswer[index].createdAnswer.questionId.question
                                 }
                                 answer={
-                                  this.props.profile.userAnswer[index]
-                                    .createdAnswer.answer
+                                  this.props.profile.userAnswer[index].createdAnswer.answer
                                 }
                                 upvoteCount={
-                                  this.props.profile.userAnswer[index]
-                                    .createdAnswer.upVotes
+                                  this.props.profile.userAnswer[index].createdAnswer.upVotes
                                 }
                                 user={this.props.auth.user}
                                 answerOwner={
-                                  this.props.profile.userAnswer[index]
-                                    .createdAnswer.answerOwner
+                                  this.props.profile.userAnswer[index].createdAnswer.answerOwner
                                 }
                                 postedTime={
-                                  this.props.profile.userAnswer[index]
-                                    .createdAnswer.postedTime
+                                  this.props.profile.userAnswer[index].createdAnswer.postedTime
                                 }
                                 views={
-                                  this.props.profile.userAnswer[index]
-                                    .createdAnswer.views
+                                  this.props.profile.userAnswer[index] .createdAnswer.views
                                 }
                                 myanswer="true"
                               />
                             );
                           }
                         );
-                        // }
+                        }
                         break;
                       case "Your Followed Questions":
                         // if (
