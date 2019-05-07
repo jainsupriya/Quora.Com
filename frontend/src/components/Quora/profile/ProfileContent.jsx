@@ -329,6 +329,7 @@ class ProfileContent extends Component {
             }
             views={this.props.profile.userAnswer[index].createdAnswer.views}
             myanswer="true"
+            answer_id= {this.props.profile.userAnswer[index].createdAnswer._id}
           />
         );
       }
