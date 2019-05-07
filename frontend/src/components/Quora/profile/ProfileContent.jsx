@@ -293,7 +293,7 @@ class ProfileContent extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
+    
     var QuestionComp;
     var questionAskedMap = this.props.profile.askedQuestion.map(item => {
       console.log(item);
@@ -442,11 +442,12 @@ class ProfileContent extends Component {
     });
 
     return (
+      
       <div>
         {/* <AppBar className="m-bg-color" position="sticky">
           <NavHeader />
         </AppBar> */}
-
+       
         <Grid
           container
           direction="row"
@@ -513,7 +514,7 @@ class ProfileContent extends Component {
 
                 <div>
                   {(() => {
-                    console.log(this.state.header);
+                  
                     switch (this.state.header) {
                       case "Your Questions":
                         return questionAskedMap;

@@ -91,7 +91,7 @@ class Editor extends React.Component {
         {
           answer: this.state.editorHtml,
           answerOwner: this.props.auth.user._id,
-          isAnonymous: "false",
+          isAnonymous: this.props.isAnonymous,
           questionId: this.props.qid
         }
         axios.post(`/answer`, answer).
