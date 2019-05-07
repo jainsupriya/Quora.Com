@@ -13,14 +13,14 @@ const TOPIC = "user";
 const redis = require("redis");
 
 // Create Redis Client
-// let client = redis.createClient();
-var client = redis.createClient(
-  6379,
-  "redisforquora.gtvq8d.0001.usw1.cache.amazonaws.com",
-  {
-    no_ready_check: true
-  }
-);
+let client = redis.createClient();
+// var client = redis.createClient(
+//   6379,
+//   "redisforquora.gtvq8d.0001.usw1.cache.amazonaws.com",
+//   {
+//     no_ready_check: true
+//   }
+// );
 
 client.on("connect", function() {
     console.log("Connected to Redis...");
@@ -106,7 +106,7 @@ filesRoutes.put("/file/updateProfileImg", (req, res) => {
                         res.status(results.status).send(results.data);
                         client.hset(
                             "get/user/",
-                            req.params.userId,
+                            req.body.userId,
                             JSON.stringify(results.data)
                         );
                     });
