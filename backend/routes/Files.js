@@ -10,6 +10,21 @@ const fs = require('fs')
 const fsx = require('fs-extra')
 var kafka = require("../kafka/client");
 const TOPIC = "user";
+const redis = require("redis");
+
+// Create Redis Client
+let client = redis.createClient();
+// var client = redis.createClient(
+//   6379,
+//   "redisforquora.gtvq8d.0001.usw1.cache.amazonaws.com",
+//   {
+//     no_ready_check: true
+//   }
+// );
+
+client.on("connect", function() {
+    console.log("Connected to Redis...");
+});
 
 // multer with S3
 aws.config.update({
@@ -32,7 +47,8 @@ const storage = multerS3({
         console.log("+++++++++++++++++++++++++++++++++")
         console.log(req.body)
         console.log("+++++++++++++++++++++++++++++++++")
-      cb(null, "ProfilePic/"+req.body.filename)
+      cb(null, "ProfilePic/"+req.body.userId+file.originalname)
+    //   cb(null, "ProfilePic/"+req.body.filename)
     //   cb(null, file.originalname)
     }
   })
@@ -90,7 +106,7 @@ filesRoutes.put("/file/updateProfileImg", (req, res) => {
                         res.status(results.status).send(results.data);
                         client.hset(
                             "get/user/",
-                            req.params.userId,
+                            req.body.userId,
                             JSON.stringify(results.data)
                         );
                     });

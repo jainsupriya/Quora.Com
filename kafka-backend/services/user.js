@@ -36,23 +36,34 @@ function handle_request(msg, callback) {
                 });
             break;
         case "get/users/searchByUsername/:usernameQuery":
-            pool.getConnection(function(err, connection) {
-                if (err) {
-                    console.error("error connecting: " + err.stack);
-                    return;
-                }
-                let queryString = `SELECT * FROM users WHERE username LIKE '%${
-                    msg.reqBody.usernameQuery
-                }%';`;
-                console.log(queryString);
-                connection.query(queryString, (err, rows, fields) => {
+            User.find({username: { $regex : msg.reqBody.usernameQuery }},{fname:1,lname:1, _id:1})
+                .then((result, err) => {
                     if (err) {
                         myCallback(err, null, callback);
                     } else {
-                        myCallback(err, rows, callback);
+                        myCallback(null, result, callback);
                     }
+                })
+                .catch(err => {
+                    myCallback(err, null, callback);
                 });
-            });
+            // pool.getConnection(function(err, connection) {
+            //     if (err) {
+            //         console.error("error connecting: " + err.stack);
+            //         return;
+            //     }
+            //     let queryString = `SELECT * FROM users WHERE username LIKE '%${
+            //         msg.reqBody.usernameQuery
+            //     }%';`;
+            //     console.log(queryString);
+            //     connection.query(queryString, (err, rows, fields) => {
+            //         if (err) {
+            //             myCallback(err, null, callback);
+            //         } else {
+            //             myCallback(err, rows, callback);
+            //         }
+            //     });
+            // });
             break;
         case "get/users":
             pool.getConnection(function(err, connection) {
@@ -567,27 +578,33 @@ function handle_request(msg, callback) {
                     console.error("error connecting: " + err.stack);
                     return;
                 }
-                let queryString = `DELETE FROM users WHERE id = ${mysql.escape(
+                let queryString = `UPDATE users
+                SET password = "deleted"
+                WHERE id = ${mysql.escape(
                     msg.reqBody.userId
                 )};`;
+                // let queryString = `DELETE FROM users WHERE id = ${mysql.escape(
+                //     msg.reqBody.userId
+                // )};`;
                 console.log(queryString);
                 connection.query(queryString, (err, rows, fields) => {
                     if (err) {
                         console.log(err);
                         myCallback(err, null, callback);
                     } else {
-                        User.remove({ sqlUserId: msg.reqBody.userId })
-                            .then((result, err) => {
-                                if (err) {
-                                    myCallback(err, null, callback);
-                                } else {
-                                    resD = { sql: rows, mongo: result };
-                                    myCallback(null, resD, callback);
-                                }
-                            })
-                            .catch(err => {
-                                myCallback(err, null, callback);
-                            });
+                        myCallback(null, rows, callback);
+                        // User.remove({ sqlUserId: msg.reqBody.userId })
+                        //     .then((result, err) => {
+                        //         if (err) {
+                        //             myCallback(err, null, callback);
+                        //         } else {
+                        //             resD = { sql: rows, mongo: result };
+                        //             myCallback(null, resD, callback);
+                        //         }
+                        //     })
+                        //     .catch(err => {
+                        //         myCallback(err, null, callback);
+                        //     });
                     }
                 });
                 // console.log("connected as id " + connection.threadId);

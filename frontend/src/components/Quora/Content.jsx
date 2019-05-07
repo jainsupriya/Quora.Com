@@ -38,8 +38,7 @@ class Content extends Component {
   }
 
   componentDidMount = () => {
-    const userID = this.props.userDetails._id;
-    this.props.getContentDetails(userID);
+    this.props.getContentDetails(this.props.auth.user._id);
     this.setState({
       contentDetails: this.props.contentDetails.contents,
       showMsg: "Please Select Filters!!"
@@ -481,7 +480,7 @@ Content.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  // auth: state.auth,
+  auth: state.auth,
   // userState: state.userState,
   // errors: state.errors,
   userDetails: state.homeState.userDetails,
