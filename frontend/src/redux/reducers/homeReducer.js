@@ -6,6 +6,7 @@ import {
   SET_USER_DETAILS,
   GET_ANSWERS_FOR_QUESTIONS,
   GET_USER_DETAILS_QUESTIONS,
+  GET_USER_DETAILS_NAVBAR
 } from "../actions/types";
 const initialState = {
   questions: [],
@@ -52,6 +53,15 @@ export default function(state = initialState, action) {
       return {
         ...state,
         answerforquestions: action.payload
+      };
+      case GET_USER_DETAILS_NAVBAR:
+      console.log(action.payload);
+      console.log("ruchika2")
+      return {
+        ...state,
+        isChanged: !state.isChanged,
+        userDetails: action.payload.userDetails,
+        questions: action.payload.questions
       };
 
     case CLEAR_HOMESTATE:

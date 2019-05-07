@@ -12,21 +12,26 @@ import {
   GET_FOLLOWING,
   GET_FOLLOWED_QUESTION,
   GET_USER_ANSWER,
-  GET_ASKED_QUESTION
+  GET_ASKED_QUESTION,
+  GET_USER_DETAILS_NAVBAR
 } from "./types";
+
+import { getUserDetailsOnly } from "./homeAction";
 
 // set profile name
 export const setProfileName = (id, profileData) => dispatch => {
+  //const id= ${id}
   console.log(id);
   console.log(profileData);
   axios
     .put(`/user/${id}`, profileData)
-    .then(res =>
+    .then(res => {
+     // getUserDetailsOnly(id);
       dispatch({
         type: GET_USER_DETAILS,
         payload: res.data
-      })
-    )
+      });
+    })
     .catch(err =>
       dispatch({
         type: GET_PROFILE,
@@ -40,6 +45,7 @@ export const setProfileCredential = (userId, profiledata) => dispatch => {
   axios
     .put(`/user/${userId}`, profiledata)
     .then(res => {
+     // getUserDetailsOnly(userId);
       dispatch({
         type: GET_USER_DETAILS,
         payload: res.data
@@ -88,7 +94,7 @@ export const setProfilePersonal = (userId, profiledata) => dispatch => {
 };
 
 // set profile name
-export const getProfileByUserId = (userId) => dispatch => {
+export const getProfileByUserId = userId => dispatch => {
   axios
     .get(`/user/${userId}`)
     .then(res => {
@@ -102,7 +108,7 @@ export const getProfileByUserId = (userId) => dispatch => {
 };
 
 // set profile name
-export const getFollowedQuestion = (userId) => dispatch => {
+export const getFollowedQuestion = userId => dispatch => {
   axios
     .get(`/activity/byUserId/${userId}/onlyFollowQuestions`)
     .then(res => {
@@ -116,7 +122,7 @@ export const getFollowedQuestion = (userId) => dispatch => {
 };
 
 // set profile name
-export const getAskedQuestion = (userId) => dispatch => {
+export const getAskedQuestion = userId => dispatch => {
   axios
     .get(`/activity/byUserId/${userId}/onlyQuestions`)
     .then(res => {
@@ -130,7 +136,7 @@ export const getAskedQuestion = (userId) => dispatch => {
 };
 
 // set profile name
-export const getUserAnswer = (userId) => dispatch => {
+export const getUserAnswer = userId => dispatch => {
   axios
     .get(`/activity/byUserId/${userId}/onlyAnswers`)
     .then(res => {
@@ -144,7 +150,7 @@ export const getUserAnswer = (userId) => dispatch => {
 };
 
 // GET FOLLOWERS
-export const getFollowers = (userId) => dispatch => {
+export const getFollowers = userId => dispatch => {
   axios
     .get(`/userWith/FollowersUserList/${userId}`)
     .then(res => {
@@ -157,7 +163,7 @@ export const getFollowers = (userId) => dispatch => {
 };
 
 // GET FOLLOWERS
-export const getFollowing = (userId) => dispatch => {
+export const getFollowing = userId => dispatch => {
   axios
     .get(`/userWith/FollowingUserList/${userId}`)
     .then(res => {
@@ -170,11 +176,9 @@ export const getFollowing = (userId) => dispatch => {
 };
 
 // set profile name
-export const setFollower = (userId,followerId) => dispatch => {
+export const setFollower = (userId, followerId) => dispatch => {
   axios
-  .put(
-    `/user/followUser/${userId}/${followerId}`
-  )
+    .put(`/user/followUser/${userId}/${followerId}`)
     .then(res => {
       dispatch({
         type: GET_PROFILE,
@@ -185,11 +189,9 @@ export const setFollower = (userId,followerId) => dispatch => {
 };
 
 // set profile name
-export const removeFollower = (userId,followerId) => dispatch => {
+export const removeFollower = (userId, followerId) => dispatch => {
   axios
-  .put(
-    `/user/unFollowUser/${userId}/${followerId}`
-  )
+    .put(`/user/unFollowUser/${userId}/${followerId}`)
     .then(res => {
       dispatch({
         type: GET_PROFILE,
@@ -201,6 +203,26 @@ export const removeFollower = (userId,followerId) => dispatch => {
 
 export const updateImage = (fd, history) => dispatch => {
   axios.put("/file/updateProfileImg", fd).then(res => {
+    // console.log(res.data._id)
+    getUserDetailsOnly(res.data._id);
+    // axios
+    // .get(`/user/${res.data._id}`)
+    // .then(res1 => {
+    //   console.log("ruchika here");
+
+    //   var data = res1.data;
+    //   console.log(data);
+    //   dispatch({
+    //     type: GET_USER_DETAILS_NAVBAR,
+    //     payload: data
+    //   });
+    // })
+    // .catch(err =>
+    //   dispatch({
+    //     type: GET_ERRORS,
+    //     payload: err !== undefined && err.data !== undefined ? err.data : {}
+    //   })
+    // );
     dispatch({
       type: SET_USER_DETAILS,
       payload: res.data
