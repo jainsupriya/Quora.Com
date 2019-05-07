@@ -2,6 +2,22 @@ const express = require("express");
 const AnswerRoutes = express.Router();
 var kafka = require("../kafka/client");
 const TOPIC = "answer";
+const redis = require("redis");
+
+// Create Redis Client
+let client = redis.createClient();
+// var client = redis.createClient(
+//   6379,
+//   "redisforquora.gtvq8d.0001.usw1.cache.amazonaws.com",
+//   {
+//     no_ready_check: true
+//   }
+// );
+
+client.on("connect", function() {
+    console.log("Connected to Redis...");
+});
+
 
 var Pusher = require('pusher');
 
