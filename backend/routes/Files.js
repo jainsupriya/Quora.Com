@@ -10,6 +10,21 @@ const fs = require('fs')
 const fsx = require('fs-extra')
 var kafka = require("../kafka/client");
 const TOPIC = "user";
+const redis = require("redis");
+
+// Create Redis Client
+// let client = redis.createClient();
+var client = redis.createClient(
+  6379,
+  "redisforquora.gtvq8d.0001.usw1.cache.amazonaws.com",
+  {
+    no_ready_check: true
+  }
+);
+
+client.on("connect", function() {
+    console.log("Connected to Redis...");
+});
 
 // multer with S3
 aws.config.update({
