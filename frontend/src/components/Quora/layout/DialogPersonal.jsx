@@ -147,11 +147,11 @@ class DialogPersonal extends Component {
     console.log(profileData);
     console.log(this.props.state.userDetails._id);
 
- 
     this.props.setProfilePersonal(
       this.props.state.userDetails._id,
       profileData
     );
+    this.props.onClose();
   };
   render() {
     const { classes } = this.props;
@@ -486,7 +486,7 @@ class DialogPersonal extends Component {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.props.onClose} color="secondary">
               Cancel
             </Button>
             <Button onClick={this.handleSave} color="primary">

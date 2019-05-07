@@ -141,6 +141,7 @@ class DialogEmployment extends Component {
       this.props.state.userDetails._id,
       profileData
     );
+    this.props.onClose();
   };
 
   render() {
@@ -448,7 +449,7 @@ class DialogEmployment extends Component {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.props.onClose} color="secondary">
               Cancel
             </Button>
             <Button onClick={this.handleSave} color="primary">
