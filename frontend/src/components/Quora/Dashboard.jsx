@@ -168,6 +168,7 @@ class Dashboard extends React.Component {
 
   getDateArray = () => {
     let stopDate = new Date();
+    stopDate = stopDate.addDays(1);
     let startDate = stopDate.addDays(-30)
     let dateMap = this.getDates1(startDate, stopDate);
     const profileViews = this.props.userDetails.profileViews;
