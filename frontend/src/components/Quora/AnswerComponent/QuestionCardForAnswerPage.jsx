@@ -24,6 +24,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import AnswerCard from "../AnswerComponent/AnswerCard";
 import AnswerCardForAnswerPage from "./AnswerCardForAnswerPage";
+import Editor from "./Editor";
 const styles = theme => ({});
 
 class QuestionCardForAnswerPage extends React.Component {
@@ -36,7 +37,8 @@ class QuestionCardForAnswerPage extends React.Component {
       comment: "New Comment added",
       showComment: false,
       readMore: false,
-      views: ""
+      views: "",
+      editAnswer:false
     };
   }
   readMoreText = () => {
@@ -51,6 +53,14 @@ class QuestionCardForAnswerPage extends React.Component {
         }
       });
     }
+  };
+  handleClose = () => {
+    this.setState({ openQuill: false });
+  };
+  handleEdit = () => {
+    this.setState({ 
+      editAnswer: !this.state.editAnswer ,
+      openQuill:true });
   };
   readMoreTextClose = () => {
     this.setState({ readMore: false });
@@ -106,9 +116,6 @@ class QuestionCardForAnswerPage extends React.Component {
   };
 
   render() {
-    console.log(this.props.isAnonymous);
-    console.log(this.props.isAnonymous);
-
     const { question, user } = this.props;
     var comp = "";
     var upvotecomp = "";
@@ -375,7 +382,7 @@ class QuestionCardForAnswerPage extends React.Component {
                         </g>
                       </svg>
                     </span>
-                    <span className="m-padding-left-right-15">{`Share`}</span>
+                    <span className="m-padding-left-right-15" style={{cursor:"pointer"}} onClick={this.handleEdit}>{`Edit`}</span>
                     <span className="m-padding-left-right-15">{`2`}</span>
                   </Grid>
                   <Grid item>
@@ -511,6 +518,9 @@ class QuestionCardForAnswerPage extends React.Component {
                 </Grid>
               </React.Fragment>
             </Grid>
+            {this.state.openQuill && (
+            <Editor answerid={ this.props.answer_id}  toggle={this.handleClose}  editAnswer={this.props.question}/>
+          )}
           </Paper>
         </div>
       );

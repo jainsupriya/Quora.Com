@@ -85,6 +85,31 @@ class Editor extends React.Component {
           console.log(err);
         });      
       }
+      else if(this.props.editAnswer)
+      {
+        console.log(this.props.answerid)
+        const answer =
+        {
+          answer: this.state.editorHtml,
+        }
+       
+        axios.put(`/answer/`+ this.props.answerid, answer ).
+        then(res=>{
+        
+          if(res.status === 200)
+          {
+          
+            this.setState( 
+              {  
+                editorHtml: ''
+              });
+            this.props.toggle();
+          }
+        })
+        .catch(err =>{
+          console.log(err);
+        });      
+      }
       else
       {
         const answer =
