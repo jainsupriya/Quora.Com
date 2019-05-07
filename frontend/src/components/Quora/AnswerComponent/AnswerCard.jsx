@@ -656,7 +656,7 @@ class AnswerCard extends React.Component {
 
           {this.state.openQuill && (
             <Editor
-              qid={question._id}
+              questionId={question._id}
               toggle={this.handleClose}
               isAnonymous={this.state.isAnonymous}
             />

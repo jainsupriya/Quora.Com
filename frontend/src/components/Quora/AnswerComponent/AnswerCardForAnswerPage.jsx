@@ -40,7 +40,8 @@ class AnswerCardForAnswerPage extends React.Component {
       openQuill: false,
       editorHtml: "",
       totalAnswer: "",
-      editQuestion:false
+      editQuestion:false,
+      isAnonymous:false
     };
     this.GiveAnswer = this.GiveAnswer.bind(this);
   }
@@ -523,7 +524,7 @@ class AnswerCardForAnswerPage extends React.Component {
           </Grid>
 
           {this.state.openQuill && (
-            <Editor qid={question._id ? question._id : this.props.question_id}  toggle={this.handleClose}  editQuestion={this.props.question}/>
+            <Editor questionId={this.props.questionid ? this.props.questionid : this.props.question._id}  toggle={this.handleClose}  isAnonymous= {this.state.isAnonymous} editQuestion={this.props.question}/>
           )}
         </Paper>
       </div>

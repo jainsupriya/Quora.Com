@@ -109,7 +109,7 @@ class Answers extends React.Component {
         .map(question => {
           return (
 
-            <AnswerCardForAnswerPage question={this.props.answerforquestions[0].question}  answerList = {this.props.answerforquestions[0].answerList}/>
+            <AnswerCardForAnswerPage questionid ={this.props.answerforquestions[0]._id} question={this.props.answerforquestions[0].question}  answerList = {this.props.answerforquestions[0].answerList}/>
           );
         });
     } else {

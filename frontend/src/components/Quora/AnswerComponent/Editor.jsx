@@ -58,10 +58,12 @@ class Editor extends React.Component {
     handleSubmit(event)
     {
 
+      
       event.preventDefault();
   
-      if(this.props.editQuestion)
+      if(this.props.editQuestion=== true)
       {
+        console.log("hi");
         const answer =
         {
           question: this.state.editorHtml,
@@ -85,9 +87,10 @@ class Editor extends React.Component {
           console.log(err);
         });      
       }
-      else if(this.props.editAnswer)
+      if(this.props.editAnswer=== true)
       {
-        console.log(this.props.answerid)
+        console.log("hello")
+       
         const answer =
         {
           answer: this.state.editorHtml,
@@ -112,13 +115,17 @@ class Editor extends React.Component {
       }
       else
       {
+        console.log(this.props.auth.user._id)
+
+
         const answer =
         {
           answer: this.state.editorHtml,
           answerOwner: this.props.auth.user._id,
           isAnonymous: this.props.isAnonymous,
-          questionId: this.props.qid
+          questionId: this.props.questionId
         }
+        console.log(answer)
         axios.post(`/answer`, answer).
             then(res=>{     
               if(res.status === 200)
