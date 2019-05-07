@@ -44,7 +44,7 @@ export const getUserDetails = userId => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.data
+        payload: err.response !== undefined ? err.response.data : {}
       })
     );
 };

@@ -322,10 +322,10 @@ class NavHeader extends Component {
                     <Grid item>
                       <Avatar
                         alt={
-                          this.props.userDetails.fname +
-                          this.props.userDetails.lname
+                          this.props.auth.user.fname +
+                          this.props.auth.user.lname
                         }
-                        src={this.props.userDetails.profileImg}
+                        src={this.props.auth.user.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -369,10 +369,10 @@ class NavHeader extends Component {
                     <Grid item>
                       <Avatar
                         alt={
-                          this.props.userDetails.fname +
-                          this.props.userDetails.lname
+                          this.props.auth.user.fname +
+                          this.props.auth.user.lname
                         }
-                        src={this.props.userDetails.profileImg}
+                        src={this.props.auth.user.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -774,9 +774,9 @@ class NavHeader extends Component {
               >
                 <Avatar
                   alt={
-                    this.props.userDetails.fname + this.props.userDetails.lname
+                    this.props.auth.user.fname + this.props.auth.user.lname
                   }
-                  src={this.props.userDetails.profileImg}
+                  src={this.props.auth.user.profileImg}
                   className="avatar"
                 />
               </div>
