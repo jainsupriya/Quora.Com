@@ -358,12 +358,7 @@ class ProfileContent extends Component {
                   </div>
                 </div>
 
-                <div
-                // style={{
-                //   display:
-                //     this.state.header === "Your Content" ? "block" : "none"
-                // }}
-                >
+                <div>
                   {Object.keys(this.state.contentDetails).map(index => {
                     return (
                       <div>

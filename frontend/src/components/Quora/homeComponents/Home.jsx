@@ -32,7 +32,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      topic: "Change",
+      topic: "topic1",
       userDetails: {},
       openAddQuestion: false,
       visible: 2
@@ -86,9 +86,11 @@ class Home extends React.Component {
   render() {
     var QuestionComp;
     var userTopicList =
-      this.props.userDetails !== undefined
+      this.props.userDetails !== undefined &&
+      this.props.userDetails.interestedTopicList !== undefined &&
+      this.props.userDetails.interestedTopicList.length
         ? this.props.userDetails.interestedTopicList
-        : [];
+        : ["topic1"];
     if (this.props.questions && this.props.questions.length > 0) {
       QuestionComp = this.props.questions
 
