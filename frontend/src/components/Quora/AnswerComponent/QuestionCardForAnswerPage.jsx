@@ -36,18 +36,17 @@ class QuestionCardForAnswerPage extends React.Component {
       comment: "New Comment added",
       showComment: false,
       readMore: false,
-      views: ''
+      views: ""
     };
   }
   readMoreText = () => {
     this.setState({ readMore: true });
-    console.log(this.props.answer._id)
+    console.log(this.props.answer._id);
     if (this.props.answer !== undefined) {
       axios.put(`/answer/view/` + this.props.answer_id).then(response => {
         if (response.status === 200) {
-        
           this.setState({
-            views: this.state.views+1
+            views: this.state.views + 1
           });
         }
       });
@@ -61,7 +60,7 @@ class QuestionCardForAnswerPage extends React.Component {
     var upvoteCount = 0;
     var isUpvoted = false;
 
-    this.setState({views: this.props.views})
+    this.setState({ views: this.props.views });
     if (this.props.answerList !== undefined && this.props.answerList.length) {
       if (
         this.props.answerList[0].upVotes !== undefined &&
@@ -85,13 +84,13 @@ class QuestionCardForAnswerPage extends React.Component {
       axios
         .put(`/answer/upvoteInc/${this.props.user._id}/${answerOwnerId}`)
         .then(res => console.log(res.data))
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     } else {
       upvoteCount = upvoteCount > 0 ? upvoteCount - 1 : 0;
       axios
         .put(`/answer/upvoteDec/${this.props.user._id}/${answerOwnerId}`)
         .then(res => console.log(res.data))
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     }
 
     this.setState({
@@ -107,9 +106,9 @@ class QuestionCardForAnswerPage extends React.Component {
   };
 
   render() {
-    console.log(this.props.isAnonymous)
-    console.log(this.props.isAnonymous)
-   
+    console.log(this.props.isAnonymous);
+    console.log(this.props.isAnonymous);
+
     const { question, user } = this.props;
     var comp = "";
     var upvotecomp = "";
@@ -203,7 +202,6 @@ class QuestionCardForAnswerPage extends React.Component {
       }
 
       comp = (
-        
         <div>
           <Paper elevation={2} className="m-padding-10">
             <Grid
@@ -217,7 +215,11 @@ class QuestionCardForAnswerPage extends React.Component {
                 <span className="reason-txt">Answer · Recommended for you</span>
               </Grid>
               <React.Fragment>
-                 { this.props.question && <Typography variant="subtitle">{this.props.question}</Typography>}
+                {this.props.question && (
+                  <Typography variant="subtitle">
+                    {this.props.question}
+                  </Typography>
+                )}
                 <Grid
                   container
                   direction="row"
@@ -298,16 +300,29 @@ class QuestionCardForAnswerPage extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                { !this.state.readMore && 
-                   <Typography variant="subtitle"
-                              style ={{   height: 20, maxWidth: 750 , overflow: "hidden", textOverflow: "ellipsis" , whiteSpace : "nowrap"}} 
-                              onClick={() => this.readMoreText()} >{Parser(this.props.answer)}
-                              </Typography>}
-                { this.state.readMore &&  
-                    <Typography variant="subtitle" 
-                    onClick={() => this.readMoreTextClose()} >{Parser(this.props.answer)}
-                    </Typography>}
-        
+                  {!this.state.readMore && (
+                    <Typography
+                      variant="subtitle"
+                      style={{
+                        height: 20,
+                        maxWidth: 750,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}
+                      onClick={() => this.readMoreText()}
+                    >
+                      {Parser(this.props.answer)}
+                    </Typography>
+                  )}
+                  {this.state.readMore && (
+                    <Typography
+                      variant="subtitle"
+                      onClick={() => this.readMoreTextClose()}
+                    >
+                      {Parser(this.props.answer)}
+                    </Typography>
+                  )}
                 </Grid>
 
                 <Grid item className="votes">

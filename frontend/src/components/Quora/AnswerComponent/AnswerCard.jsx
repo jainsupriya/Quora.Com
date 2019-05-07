@@ -102,7 +102,7 @@ class AnswerCard extends React.Component {
           }`
         )
         .then(res => console.log(res.data))
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     } else {
       followerCount =
         this.state.followerCount > 0 ? this.state.followerCount - 1 : 0;
@@ -113,7 +113,7 @@ class AnswerCard extends React.Component {
           }`
         )
         .then(res => console.log(res.data))
-        .catch(err => console.log(err.data));
+        .catch(err => console.log(err));
     }
 
     this.setState({

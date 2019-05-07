@@ -45,7 +45,9 @@ export const loginUser = userData => dispatch => {
       dispatch({
         type: GET_ERRORS,
         payload:
-          err.response !== undefined && err.response.data !== undefined
+          err !== undefined &&
+          err.response !== undefined &&
+          err.response.data !== undefined
             ? err.response.data
             : {}
       })

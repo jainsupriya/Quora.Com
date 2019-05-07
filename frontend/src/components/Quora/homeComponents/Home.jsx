@@ -55,7 +55,6 @@ class Home extends React.Component {
     };
 
     this.props.addQuestion(questionData);
-    this.setState({ openAddQuestion: false });
   };
 
   handleClickOpen = () => {
@@ -139,6 +138,7 @@ class Home extends React.Component {
             >
               <Grid item xs={2} className="fix-pos">
                 <div style={{ position: "fixed", width: "11%" }}>
+                  <h3>Topics</h3>
                   {userTopicList !== undefined
                     ? userTopicList.map(topic => {
                         return (
@@ -166,7 +166,6 @@ class Home extends React.Component {
                   Improve Your Feed
                   <Divider />
                   {/* {for (let index = 0; index < 10; index++) {
-
                                         
                                     }} */}
                   <Grid
