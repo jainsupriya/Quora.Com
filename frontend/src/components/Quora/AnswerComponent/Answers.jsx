@@ -119,6 +119,7 @@ class Answers extends React.Component {
     if (this.props.answerforquestions && this.props.answerforquestions[0].answerList.length > 0) {
       AnswerComp = this.props.answerforquestions[0].answerList.slice(0, this.state.visible)
         .map(answer => {
+          console.log(answer.isAnonymous)
           return (
 
             <QuestionCardForAnswerPage
@@ -129,6 +130,7 @@ class Answers extends React.Component {
             postedTime = {answer.postedTime}
             views = {answer.views}
             answer_id = {answer._id}
+            isAnonymous= {answer.isAnonymous}
           />
           );
         });

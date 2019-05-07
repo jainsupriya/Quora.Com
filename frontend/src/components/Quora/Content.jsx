@@ -33,8 +33,15 @@ class Content extends Component {
       userDetails: {},
       contentDetails: [],
       bgColorType: "All Types",
-      showMsg: ""
+      showMsg: "",
+      visible: 8
     };
+  }
+
+  loadMore = () => {
+    this.setState(prev => {
+      return { visible: prev.visible + 8 };
+    });
   }
 
   componentDidMount = () => {
@@ -81,7 +88,8 @@ class Content extends Component {
       {
         type: typeInRes,
         header: header,
-        bgColorType: bgColorType
+        bgColorType: bgColorType,
+        visible: 8
       },
       () => this.updateContent()
     );
@@ -381,7 +389,7 @@ class Content extends Component {
                 //     this.state.header === "Your Content" ? "block" : "none"
                 // }}
                 >
-                  {Object.keys(this.state.contentDetails).map(index => {
+                  {Object.keys(this.state.contentDetails).slice(0, this.state.visible).map(index => {
                     return (
                       <div>
                         <div style={{ padding: "2% 0" }}>
@@ -463,6 +471,17 @@ class Content extends Component {
                     );
                   })}
                 </div>
+                {this.state.contentDetails &&
+                  this.state.visible <
+                    this.state.contentDetails.length && (
+                    <button
+                      onClick={this.loadMore}
+                      type="button"
+                      className="load-more"
+                    >
+                      Load more
+                    </button>
+                  )}
               </Grid>
 
               <Grid item xs={2} className="fix-pos" />

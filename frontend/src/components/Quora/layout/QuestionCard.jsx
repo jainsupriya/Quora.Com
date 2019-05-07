@@ -349,7 +349,8 @@ class QuestionCard extends React.Component {
                   <Grid item>
                     <Avatar
                       alt={
-                        answer.answerOwner !== undefined
+                        
+                        answer.isAnonymous === false
                           ? answer.answerOwner.fname +
                             " " +
                             answer.answerOwner.lname
@@ -521,7 +522,7 @@ class QuestionCard extends React.Component {
                         </g>
                       </svg>
                     </span>
-                    <span className="m-padding-left-right-15">
+                    <span className="m-padding-left-right-15" >
                       <svg
                         width="24px"
                         height="24px"

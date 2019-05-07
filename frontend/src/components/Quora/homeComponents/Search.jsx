@@ -2,7 +2,7 @@ import React from "react";
 import "../../../styles/home.css";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import AppBar from "@material-ui/core/AppBar";
 // import Toolbar from "@material-ui/core/Toolbar";
 // import Typography from "@material-ui/core/Typography";
@@ -32,7 +32,26 @@ import AddQuestion from "../homeComponents/AddQuestion";
 import NavHeader from "../header/navHeader";
 import AnswerCardForAnswerPage from "../AnswerComponent/AnswerCardForAnswerPage";
 import QuestionCardForAnswerPage from "../AnswerComponent/QuestionCardForAnswerPage";
-const styles = theme => ({});
+const styles = theme => ({
+  dropdown : {
+    border: '1px solid #b92b27',
+    background: '#b92b27',
+    width: 160,
+    textAlign: 'left',
+    '&:hover':{
+      border: '1px solid #fff',
+      background: '#b92b27',
+    },
+    '&:active':{
+      border: '1px solid #fff',
+      background: '#b92b27',
+    }
+  },
+  listElement : {
+    padding: '1% 5% 5%',
+    borderBottom: '1px solid #e2e2e2'
+  }
+});
 
 class Search extends React.Component {
   constructor(props) {
@@ -109,7 +128,7 @@ class Search extends React.Component {
     {
         if(value=== "")
         this.setState({
-          topic :''        
+          topics :''        
          });  
          else
          {
@@ -118,7 +137,7 @@ class Search extends React.Component {
                   var searchResult = (response.data).filter((topic)=>{
                       return topic.indexOf(value) > -1; });
                   this.setState({
-                    topic :searchResult        
+                    topics :searchResult        
                   });         
                   console.log(searchResult)
               }
@@ -192,7 +211,7 @@ class Search extends React.Component {
   };
 
   render() {
-   
+   const {classes} = this.props;
     
 
  
@@ -286,13 +305,13 @@ class Search extends React.Component {
               alignItems="flex-start"
             >
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                <DropdownToggle caret>
-                Dropdown
+                <DropdownToggle className={classes.dropdown} caret>
+                Select Filter
                 </DropdownToggle>
-                <DropdownMenu>
-                <div onClick={() =>this.handleClick("Topic")} >Search by Topic</div>
-                <div onClick= {() =>this.handleClick("Question")} >Search by Question</div>
-                <div onClick={() =>this.handleClick("People")}>Search byPeople</div>
+                <DropdownMenu dtyle={{padding: 0}}>
+                <div onClick={() =>this.handleClick("Topic")} className={classes.listElement}>Search by Topic</div>
+                <div onClick= {() =>this.handleClick("Question")} className={classes.listElement}>Search by Question</div>
+                <div onClick={() =>this.handleClick("People")} className={classes.listElement} style={{border: 'none'}}>Search byPeople</div>
                 </DropdownMenu>
             </Dropdown>
               <Grid item xs={8} className="m-padding-left-right-15">
@@ -356,6 +375,10 @@ class Search extends React.Component {
     );
   }
 }
+
+Search.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
