@@ -50,7 +50,8 @@ class QuestionCard extends React.Component {
       readMore: false,
       isBookmarked: false,
       commentList: [],
-      visible: 2
+      visible: 2,
+      downvote:false
     };
     this.loadMore = this.loadMore.bind(this);
   }
@@ -63,14 +64,20 @@ class QuestionCard extends React.Component {
     this.setState({ showComments: !this.state.showComments });
   };
   handleDownload = () => {
-    console.log(this.props.auth.user._id)
-    console.log(this.props.question.answerList[0]._id)
     axios.put(`/answer/downvote/${this.props.auth.user._id}/${this.props.question.answerList[0]._id}`).then(response => {
       if (response.status === 200) {
-        console.log(response.status )
+        this.setState({downvote:true})
       }
     });
   };
+  handleUndoDownVote=()=>{
+    console.log(this.props.auth.user._id+ " " + this.props.question.answerList[0]._id)
+    axios.put(`/answer/undoDownvote/${this.props.auth.user._id}/${this.props.question.answerList[0]._id}`).then(response => {
+      if (response.status === 200) {
+        this.setState({downvote:false})
+      }
+    });
+  }
   readMoreText = () => {
     this.setState({ readMore: true });
 
@@ -262,18 +269,12 @@ class QuestionCard extends React.Component {
   render() {
     const { question } = this.props;
     const { isUpvoted, upvoteCount } = this.state;
-
     var comp = "";
     var upvotecomp = "";
     var answer = {};
 
     if (question.answerList !== undefined && question.answerList.length) {
-      console.log(this.props.auth.user._id)
-      console.log(question.answerList[0].downVotes)
-      if(question.answerList[0].downVotes.includes(this.props.auth.user._id))
-      {
-        console.log("true")
-      }
+
       answer = question.answerList[0];
       if (isUpvoted) {
         upvotecomp = (
@@ -418,7 +419,7 @@ class QuestionCard extends React.Component {
                 </Grid>
 
                 <Grid item className="ans-main-content">
-                  {!this.state.readMore && (
+                  {!this.state.readMore && (!this.props.auth.user.downVoteAnswerList.includes(question.answerList[0]._id) || this.state.downvote===false) && (
                     <Typography
                       variant="subtitle"
                       style={{
@@ -433,15 +434,18 @@ class QuestionCard extends React.Component {
                       {answer.answer !== undefined ? Parser(answer.answer) : ""}
                     </Typography>
                   )}
-                  {this.state.readMore && (
+                  {this.state.readMore && (!this.props.auth.user.downVoteAnswerList.includes(question.answerList[0]._id) || this.state.downvote===false) && 
                     <Typography
                       variant="subtitle1"
                       onClick={() => this.readMoreTextClose()}
                     >
                       {answer.answer !== undefined ? Parser(answer.answer) : ""}
                     </Typography>
-                  )}
+                  }
                 </Grid>
+                { (this.state.downvote=== true && this.props.auth.user.downVoteAnswerList.includes(question.answerList[0]._id)) &&
+                  <a onClick={this.handleUndoDownVote}>Undo Downvote </a> 
+                }
                 <Grid item className="votes">
                   {answer.views} {`views · View Upvoters`}
                 </Grid>
