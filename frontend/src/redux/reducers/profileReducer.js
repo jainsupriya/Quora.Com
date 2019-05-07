@@ -2,13 +2,20 @@ import {
   GET_PROFILE,
   CLEAR_PROFILE,
   GET_FOLLOWER,
-  GET_FOLLOWING
+  GET_FOLLOWING,
+  GET_USER_ANSWER,
+  GET_FOLLOWED_QUESTION,
+  GET_ASKED_QUESTION
 } from "../actions/types";
 
 const initialState = {
   profile: {},
   follower: [],
-  following: []
+  following: [],
+  askedQuestion:[],
+  followedQuestion:[],
+  userAnswer:[],
+
 };
 
 export default function(state = initialState, action) {
@@ -27,6 +34,21 @@ export default function(state = initialState, action) {
       return {
         ...state,
         following: action.payload
+      };
+      case GET_ASKED_QUESTION:
+      return {
+        ...state,
+        askedQuestion: action.payload
+      };
+      case GET_FOLLOWED_QUESTION:
+      return {
+        ...state,
+        followedQuestion: action.payload
+      };
+      case GET_USER_ANSWER:
+      return {
+        ...state,
+        userAnswer: action.payload
       };
 
     case CLEAR_PROFILE:

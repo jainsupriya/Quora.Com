@@ -9,7 +9,10 @@ import {
   SET_USER_DETAILS,
   GET_USER_DETAILS,
   GET_FOLLOWER,
-  GET_FOLLOWING
+  GET_FOLLOWING,
+  GET_FOLLOWED_QUESTION,
+  GET_USER_ANSWER,
+  GET_ASKED_QUESTION
 } from "./types";
 
 // set profile name
@@ -89,8 +92,51 @@ export const getProfileByUserId = (userId) => dispatch => {
   axios
     .get(`/user/${userId}`)
     .then(res => {
+      //console.log(res)
       dispatch({
         type: GET_PROFILE,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// set profile name
+export const getFollowedQuestion = (userId) => dispatch => {
+  axios
+    .get(`/activity/byUserId/${userId}/onlyFollowQuestions`)
+    .then(res => {
+      //console.log(res)
+      dispatch({
+        type: GET_FOLLOWED_QUESTION,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// set profile name
+export const getAskedQuestion = (userId) => dispatch => {
+  axios
+    .get(`/activity/byUserId/${userId}/onlyQuestions`)
+    .then(res => {
+      //console.log(res)
+      dispatch({
+        type: GET_ASKED_QUESTION,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// set profile name
+export const getUserAnswer = (userId) => dispatch => {
+  axios
+    .get(`/activity/byUserId/${userId}/onlyAnswers`)
+    .then(res => {
+      //console.log(res)
+      dispatch({
+        type: GET_USER_ANSWER,
         payload: res.data
       });
     })

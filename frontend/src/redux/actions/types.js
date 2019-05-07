@@ -35,3 +35,9 @@ export const GET_FOLLOWER = "GET_FOLLOWER";
 //Following
 export const GET_FOLLOWING = "GET_FOLLOWING";
 
+//Question
+export const GET_FOLLOWED_QUESTION = "GET_FOLLOWED_QUESTION"
+export const GET_ASKED_QUESTION = "GET_ASKED_QUESTION"
+export const GET_USER_ANSWER = "GET_USER_ANSWER"
+
+
