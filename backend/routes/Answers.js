@@ -254,6 +254,21 @@ AnswerRoutes.put("/answer/downvote/:userId/:answerId", (req, res, next) => {
     });
 });
 
+// Downvote an answer
+AnswerRoutes.put("/answer/undoDownvote/:userId/:answerId", (req, res, next) => {
+    console.log(
+        "===================================================================================================================================================="
+    );
+    console.log("/put/answer/undoDownvote/:userId/:answerId");
+    var reqMsg = {
+        api: "put/answer/undoDownvote/:userId/:answerId",
+        reqBody: {userId: req.params.userId, answerId: req.params.answerId}
+    };
+    kafka.make_request(TOPIC, reqMsg, function(err, results) {
+        res.status(results.status).send(results.data);
+    });
+});
+
 // View an answer
 AnswerRoutes.put("/answer/view/:answerId", (req, res, next) => {
     console.log(
