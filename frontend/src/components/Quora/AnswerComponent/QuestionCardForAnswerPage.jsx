@@ -107,6 +107,9 @@ class QuestionCardForAnswerPage extends React.Component {
   };
 
   render() {
+    console.log(this.props.isAnonymous)
+    console.log(this.props.isAnonymous)
+   
     const { question, user } = this.props;
     var comp = "";
     var upvotecomp = "";
@@ -200,6 +203,7 @@ class QuestionCardForAnswerPage extends React.Component {
       }
 
       comp = (
+        
         <div>
           <Paper elevation={2} className="m-padding-10">
             <Grid
@@ -224,14 +228,14 @@ class QuestionCardForAnswerPage extends React.Component {
                     {this.props.user && (
                       <Avatar
                         alt={
-                          this.props.user !== undefined
+                          this.props.isAnonymous === false
                             ? this.props.user.fname +
                               " " +
                               this.props.user.lname
                             : "Anonymous User"
                         }
                         src={
-                          this.props.user !== undefined
+                          this.props.isAnonymous === false
                             ? this.props.user.profileImg
                             : ""
                         }
@@ -241,7 +245,7 @@ class QuestionCardForAnswerPage extends React.Component {
                     {!this.props.user && (
                       <Avatar
                         alt={
-                          this.props.answerOwner !== undefined
+                          this.props.isAnonymous === false
                             ? this.props.answerOwner.fname +
                               " " +
                               this.props.answerOwner.lname
@@ -266,7 +270,7 @@ class QuestionCardForAnswerPage extends React.Component {
                     >
                       {this.props.user && (
                         <Grid item className="black-clr">
-                          {this.props.user !== undefined
+                          {this.props.isAnonymous === false
                             ? this.props.user.fname +
                               " " +
                               this.props.user.lname
@@ -275,7 +279,7 @@ class QuestionCardForAnswerPage extends React.Component {
                       )}
                       {!this.props.user && (
                         <Grid item className="black-clr">
-                          {this.props.answerOwner !== undefined
+                          {this.props.answerOwner === false
                             ? this.props.answerOwner.fname +
                               " " +
                               this.props.answerOwner.lname

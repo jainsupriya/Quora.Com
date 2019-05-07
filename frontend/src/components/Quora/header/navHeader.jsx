@@ -465,7 +465,12 @@ class NavHeader extends Component {
                   <a className={classes.profileMenu} href="/search">
                     Search
                   </a>
-                </li>      
+                </li>    
+                <li className={classes.listStyle}>
+                  <a className={classes.profileMenu} href="/search">
+                    Deactivate User
+                  </a>
+                </li>    
                 <li className={classes.listStyle}>
                   <a className={classes.profileMenu} href="/dashboard">
                     Dashboard
@@ -654,9 +659,7 @@ class NavHeader extends Component {
                     ? "menu-clr-1"
                     : "menu-clr-2"
                 }
-                onClick={() => {
-                  this.navigationClick("spaces");
-                }}
+               
               >
                 <svg
                   width="24px"
@@ -717,6 +720,7 @@ class NavHeader extends Component {
                 placeholder="Search Quora"
                 autoFocus={true}
                 type="text"
+                disabled
                 value={this.searchValue}
                 onChange={this.searchForTopicOrPeople}
               />
