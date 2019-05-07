@@ -122,7 +122,7 @@ class NavHeader extends Component {
   }
 
   componentDidMount = () => {
-    const userID = this.props.auth.user._id;
+    const userID = this.props.userDetails._id;
     console.log(userID);
     this.props.getFollowingUsers(userID);
     this.props.getUserDetails(userID);
@@ -164,7 +164,7 @@ class NavHeader extends Component {
   handleAddQuestion = (question, topic) => {
     var questionData = {
       question: question,
-      questionOwner: this.props.auth.user._id,
+      questionOwner: this.props.userDetails._id,
       topicList: topic
     };
 
@@ -322,10 +322,10 @@ class NavHeader extends Component {
                     <Grid item>
                       <Avatar
                         alt={
-                          this.props.auth.user.fname +
-                          this.props.auth.user.lname
+                          this.props.userDetails.fname +
+                          this.props.userDetails.lname
                         }
-                        src={this.props.auth.user.profileImg}
+                        src={this.props.userDetails.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -369,10 +369,10 @@ class NavHeader extends Component {
                     <Grid item>
                       <Avatar
                         alt={
-                          this.props.auth.user.fname +
-                          this.props.auth.user.lname
+                          this.props.userDetails.fname +
+                          this.props.userDetails.lname
                         }
-                        src={this.props.auth.user.profileImg}
+                        src={this.props.userDetails.profileImg}
                         className="avatar"
                       />
                     </Grid>
@@ -779,9 +779,9 @@ class NavHeader extends Component {
               >
                 <Avatar
                   alt={
-                    this.props.auth.user.fname + this.props.auth.user.lname
+                    this.props.userDetails.fname + this.props.userDetails.lname
                   }
-                  src={this.props.auth.user.profileImg}
+                  src={this.props.userDetails.profileImg}
                   className="avatar"
                 />
               </div>
