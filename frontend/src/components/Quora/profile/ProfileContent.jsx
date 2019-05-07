@@ -402,7 +402,7 @@ class ProfileContent extends Component {
             }
           )
         : "";
-    var followingMap = (this.props.profile.follower.length != 0 )
+    var followingMap = (this.props.profile.following.length != 0 )
     ?Object.keys(
       this.props.profile.following[0].followingUserList
     ).map(index => {
