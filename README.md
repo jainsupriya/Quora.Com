@@ -33,5 +33,5 @@ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 -
 
 
 <div align="center">
-    <img src="QuoraArchitecture.png" width="1000px" height="800px"</img> 
+    <img src="QuoraArchitecture.png" width="1000px" height="700px"</img> 
 </div
